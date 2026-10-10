@@ -1,0 +1,28 @@
+export const permissions = {
+  cmsRead: "cms.read",
+  cmsWrite: "cms.write",
+  dashboardRead: "dashboard.read",
+  pagesRead: "pages.read",
+  pagesWrite: "pages.write",
+  leadsRead: "leads.read",
+  leadsWrite: "leads.write",
+  leadsExport: "leads.export",
+  formsRead: "forms.read",
+  formsWrite: "forms.write",
+  mediaRead: "media.read",
+  mediaWrite: "media.write",
+  seoRead: "seo.read",
+  seoWrite: "seo.write",
+  settingsRead: "settings.read",
+  settingsWrite: "settings.write",
+  adminAccess: "admin.access",
+  auditRead: "audit.read",
+  auditExport: "audit.export",
+  backupsRead: "backups.read",
+  backupsCreate: "backups.create",
+  backupsRestore: "backups.restore",
+  usersRead: "users.read",
+  usersWrite: "users.write",
+} as const;
+
+export type Permission = (typeof permissions)[keyof typeof permissions];

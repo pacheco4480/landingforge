@@ -1,0 +1,956 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserStatus {
+  ACTIVE    @map("active")
+  INVITED   @map("invited")
+  SUSPENDED @map("suspended")
+  DELETED   @map("deleted")
+}
+
+enum PageStatus {
+  DRAFT     @map("draft")
+  PUBLISHED @map("published")
+  ARCHIVED  @map("archived")
+}
+
+enum DemoStatus {
+  DRAFT     @map("draft")
+  READY     @map("ready")
+  PUBLISHED @map("published")
+  ARCHIVED  @map("archived")
+}
+
+enum PageType {
+  LANDING   @map("landing")
+  LEGAL     @map("legal")
+  THANK_YOU @map("thank_you")
+  CUSTOM    @map("custom")
+}
+
+enum FormFieldType {
+  TEXT         @map("text")
+  EMAIL        @map("email")
+  PHONE        @map("phone")
+  NUMBER       @map("number")
+  TEXTAREA     @map("textarea")
+  SELECT       @map("select")
+  RADIO        @map("radio")
+  CHECKBOX     @map("checkbox")
+  MULTI_SELECT @map("multi_select")
+  DATE         @map("date")
+  FILE         @map("file")
+  HIDDEN       @map("hidden")
+}
+
+enum FormStatus {
+  DRAFT     @map("draft")
+  PUBLISHED @map("published")
+  ARCHIVED  @map("archived")
+}
+
+enum FormType {
+  CONTACT     @map("contact")
+  QUOTE       @map("quote")
+  BOOKING     @map("booking")
+  APPOINTMENT @map("appointment")
+  NEWSLETTER  @map("newsletter")
+  CUSTOM      @map("custom")
+}
+
+enum SubmissionStatus {
+  RECEIVED  @map("received")
+  PROCESSED @map("processed")
+  SPAM      @map("spam")
+  FAILED    @map("failed")
+}
+
+enum LeadStatus {
+  NEW            @map("new")
+  CONTACTED      @map("contacted")
+  IN_NEGOTIATION @map("in_negotiation")
+  CONVERTED      @map("converted")
+  LOST           @map("lost")
+}
+
+enum LeadPriority {
+  LOW    @map("low")
+  NORMAL @map("normal")
+  HIGH   @map("high")
+}
+
+enum EmailDigestFrequency {
+  DISABLED @map("disabled")
+  DAILY    @map("daily")
+  WEEKLY   @map("weekly")
+  MONTHLY  @map("monthly")
+}
+
+enum EmailType {
+  PASSWORD_RESET       @map("password_reset")
+  WELCOME              @map("welcome")
+  NOTIFICATION_DIGEST  @map("notification_digest")
+}
+
+enum EmailDeliveryStatus {
+  PENDING @map("pending")
+  SENT    @map("sent")
+  FAILED  @map("failed")
+}
+
+enum SecurityEventType {
+  RATE_LIMIT        @map("rate_limit")
+  SPAM_DETECTED     @map("spam_detected")
+  TURNSTILE_FAILED  @map("turnstile_failed")
+  HONEYPOT_TRIGGERED @map("honeypot_triggered")
+  UPLOAD_BLOCKED    @map("upload_blocked")
+  AUTH_BLOCKED      @map("auth_blocked")
+}
+
+enum SystemLogLevel {
+  INFO     @map("info")
+  WARNING  @map("warning")
+  ERROR    @map("error")
+  CRITICAL @map("critical")
+}
+
+enum SystemLogSource {
+  FRONTEND @map("frontend")
+  BACKEND  @map("backend")
+  API      @map("api")
+  DATABASE @map("database")
+  AUTH     @map("auth")
+  STORAGE  @map("storage")
+  EMAIL    @map("email")
+  CMS      @map("cms")
+  SECURITY @map("security")
+  SYSTEM   @map("system")
+}
+
+enum LegalDocumentType {
+  PRIVACY_POLICY @map("privacy_policy")
+  COOKIE_POLICY  @map("cookie_policy")
+  TERMS          @map("terms")
+  LEGAL_NOTICE   @map("legal_notice")
+}
+
+enum BackupType {
+  MANUAL    @map("manual")
+  AUTOMATIC @map("automatic")
+  EXPORT    @map("export")
+}
+
+enum BackupStatus {
+  PENDING   @map("pending")
+  COMPLETED @map("completed")
+  FAILED    @map("failed")
+}
+
+enum DeploymentMode {
+  INTERNAL_DEMO @map("internal_demo")
+  CLIENT        @map("client")
+}
+
+enum DeploymentEnvironment {
+  LOCAL      @map("local")
+  PREVIEW    @map("preview")
+  PRODUCTION @map("production")
+}
+
+enum DeploymentStatus {
+  NOT_STARTED @map("not_started")
+  CONFIGURING @map("configuring")
+  READY       @map("ready")
+  LIVE        @map("live")
+  BLOCKED     @map("blocked")
+}
+
+enum DomainStatus {
+  NOT_CONFIGURED @map("not_configured")
+  PENDING        @map("pending")
+  CONNECTED      @map("connected")
+  ERROR          @map("error")
+}
+
+enum SslStatus {
+  NOT_CONFIGURED @map("not_configured")
+  PENDING        @map("pending")
+  ACTIVE         @map("active")
+  ERROR          @map("error")
+}
+
+model User {
+  id             String         @id @default(uuid()) @db.Uuid
+  name           String
+  email          String         @unique
+  passwordHash   String?        @map("password_hash")
+  avatarUrl      String?        @map("avatar_url")
+  status         UserStatus     @default(INVITED)
+  lastLoginAt    DateTime?      @map("last_login_at")
+  passwordChangedAt DateTime?   @map("password_changed_at")
+  authorizationVersion Int      @default(1) @map("authorization_version")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  deletedAt      DateTime?      @map("deleted_at")
+  roles          UserRole[]
+  assignedLeads  Lead[]         @relation("AssignedLeads")
+  leadNotes      LeadNote[]
+  mediaAssets    MediaAsset[]   @relation("MediaCreatedBy")
+  notifications  Notification[]
+  auditLogs      AuditLog[]
+  systemErrorLogs SystemErrorLog[]
+  createdBackups Backup[]       @relation("BackupCreatedBy")
+  passwordResetTokens PasswordResetToken[]
+  updatedLegalSettings LegalSetting[] @relation("LegalSettingUpdatedBy")
+  createdLegalDocumentVersions LegalDocumentVersion[] @relation("LegalDocumentCreatedBy")
+
+  @@index([status])
+  @@map("users")
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  tokenHash String    @unique @map("token_hash")
+  expiresAt DateTime  @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+  @@map("password_reset_tokens")
+}
+
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  name        String           @unique
+  description String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  users       UserRole[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid()) @db.Uuid
+  key         String           @unique
+  description String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  roles       RolePermission[]
+
+  @@map("permissions")
+}
+
+model UserRole {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  id           String     @id @default(uuid()) @db.Uuid
+  roleId       String     @map("role_id") @db.Uuid
+  permissionId String     @map("permission_id") @db.Uuid
+  createdAt    DateTime   @default(now()) @map("created_at")
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([permissionId])
+  @@map("role_permissions")
+}
+
+model SiteSetting {
+  id              String      @id @default(uuid()) @db.Uuid
+  siteName        String      @map("site_name")
+  businessName    String      @map("business_name")
+  businessType    String      @map("business_type")
+  domain          String?     @unique
+  defaultLanguage String      @default("pt-PT") @map("default_language")
+  timezone        String      @default("Europe/Lisbon")
+  contactEmail    String      @map("contact_email")
+  contactPhone    String?     @map("contact_phone")
+  address         String?
+  city            String?
+  region          String?
+  country         String?
+  postalCode      String?     @map("postal_code")
+  latitude        Float?
+  longitude       Float?
+  openingHours    String?     @map("opening_hours")
+  whatsappUrl     String?     @map("whatsapp_url")
+  facebookUrl     String?     @map("facebook_url")
+  instagramUrl    String?     @map("instagram_url")
+  linkedinUrl     String?     @map("linkedin_url")
+  primaryColor    String      @map("primary_color")
+  secondaryColor  String      @map("secondary_color")
+  accentColor     String      @map("accent_color")
+  logoMediaId     String?     @map("logo_media_id") @db.Uuid
+  faviconMediaId  String?     @map("favicon_media_id") @db.Uuid
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  logoMedia       MediaAsset? @relation("SiteLogo", fields: [logoMediaId], references: [id], onDelete: SetNull)
+  faviconMedia    MediaAsset? @relation("SiteFavicon", fields: [faviconMediaId], references: [id], onDelete: SetNull)
+  legalSettings   LegalSetting?
+
+  @@map("site_settings")
+}
+
+model ClientSetting {
+  id                   String               @id @default(uuid()) @db.Uuid
+  language             String               @default("pt-PT")
+  timezone             String               @default("Europe/Lisbon")
+  currency             String               @default("EUR")
+  dateFormat           String               @default("dd/MM/yyyy") @map("date_format")
+  analyticsEnabled     Boolean              @default(false) @map("analytics_enabled")
+  maintenanceMode      Boolean              @default(false) @map("maintenance_mode")
+  maintenanceMessage   String?              @map("maintenance_message")
+  emailDigestFrequency EmailDigestFrequency @default(DISABLED) @map("email_digest_frequency")
+  emailDigestHour      Int                  @default(9) @map("email_digest_hour")
+  emailDigestRecipient String?              @map("email_digest_recipient")
+  emailDigestWeekday   Int                  @default(1) @map("email_digest_weekday")
+  emailDigestLastSentAt DateTime?           @map("email_digest_last_sent_at")
+  emailDigestLastStatus EmailDeliveryStatus? @map("email_digest_last_status")
+  deploymentMode       DeploymentMode       @default(CLIENT) @map("deployment_mode")
+  deploymentEnvironment DeploymentEnvironment @default(LOCAL) @map("deployment_environment")
+  deploymentStatus     DeploymentStatus     @default(NOT_STARTED) @map("deployment_status")
+  domainStatus         DomainStatus         @default(NOT_CONFIGURED) @map("domain_status")
+  sslStatus            SslStatus            @default(NOT_CONFIGURED) @map("ssl_status")
+  readyForDelivery     Boolean              @default(false) @map("ready_for_delivery")
+  deliveryChecklist    Json?                @map("delivery_checklist")
+  lastDeploymentCheckAt DateTime?           @map("last_deployment_check_at")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+
+  @@index([emailDigestFrequency])
+  @@index([deploymentStatus])
+  @@map("client_settings")
+}
+
+model SecuritySetting {
+  id                  String   @id @default(uuid()) @db.Uuid
+  turnstileEnabled    Boolean  @default(false) @map("turnstile_enabled")
+  turnstileSiteKey    String?  @map("turnstile_site_key")
+  honeypotEnabled     Boolean  @default(true) @map("honeypot_enabled")
+  duplicateCooldownSeconds Int @default(60) @map("duplicate_cooldown_seconds")
+  loginLimitPerMinute Int     @default(5) @map("login_limit_per_minute")
+  passwordResetLimitPerHour Int @default(3) @map("password_reset_limit_per_hour")
+  formLimitPerMinute  Int     @default(5) @map("form_limit_per_minute")
+  uploadLimitPerMinute Int    @default(10) @map("upload_limit_per_minute")
+  apiLimitPerMinute   Int     @default(60) @map("api_limit_per_minute")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  @@map("security_settings")
+}
+
+model Industry {
+  id          String     @id @default(uuid()) @db.Uuid
+  key         String     @unique
+  name        String
+  description String?
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  templates   Template[]
+
+  @@index([isActive])
+  @@map("industries")
+}
+
+model Template {
+  id          String            @id @default(uuid()) @db.Uuid
+  industryId  String            @map("industry_id") @db.Uuid
+  key         String            @unique
+  name        String
+  description String?
+  isActive    Boolean           @default(true) @map("is_active")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  industry    Industry          @relation(fields: [industryId], references: [id], onDelete: Restrict)
+  variants    TemplateVariant[]
+  pages       Page[]
+
+  @@index([industryId])
+  @@index([isActive])
+  @@map("templates")
+}
+
+model TemplateVariant {
+  id          String   @id @default(uuid()) @db.Uuid
+  templateId  String   @map("template_id") @db.Uuid
+  key         String
+  name        String
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  template    Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  pages       Page[]
+
+  @@unique([templateId, key])
+  @@index([isActive])
+  @@map("template_variants")
+}
+
+model Theme {
+  id                 String   @id @default(uuid()) @db.Uuid
+  name               String
+  key                String   @unique
+  primaryColor       String   @map("primary_color")
+  secondaryColor     String   @map("secondary_color")
+  accentColor        String   @map("accent_color")
+  backgroundColor    String   @map("background_color")
+  surfaceColor       String   @map("surface_color")
+  textPrimaryColor   String   @map("text_primary_color")
+  textSecondaryColor String   @map("text_secondary_color")
+  headingFont        String   @map("heading_font")
+  bodyFont           String   @map("body_font")
+  borderRadius       String   @map("border_radius")
+  shadowStyle        String   @map("shadow_style")
+  settings           Json     @default("{}")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
+  pages              Page[]
+
+  @@map("themes")
+}
+
+model Page {
+  id                String           @id @default(uuid()) @db.Uuid
+  templateId        String?          @map("template_id") @db.Uuid
+  templateVariantId String?          @map("template_variant_id") @db.Uuid
+  themeId           String?          @map("theme_id") @db.Uuid
+  title             String
+  slug              String           @unique
+  status            PageStatus       @default(DRAFT)
+  pageType          PageType         @default(LANDING) @map("page_type")
+  isDemo            Boolean          @default(false) @map("is_demo")
+  demoKey           String?          @unique @map("demo_key")
+  demoStatus        DemoStatus?      @map("demo_status")
+  portfolioVisible  Boolean          @default(false) @map("portfolio_visible")
+  portfolioOrder    Int?             @map("portfolio_order")
+  publishedAt       DateTime?        @map("published_at")
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+  deletedAt         DateTime?        @map("deleted_at")
+  template          Template?        @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  templateVariant   TemplateVariant? @relation(fields: [templateVariantId], references: [id], onDelete: SetNull)
+  theme             Theme?           @relation(fields: [themeId], references: [id], onDelete: SetNull)
+  sections          PageSection[]
+  forms             Form[]
+  thankYouForForms  Form[]           @relation("FormThankYouPage")
+  submissions       FormSubmission[]
+  seoSetting        SeoSetting?
+  analyticsEvents   AnalyticsEvent[]
+  privacyLegalSettings LegalSetting[] @relation("PrivacyLegalPage")
+  cookieLegalSettings  LegalSetting[] @relation("CookieLegalPage")
+  termsLegalSettings   LegalSetting[] @relation("TermsLegalPage")
+  legalDocumentVersions LegalDocumentVersion[]
+
+  @@index([templateId])
+  @@index([templateVariantId])
+  @@index([themeId])
+  @@index([status])
+  @@index([pageType])
+  @@index([isDemo])
+  @@index([isDemo, demoStatus])
+  @@index([portfolioVisible, portfolioOrder])
+  @@map("pages")
+}
+
+model PageSection {
+  id          String    @id @default(uuid()) @db.Uuid
+  pageId      String    @map("page_id") @db.Uuid
+  sectionKey  String    @map("section_key")
+  sectionType String    @map("section_type")
+  name        String
+  sortOrder   Int       @default(0) @map("sort_order")
+  isVisible   Boolean   @default(true) @map("is_visible")
+  content     Json      @default("{}")
+  settings    Json      @default("{}")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  page        Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, sectionKey])
+  @@index([pageId, sortOrder])
+  @@index([sectionType])
+  @@map("page_sections")
+}
+
+model SectionTemplate {
+  id                  String      @id @default(uuid()) @db.Uuid
+  sectionType         String      @map("section_type")
+  name                String
+  description         String?
+  previewImageMediaId String?     @map("preview_image_media_id") @db.Uuid
+  configurationJson   Json        @map("configuration_json")
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+  previewImageMedia   MediaAsset? @relation("SectionTemplatePreview", fields: [previewImageMediaId], references: [id], onDelete: SetNull)
+
+  @@unique([sectionType, name])
+  @@index([previewImageMediaId])
+  @@map("section_templates")
+}
+
+model Form {
+  id             String           @id @default(uuid()) @db.Uuid
+  pageId         String?          @map("page_id") @db.Uuid
+  thankYouPageId String?          @map("thank_you_page_id") @db.Uuid
+  name           String
+  key            String
+  type           FormType         @default(CONTACT)
+  status         FormStatus       @default(DRAFT)
+  description    String?
+  successMessage String           @map("success_message")
+  errorMessage   String           @map("error_message")
+  recipientEmail String           @map("recipient_email")
+  redirectUrl    String?          @map("redirect_url")
+  gdprConsentRequired Boolean     @default(true) @map("gdpr_consent_required")
+  gdprConsentLabel String         @default("Li e aceito a Politica de Privacidade.") @map("gdpr_consent_label")
+  gdprConsentVersion String       @default("1.0") @map("gdpr_consent_version")
+  isActive       Boolean          @default(true) @map("is_active")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  deletedAt      DateTime?        @map("deleted_at")
+  page           Page?            @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  thankYouPage   Page?            @relation("FormThankYouPage", fields: [thankYouPageId], references: [id], onDelete: SetNull)
+  fields         FormField[]
+  submissions    FormSubmission[]
+
+  @@unique([pageId, key])
+  @@index([status])
+  @@index([type])
+  @@index([isActive])
+  @@index([thankYouPageId])
+  @@map("forms")
+}
+
+model FormField {
+  id               String        @id @default(uuid()) @db.Uuid
+  formId           String        @map("form_id") @db.Uuid
+  label            String
+  name             String
+  type             FormFieldType
+  placeholder      String?
+  helpText         String?       @map("help_text")
+  defaultValue     String?       @map("default_value")
+  options          Json?
+  validation       Json?
+  conditionalLogic Json?         @map("conditional_logic")
+  sortOrder        Int           @default(0) @map("sort_order")
+  isRequired       Boolean       @default(false) @map("is_required")
+  isVisible        Boolean       @default(true) @map("is_visible")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+  form             Form          @relation(fields: [formId], references: [id], onDelete: Cascade)
+
+  @@unique([formId, name])
+  @@index([formId, sortOrder])
+  @@map("form_fields")
+}
+
+model FormSubmission {
+  id          String           @id @default(uuid()) @db.Uuid
+  formId      String           @map("form_id") @db.Uuid
+  pageId      String?          @map("page_id") @db.Uuid
+  data        Json
+  status      SubmissionStatus @default(RECEIVED)
+  ipAddress   String?          @map("ip_address")
+  userAgent   String?          @map("user_agent")
+  referrer    String?
+  utmSource   String?          @map("utm_source")
+  utmMedium   String?          @map("utm_medium")
+  utmCampaign String?          @map("utm_campaign")
+  utmTerm     String?          @map("utm_term")
+  utmContent  String?          @map("utm_content")
+  consentGiven Boolean         @default(false) @map("consent_given")
+  consentVersion String?       @map("consent_version")
+  consentGivenAt DateTime?     @map("consent_given_at")
+  consentSource String?        @map("consent_source")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  form        Form             @relation(fields: [formId], references: [id], onDelete: Restrict)
+  page        Page?            @relation(fields: [pageId], references: [id], onDelete: SetNull)
+  files       SubmissionFile[]
+  lead        Lead?
+
+  @@index([formId, createdAt])
+  @@index([pageId, createdAt])
+  @@index([status])
+  @@index([consentGiven, consentGivenAt])
+  @@map("form_submissions")
+}
+
+model SubmissionFile {
+  id               String         @id @default(uuid()) @db.Uuid
+  formSubmissionId String         @map("form_submission_id") @db.Uuid
+  mediaAssetId     String         @map("media_asset_id") @db.Uuid
+  createdAt        DateTime       @default(now()) @map("created_at")
+  formSubmission   FormSubmission @relation(fields: [formSubmissionId], references: [id], onDelete: Cascade)
+  mediaAsset       MediaAsset     @relation(fields: [mediaAssetId], references: [id], onDelete: Restrict)
+
+  @@unique([formSubmissionId, mediaAssetId])
+  @@index([mediaAssetId])
+  @@map("submission_files")
+}
+
+model Lead {
+  id               String          @id @default(uuid()) @db.Uuid
+  formSubmissionId String?         @unique @map("form_submission_id") @db.Uuid
+  name             String?
+  email            String?
+  phone            String?
+  company          String?
+  message          String?
+  source           String?
+  consentGiven     Boolean         @default(false) @map("consent_given")
+  consentVersion   String?         @map("consent_version")
+  consentGivenAt   DateTime?       @map("consent_given_at")
+  consentSource    String?         @map("consent_source")
+  status           LeadStatus      @default(NEW)
+  priority         LeadPriority    @default(NORMAL)
+  assignedToUserId String?         @map("assigned_to_user_id") @db.Uuid
+  firstSeenAt      DateTime        @default(now()) @map("first_seen_at")
+  lastContactedAt  DateTime?       @map("last_contacted_at")
+  convertedAt      DateTime?       @map("converted_at")
+  lostAt           DateTime?       @map("lost_at")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+  deletedAt        DateTime?       @map("deleted_at")
+  formSubmission   FormSubmission? @relation(fields: [formSubmissionId], references: [id], onDelete: SetNull)
+  assignedToUser   User?           @relation("AssignedLeads", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  notes            LeadNote[]
+
+  @@index([status, createdAt])
+  @@index([priority])
+  @@index([assignedToUserId])
+  @@index([email])
+  @@index([consentGiven, consentGivenAt])
+  @@map("leads")
+}
+
+model LeadNote {
+  id        String   @id @default(uuid()) @db.Uuid
+  leadId    String   @map("lead_id") @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  note      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([leadId, createdAt])
+  @@index([userId])
+  @@map("lead_notes")
+}
+
+model LeadStage {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  color     String
+  sortOrder Int      @unique @map("sort_order")
+  isDefault Boolean  @default(false) @map("is_default")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("lead_stages")
+}
+
+model MediaFolder {
+  id        String        @id @default(uuid()) @db.Uuid
+  parentId  String?       @map("parent_id") @db.Uuid
+  name      String
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  parent    MediaFolder?  @relation("MediaFolderHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  children  MediaFolder[] @relation("MediaFolderHierarchy")
+  assets    MediaAsset[]
+
+  @@unique([parentId, name])
+  @@index([parentId])
+  @@map("media_folders")
+}
+
+model MediaAsset {
+  id                      String            @id @default(uuid()) @db.Uuid
+  folderId                String?           @map("folder_id") @db.Uuid
+  filename                String
+  originalFilename        String            @map("original_filename")
+  mimeType                String            @map("mime_type")
+  sizeBytes               Int               @map("size_bytes")
+  width                   Int?
+  height                  Int?
+  altText                 String?           @map("alt_text")
+  storageProvider         String            @map("storage_provider")
+  storagePath             String            @unique @map("storage_path")
+  publicUrl               String?           @map("public_url")
+  tags                    Json?
+  createdByUserId         String?           @map("created_by_user_id") @db.Uuid
+  createdAt               DateTime          @default(now()) @map("created_at")
+  updatedAt               DateTime          @updatedAt @map("updated_at")
+  deletedAt               DateTime?         @map("deleted_at")
+  folder                  MediaFolder?      @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  createdByUser           User?             @relation("MediaCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  siteLogoFor             SiteSetting[]     @relation("SiteLogo")
+  siteFaviconFor          SiteSetting[]     @relation("SiteFavicon")
+  seoImages               SeoSetting[]
+  sectionTemplatePreviews SectionTemplate[] @relation("SectionTemplatePreview")
+  submissionFiles         SubmissionFile[]
+
+  @@index([folderId])
+  @@index([mimeType])
+  @@index([createdAt])
+  @@index([createdByUserId])
+  @@map("media_assets")
+}
+
+model SeoSetting {
+  id              String      @id @default(uuid()) @db.Uuid
+  pageId          String      @unique @map("page_id") @db.Uuid
+  metaTitle       String      @map("meta_title")
+  metaDescription String      @map("meta_description")
+  keywords        String?
+  canonicalUrl    String?     @map("canonical_url")
+  ogTitle         String?     @map("og_title")
+  ogDescription   String?     @map("og_description")
+  ogImageMediaId  String?     @map("og_image_media_id") @db.Uuid
+  twitterCardType String?     @map("twitter_card_type")
+  robotsIndex     Boolean     @default(true) @map("robots_index")
+  robotsFollow    Boolean     @default(true) @map("robots_follow")
+  schemaJson      Json?       @map("schema_json")
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+  page            Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  ogImageMedia    MediaAsset? @relation(fields: [ogImageMediaId], references: [id], onDelete: SetNull)
+
+  @@index([ogImageMediaId])
+  @@map("seo_settings")
+}
+
+model Redirect {
+  id         String   @id @default(uuid()) @db.Uuid
+  fromPath   String   @unique @map("from_path")
+  toPath     String   @map("to_path")
+  statusCode Int      @map("status_code")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([toPath])
+  @@map("redirects")
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  type      String
+  title     String
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+  @@index([type])
+  @@map("notifications")
+}
+
+model EmailLog {
+  id          String              @id @default(uuid()) @db.Uuid
+  type        EmailType
+  status      EmailDeliveryStatus @default(PENDING)
+  recipient   String
+  subject     String
+  providerId  String?             @map("provider_id")
+  errorMessage String?            @map("error_message")
+  metadata    Json                @default("{}")
+  sentAt      DateTime?           @map("sent_at")
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+
+  @@index([type, status, createdAt])
+  @@index([recipient, createdAt])
+  @@map("email_logs")
+}
+
+model SecurityEvent {
+  id        String            @id @default(uuid()) @db.Uuid
+  type      SecurityEventType
+  scope     String
+  keyHash   String?           @map("key_hash")
+  ipAddress String?           @map("ip_address")
+  userAgent String?           @map("user_agent")
+  metadata  Json              @default("{}")
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  @@index([type, createdAt])
+  @@index([scope, createdAt])
+  @@index([keyHash, scope, createdAt])
+  @@map("security_events")
+}
+
+model LegalSetting {
+  id                    String      @id @default(uuid()) @db.Uuid
+  siteSettingId         String      @unique @map("site_setting_id") @db.Uuid
+  consentVersion        String      @default("1.0") @map("consent_version")
+  cookieBannerEnabled   Boolean     @default(true) @map("cookie_banner_enabled")
+  analyticsCookiesEnabled Boolean   @default(false) @map("analytics_cookies_enabled")
+  marketingCookiesEnabled Boolean   @default(false) @map("marketing_cookies_enabled")
+  privacyPageId         String?     @map("privacy_page_id") @db.Uuid
+  cookiePageId          String?     @map("cookie_page_id") @db.Uuid
+  termsPageId           String?     @map("terms_page_id") @db.Uuid
+  retentionDays         Int         @default(365) @map("retention_days")
+  dataControllerName    String?     @map("data_controller_name")
+  dataControllerEmail   String?     @map("data_controller_email")
+  updatedByUserId       String?     @map("updated_by_user_id") @db.Uuid
+  createdAt             DateTime    @default(now()) @map("created_at")
+  updatedAt             DateTime    @updatedAt @map("updated_at")
+  siteSetting           SiteSetting @relation(fields: [siteSettingId], references: [id], onDelete: Cascade)
+  privacyPage           Page?       @relation("PrivacyLegalPage", fields: [privacyPageId], references: [id], onDelete: SetNull)
+  cookiePage            Page?       @relation("CookieLegalPage", fields: [cookiePageId], references: [id], onDelete: SetNull)
+  termsPage             Page?       @relation("TermsLegalPage", fields: [termsPageId], references: [id], onDelete: SetNull)
+  updatedBy             User?       @relation("LegalSettingUpdatedBy", fields: [updatedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([updatedByUserId])
+  @@map("legal_settings")
+}
+
+model LegalDocumentVersion {
+  id          String            @id @default(uuid()) @db.Uuid
+  pageId      String            @map("page_id") @db.Uuid
+  type        LegalDocumentType
+  version     String
+  title       String
+  summary     String?
+  content     Json              @default("{}")
+  createdByUserId String?       @map("created_by_user_id") @db.Uuid
+  createdAt   DateTime          @default(now()) @map("created_at")
+  page        Page              @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  createdBy   User?             @relation("LegalDocumentCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@unique([pageId, version])
+  @@index([type, createdAt])
+  @@index([createdByUserId])
+  @@map("legal_document_versions")
+}
+
+model CookieConsent {
+  id          String   @id @default(uuid()) @db.Uuid
+  consentId   String   @unique @map("consent_id")
+  version     String
+  necessary   Boolean  @default(true)
+  analytics   Boolean  @default(false)
+  marketing   Boolean  @default(false)
+  ipAddress   String?  @map("ip_address")
+  userAgent   String?  @map("user_agent")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([version, createdAt])
+  @@index([analytics, marketing])
+  @@map("cookie_consents")
+}
+
+model AnalyticsEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  pageId    String?  @map("page_id") @db.Uuid
+  eventType String   @map("event_type")
+  eventData Json     @default("{}") @map("event_data")
+  createdAt DateTime @default(now()) @map("created_at")
+  page      Page?    @relation(fields: [pageId], references: [id], onDelete: SetNull)
+
+  @@index([pageId, createdAt])
+  @@index([eventType, createdAt])
+  @@map("analytics_events")
+}
+
+model DashboardSnapshot {
+  id             String   @id @default(uuid()) @db.Uuid
+  snapshotDate   DateTime @unique @map("snapshot_date") @db.Date
+  totalLeads     Int      @default(0) @map("total_leads")
+  newLeads       Int      @default(0) @map("new_leads")
+  convertedLeads Int      @default(0) @map("converted_leads")
+  lostLeads      Int      @default(0) @map("lost_leads")
+  conversionRate Decimal  @default(0) @map("conversion_rate") @db.Decimal(5, 2)
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@map("dashboard_snapshots")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String?  @map("user_id") @db.Uuid
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String?  @map("entity_id") @db.Uuid
+  oldValues  Json?    @map("old_values")
+  newValues  Json?    @map("new_values")
+  ipAddress  String?  @map("ip_address")
+  userAgent  String?  @map("user_agent")
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([entityType, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model SystemErrorLog {
+  id          String          @id @default(uuid()) @db.Uuid
+  level       SystemLogLevel
+  source      SystemLogSource
+  message     String
+  fingerprint String?
+  userId      String?         @map("user_id") @db.Uuid
+  path        String?
+  action      String?
+  environment String
+  requestId   String?         @map("request_id")
+  metadata    Json            @default("{}")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  user        User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([level, createdAt])
+  @@index([source, createdAt])
+  @@index([fingerprint, createdAt])
+  @@index([userId, createdAt])
+  @@map("system_error_logs")
+}
+
+model Backup {
+  id              String       @id @default(uuid()) @db.Uuid
+  type            BackupType
+  status          BackupStatus @default(PENDING)
+  storagePath     String?      @map("storage_path")
+  sizeBytes       Int?         @map("size_bytes")
+  createdByUserId String?      @map("created_by_user_id") @db.Uuid
+  createdAt       DateTime     @default(now()) @map("created_at")
+  completedAt     DateTime?    @map("completed_at")
+  errorMessage    String?      @map("error_message")
+  createdByUser   User?        @relation("BackupCreatedBy", fields: [createdByUserId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@index([createdByUserId])
+  @@map("backups")
+}
