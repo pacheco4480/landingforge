@@ -243,7 +243,7 @@ CMS Input → Zod Validation → Server Action / Route Handler → Service Layer
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/landingforge.git
+git clone https://github.com/pacheco4480/landingforge.git
 cd landingforge
 
 # Install dependencies
@@ -325,19 +325,21 @@ Curated public documentation is available in [`public-docs/`](./public-docs/):
 - [x] Performance & accessibility review
 - [x] MVP audit & QA
 
-**Industry Templates** 🔄
+**Industry Templates** 🔄 (3 of 7 Complete)
 - [x] Real Estate — Local Agency · Premium
-- [x] Clinic — Modern · Luxury
+- [x] Clinic & Healthcare — Modern · Luxury
 - [x] Restaurant — Fine Dining · Playful
-- [ ] Bakery
-- [ ] Gym
-- [ ] Construction
-- [ ] Beauty
+- [ ] Bakery — Warm · Playful
+- [ ] Gym & Fitness — Performance · Modern
+- [ ] Construction — Reliable · Premium
+- [ ] Beauty & Wellness — Elegant · Playful
 
-**Future Improvements**
-- [ ] Additional template variants per industry
-- [ ] Enhanced analytics & reporting
-- [ ] Improved export & deployment workflows
+**Commercial & Agency Operations** 🔜 (Phase 4)
+- [ ] **Public Portfolio Showcase:** Interactive template browser with industry filters, live preview switcher and conversion goals
+- [ ] **Client Provisioning & Standalone Export:** Automated packaging engine to deploy isolated landing page bundles for client handoff
+- [ ] **Smart Briefing & Client Hub:** Centralized workspace replacing spreadsheets with client assets, structured requirements, and AI context prompts
+- [ ] **Client Handover & Delivery Kits:** White-label documentation, client manuals, and automated DNS/domain setup checklists
+- [ ] **Behance & Marketing Showcase:** Case studies, creative direction boards, and high-impact presentation assets
 
 ---
 
