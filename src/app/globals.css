@@ -119,12 +119,21 @@ body {
   }
 }
 
+@keyframes gymRail {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-\[restaurantTicker_28s_linear_infinite\] {
     animation: none;
   }
 
   .animate-\[bakeryFloat_5s_ease-in-out_infinite\] {
+    animation: none;
+  }
+
+  .animate-\[gymRail_26s_linear_infinite\] {
     animation: none;
   }
 }

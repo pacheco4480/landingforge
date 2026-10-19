@@ -56,6 +56,19 @@ import {
   BakeryStorySection,
   BakeryTestimonialsSection,
 } from "@/features/public-renderer/templates/bakery";
+import {
+  GymCoachesSection,
+  GymContactSection,
+  GymHeroSection,
+  GymMethodSection,
+  GymPlansSection,
+  GymProgramsSection,
+  GymResultsSection,
+  GymScheduleSection,
+  GymSpaceSection,
+  GymTrialSection,
+  GymValuesRailSection,
+} from "@/features/public-renderer/templates/gym";
 
 export const sectionRegistry: Record<string, ComponentType<PublicSectionProps>> =
   {
@@ -111,4 +124,19 @@ export const sectionRegistry: Record<string, ComponentType<PublicSectionProps>> 
     bakery_faq: FaqSection,
     bakery_contact: BakeryContactSection,
     bakery_celebration: BakeryCelebrationSection,
+    gym_hero: GymHeroSection,
+    gym_method: GymMethodSection,
+    gym_values_rail: GymValuesRailSection,
+    gym_space: GymSpaceSection,
+    gym_schedule: GymScheduleSection,
+    gym_benefits: GymResultsSection,
+    gym_programs: GymProgramsSection,
+    gym_classes: CardsSection,
+    gym_coaches: GymCoachesSection,
+    gym_plans: GymPlansSection,
+    gym_transformations: CardsSection,
+    gym_testimonials: CardsSection,
+    gym_trial: GymTrialSection,
+    gym_faq: FaqSection,
+    gym_contact: GymContactSection,
   };

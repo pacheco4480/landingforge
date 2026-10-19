@@ -278,6 +278,19 @@ function getHeaderDefaults(templateKey: string, variantKey: string): {
     };
   }
 
+  if (templateKey === "gym" && variantKey === "modern") {
+    return {
+      allowedVariants: ["minimal", "cta-focused", "classic"],
+      cta: { href: "#trial", label: "Marcar avaliação" },
+      defaultVariant: "minimal",
+      links: [
+        { href: "#programs", label: "Método" },
+        { href: "#coaches", label: "Coaches" },
+        { href: "#contact", label: "Contacto" },
+      ],
+    };
+  }
+
   return {
     allowedVariants: ["classic", "minimal", "cta-focused"],
     cta: { href: "#contact", label: "Contactar" },
@@ -395,6 +408,19 @@ function getFooterDefaults(templateKey: string, variantKey: string): {
       links: [
         { href: "#products", label: "Mais pedidos" },
         { href: "#gallery", label: "Galeria" },
+        { href: "#contact", label: "Contacto" },
+      ],
+    };
+  }
+
+  if (templateKey === "gym" && variantKey === "modern") {
+    return {
+      allowedVariants: ["minimal-legal", "simple", "cta-focused"],
+      cta: { href: "#trial", label: "Marcar avaliação" },
+      defaultVariant: "minimal-legal",
+      links: [
+        { href: "#programs", label: "Método" },
+        { href: "#coaches", label: "Coaches" },
         { href: "#contact", label: "Contacto" },
       ],
     };
