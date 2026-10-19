@@ -60,6 +60,20 @@ const restaurantSupportedSections = [
   "restaurant_gallery",
 ];
 
+const bakerySupportedSections = [
+  ...defaultSupportedSections,
+  "bakery_hero",
+  "bakery_products",
+  "bakery_featured_products",
+  "bakery_story",
+  "bakery_gallery",
+  "bakery_testimonials",
+  "bakery_opening_hours",
+  "bakery_seasonal_offers",
+  "bakery_faq",
+  "bakery_contact",
+];
+
 const templates: Record<string, TemplateDefinition> = {
   base: { key: "base", supportedSections: defaultSupportedSections },
   universal: { key: "universal", supportedSections: defaultSupportedSections },
@@ -76,7 +90,7 @@ const templates: Record<string, TemplateDefinition> = {
     key: "restaurant",
     supportedSections: restaurantSupportedSections,
   },
-  bakery: { key: "bakery", supportedSections: defaultSupportedSections },
+  bakery: { key: "bakery", supportedSections: bakerySupportedSections },
   gym: { key: "gym", supportedSections: defaultSupportedSections },
   construction: { key: "construction", supportedSections: defaultSupportedSections },
   beauty: { key: "beauty", supportedSections: defaultSupportedSections },

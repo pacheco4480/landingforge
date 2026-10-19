@@ -213,15 +213,17 @@ export function PublicBand({
 export function SectionHeading({
   title,
   description,
+  descriptionClassName,
 }: {
   title: string;
   description?: string;
+  descriptionClassName?: string;
 }) {
   return (
     <div className="max-w-2xl">
       <h2 className="text-3xl font-bold leading-tight">{title}</h2>
       {description ? (
-        <p className="mt-3 leading-7 text-[var(--public-muted)]">
+        <p className={`mt-3 leading-7 ${descriptionClassName ?? "text-[var(--public-muted)]"}`}>
           {description}
         </p>
       ) : null}

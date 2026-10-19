@@ -44,6 +44,18 @@ import {
   RestaurantReviewsSection,
   RestaurantSignatureDishesSection,
 } from "@/features/public-renderer/templates/restaurant";
+import {
+  BakeryContactSection,
+  BakeryCelebrationSection,
+  BakeryFeaturedProductsSection,
+  BakeryGallerySection,
+  BakeryHeroSection,
+  BakeryOpeningHoursSection,
+  BakeryProductsSection,
+  BakerySeasonalOffersSection,
+  BakeryStorySection,
+  BakeryTestimonialsSection,
+} from "@/features/public-renderer/templates/bakery";
 
 export const sectionRegistry: Record<string, ComponentType<PublicSectionProps>> =
   {
@@ -88,4 +100,15 @@ export const sectionRegistry: Record<string, ComponentType<PublicSectionProps>> 
     restaurant_reservation: RestaurantReservationSection,
     restaurant_location: RestaurantLocationSection,
     restaurant_gallery: RestaurantGallerySection,
+    bakery_hero: BakeryHeroSection,
+    bakery_products: BakeryProductsSection,
+    bakery_featured_products: BakeryFeaturedProductsSection,
+    bakery_story: BakeryStorySection,
+    bakery_gallery: BakeryGallerySection,
+    bakery_testimonials: BakeryTestimonialsSection,
+    bakery_opening_hours: BakeryOpeningHoursSection,
+    bakery_seasonal_offers: BakerySeasonalOffersSection,
+    bakery_faq: FaqSection,
+    bakery_contact: BakeryContactSection,
+    bakery_celebration: BakeryCelebrationSection,
   };

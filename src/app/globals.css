@@ -108,8 +108,23 @@ body {
   }
 }
 
+@keyframes bakeryFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(1deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-\[restaurantTicker_28s_linear_infinite\] {
+    animation: none;
+  }
+
+  .animate-\[bakeryFloat_5s_ease-in-out_infinite\] {
     animation: none;
   }
 }

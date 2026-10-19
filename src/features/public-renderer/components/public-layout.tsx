@@ -122,7 +122,7 @@ function getPageFooter(
 
   return {
     brand: {
-      businessName: brand.businessName,
+      businessName: text(content, "brandName", brand.businessName),
       contactEmail: text(content, "contactEmail", brand.contactEmail),
       location: text(content, "location", brand.location),
       phone: text(content, "phone", brand.phone),
@@ -150,7 +150,7 @@ function getPageHeader(
 
   return {
     brand: {
-      businessName: brand.businessName,
+      businessName: text(content, "brandName", brand.businessName),
       logoAltText: brand.logoAltText,
       logoUrl: brand.logoUrl,
     },
@@ -265,6 +265,19 @@ function getHeaderDefaults(templateKey: string, variantKey: string): {
     };
   }
 
+  if (templateKey === "bakery" && variantKey === "playful") {
+    return {
+      allowedVariants: ["playful", "cta-focused", "classic"],
+      cta: { href: "#custom-orders", label: "Criar o meu bolo" },
+      defaultVariant: "playful",
+      links: [
+        { href: "#products", label: "Mais pedidos" },
+        { href: "#custom-orders", label: "Encomendas" },
+        { href: "#gallery", label: "Galeria" },
+      ],
+    };
+  }
+
   return {
     allowedVariants: ["classic", "minimal", "cta-focused"],
     cta: { href: "#contact", label: "Contactar" },
@@ -370,6 +383,19 @@ function getFooterDefaults(templateKey: string, variantKey: string): {
         { href: "#menu", label: "Favoritos" },
         { href: "#reviews", label: "Grupos" },
         { href: "#location", label: "Chegar" },
+      ],
+    };
+  }
+
+  if (templateKey === "bakery" && variantKey === "playful") {
+    return {
+      allowedVariants: ["playful", "cta-focused", "classic"],
+      cta: { href: "#custom-orders", label: "Criar o meu bolo" },
+      defaultVariant: "playful",
+      links: [
+        { href: "#products", label: "Mais pedidos" },
+        { href: "#gallery", label: "Galeria" },
+        { href: "#contact", label: "Contacto" },
       ],
     };
   }

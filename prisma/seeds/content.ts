@@ -46,6 +46,7 @@ const templateVariants = {
     ["warm", "Warm"],
     ["modern", "Modern"],
     ["premium", "Premium"],
+    ["playful", "Playful"],
   ],
   gym: [
     ["performance", "Performance"],
@@ -95,6 +96,7 @@ const themeSeeds = [
   ["bakery-warm", "Bakery Warm", "#92400e", "#b45309", "#f59e0b"],
   ["bakery-modern", "Bakery Modern", "#14532d", "#0f766e", "#f59e0b"],
   ["bakery-premium", "Bakery Premium", "#111827", "#6b7280", "#d97706"],
+  ["bakery-playful", "Bakery Playful", "#ff4f81", "#5eead4", "#facc15"],
   ["clinic-corporate", "Clinic Corporate", "#1d4ed8", "#0f766e", "#38bdf8"],
   ["clinic-modern", "Clinic Modern", "#0f766e", "#2563eb", "#14b8a6"],
   ["clinic-luxury", "Clinic Luxury", "#111827", "#475569", "#c084fc"],
@@ -467,6 +469,7 @@ export async function seedContent(prisma: PrismaClient) {
   await seedRealEstateDemos(prisma);
   await seedClinicDemos(prisma);
   await seedRestaurantDemos(prisma);
+  await seedBakeryPlayfulDemo(prisma);
 }
 
 async function seedClinicDemos(prisma: PrismaClient) {
@@ -3208,6 +3211,42 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       });
     }
   }
+}
+
+async function seedBakeryPlayfulDemo(prisma: PrismaClient) {
+  const template = await prisma.template.findUniqueOrThrow({ where: { key: "bakery" }, select: { id: true } });
+  const variant = await prisma.templateVariant.findUniqueOrThrow({ where: { templateId_key: { templateId: template.id, key: "playful" } }, select: { id: true } });
+  const theme = await prisma.theme.findUniqueOrThrow({ where: { key: "bakery-playful" }, select: { id: true } });
+  const demoKey = "bakery-playful-demo";
+  const page = await prisma.page.upsert({
+    where: { demoKey },
+    update: { title: "Boca Doce | Pastelaria Criativa", templateId: template.id, templateVariantId: variant.id, themeId: theme.id, isDemo: true, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 9, status: PageStatus.PUBLISHED, publishedAt: new Date() },
+    create: { title: "Boca Doce | Pastelaria Criativa", slug: demoKey, status: PageStatus.PUBLISHED, pageType: PageType.LANDING, isDemo: true, demoKey, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 9, templateId: template.id, templateVariantId: variant.id, themeId: theme.id, publishedAt: new Date() },
+  });
+  await prisma.seoSetting.upsert({
+    where: { pageId: page.id },
+    update: { metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `http://localhost:3000/${demoKey}` } },
+    create: { pageId: page.id, metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, twitterCardType: "summary_large_image", schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `http://localhost:3000/${demoKey}` } },
+  });
+  const sections = [
+    ["hero", "bakery_hero", "Bakery Hero", { brandName: "Boca Doce", headerVariant: "cta-focused", headerCtaLabel: "Criar o meu bolo", headerCtaHref: "#custom-orders", headerLinks: [{ label: "Mais pedidos", href: "#products" }, { label: "Encomendas", href: "#custom-orders" }, { label: "Contacto", href: "#contact" }], footerVariant: "cta-focused", footerCtaLabel: "Criar o meu bolo", footerCtaHref: "#custom-orders", footerLinks: [{ label: "Produtos", href: "#products" }, { label: "Galeria", href: "#gallery" }, { label: "Contacto", href: "#contact" }], eyebrow: "Boca Doce · Pastelaria criativa", headline: "A tua próxima fatia favorita chegou.", subheadline: "Bolos personalizados, doces coloridos e encomendas feitas para transformar qualquer dia numa celebração.", ctaPrimary: "Criar o meu bolo", ctaSecondary: "Ver os mais pedidos", heroImage: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=82", heroImageAlt: "Bolo colorido decorado para uma celebração" }],
+    ["products", "bakery_products", "Mais pedidos", { title: "Os mais pedidos", text: "Doces com cor, textura e personalidade, preparados para levar ou partilhar.", items: [{ title: "Bolo arco-íris", label: "feito hoje", description: "Camadas macias, creme de baunilha e uma festa de cor em cada fatia.", image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo colorido com cobertura" }, { title: "Cookie confetti", label: "mais pedido", description: "Crocante por fora, macio no centro e cheio de chocolate em cada dentada.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=82", imageAlt: "Cookies com pepitas de chocolate" }, { title: "Rolo de canela", label: "acabado de sair", description: "Massa fofa, canela perfumada e cobertura cremosa para comer sem cerimónia.", image: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=900&q=82", imageAlt: "Rolo de canela acabado de sair do forno" }] }],
+    ["custom-orders", "bakery_story", "Encomendas personalizadas", { title: "Uma pequena fábrica de grandes momentos", text: "A Boca Doce junta receitas de família, cor e uma dose generosa de imaginação em cada encomenda.", items: [{ title: "Conta a ideia", description: "Partilha a ocasião, as cores e o momento que queres levar para a mesa." }, { title: "Desenhamos juntos", description: "A equipa transforma a tua ideia num bolo bonito, possível e delicioso." }, { title: "Levanta o sorriso", description: "A encomenda fica pronta para fotografar, partilhar e celebrar." }] }],
+    ["celebration", "bakery_celebration", "O teu momento", { title: "Que sabor tem a tua celebração?", text: "Escolhe a energia. A Boca Doce trata do resto, com cor, cuidado e uma receita feita para a tua ocasião.", items: [{ title: "Uma festa colorida", description: "Camadas alegres, cobertura leve e detalhes para pôr toda a mesa a sorrir.", icon: "palette" }, { title: "Um momento só teu", description: "Uma criação desenhada à medida da ocasião, das cores e das pessoas que queres surpreender.", icon: "cake" }, { title: "Para levar e partilhar", description: "Doces frescos, fáceis de escolher e prontos para aparecer nas fotografias certas.", icon: "party" }] }],
+    ["gallery", "bakery_gallery", "Galeria", { title: "Visto na mesa", text: "Cor, cobertura e detalhes que pedem uma fotografia.", items: [{ title: "Bolos de festa", label: "celebrar", image: "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=82", imageAlt: "Bolo de celebração colorido" }, { title: "Detalhes doces", label: "feito à mão", image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=82", imageAlt: "Donuts coloridos" }, { title: "Mesa Boca Doce", label: "partilhar", image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=82", imageAlt: "Mesa com pastelaria variada" }] }],
+    ["testimonials", "bakery_testimonials", "Testimonials", { title: "Quem provou, voltou", text: "Pequenas mensagens de quem trouxe a Boca Doce para a sua mesa.", items: [{ name: "Inês Carvalho", quote: "O bolo chegou lindo e ainda mais delicioso do que imaginava." }, { name: "Rita Matos", quote: "A equipa percebeu a ideia, acrescentou magia e entregou tudo no dia certo." }, { name: "João Sousa", quote: "Os miúdos escolheram as cores. Os adultos repetiram a fatia." }] }],
+    ["seasonal-offers", "bakery_seasonal_offers", "Seasonal Offers", { title: "A edição desta semana", text: "Sabores sazonais, quantidades limitadas e uma boa desculpa para passar por cá.", items: [{ title: "Citrus pop", description: "Bolo de limão, creme leve e merengue tostado.", label: "esta semana", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo fresco com frutos" }] }],
+    ["hours", "bakery_opening_hours", "Opening Hours", { title: "Passa por cá", text: "A vitrine muda com a semana. A vontade pode aparecer a qualquer hora.", hours: "Terça a sábado · 09:00–18:30", address: "Rua da Alegria, Lisboa" }],
+    ["faq", "bakery_faq", "FAQ", { title: "Perguntas com cobertura", items: [{ question: "Com quanto tempo devo pedir um bolo personalizado?", answer: "Para bolos personalizados, recomendamos falar connosco com pelo menos cinco dias de antecedência." }, { question: "Posso escolher cores e sabores?", answer: "Sim. Partilhe a ocasião e as preferências no pedido; a equipa confirma as combinações disponíveis." }, { question: "Onde levantamos a encomenda?", answer: "A encomenda é levantada na loja, em Lisboa, no horário combinado." }] }],
+    ["contact", "bakery_contact", "Contact", { title: "Vamos fazer acontecer?", text: "Conta-nos a ocasião e a ideia. Respondemos com os próximos passos.", email: "hello@example.com", phone: "+351 210 000 000" }],
+  ] as const;
+  for (const [sortOrder, [sectionKey, sectionType, name, content]] of sections.entries()) {
+    await prisma.pageSection.upsert({ where: { pageId_sectionKey: { pageId: page.id, sectionKey } }, update: { sectionType, name, sortOrder, isVisible: true, content }, create: { pageId: page.id, sectionKey, sectionType, name, sortOrder, isVisible: true, content, settings: { variant: "playful" } } });
+  }
+  await hideGenericDemoSections(prisma, page.id, sections.map(([sectionKey]) => sectionKey));
+  const form = await prisma.form.upsert({ where: { pageId_key: { pageId: page.id, key: "bakery-custom-order" } }, update: { name: "Bakery Custom Order Form", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." }, create: { pageId: page.id, key: "bakery-custom-order", name: "Bakery Custom Order Form", description: "Pedido de bolo personalizado.", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." } });
+  const fields = [["name", "Nome", FormFieldType.TEXT, true], ["email", "Email", FormFieldType.EMAIL, true], ["phone", "Telefone", FormFieldType.PHONE, false], ["occasion", "Ocasião", FormFieldType.TEXT, true], ["date", "Data pretendida", FormFieldType.DATE, false], ["message", "Conta-nos a tua ideia", FormFieldType.TEXTAREA, true]] as const;
+  for (const [sortOrder, [name, label, type, isRequired]] of fields.entries()) await prisma.formField.upsert({ where: { formId_name: { formId: form.id, name } }, update: { label, type, isRequired, sortOrder }, create: { formId: form.id, name, label, type, isRequired, sortOrder } });
 }
 
 async function seedUniversalDemo(prisma: PrismaClient) {
