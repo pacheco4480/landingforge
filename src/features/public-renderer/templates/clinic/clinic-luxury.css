@@ -1,0 +1,362 @@
+.clinic-luxury-hero {
+  position: relative;
+  min-height: clamp(620px, 82vh, 840px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #151716;
+  color: #fff;
+}
+.clinic-luxury-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(15, 18, 17, 0.9),
+      rgba(15, 18, 17, 0.2) 65%,
+      rgba(15, 18, 17, 0.1)
+    ),
+    linear-gradient(0deg, rgba(15, 18, 17, 0.64), transparent 48%);
+}
+.clinic-luxury-hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1280px);
+  padding: clamp(130px, 18vh, 210px) 24px 76px;
+  margin: auto;
+}
+.clinic-luxury-hero h1 {
+  max-width: 780px;
+  margin-top: 24px;
+  font-size: clamp(3.25rem, 7.4vw, 7.3rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+}
+.clinic-luxury-hero__lead {
+  max-width: 560px;
+  margin-top: 28px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.7;
+}
+.clinic-luxury-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e7cb91;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.clinic-luxury-kicker span {
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+.clinic-luxury-kicker--dark {
+  color: #856f45;
+}
+.clinic-luxury-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+.clinic-luxury-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.clinic-luxury-button svg {
+  width: 17px;
+}
+.clinic-luxury-button--gold {
+  color: #171a18;
+  background: #e7cb91;
+}
+.clinic-luxury-text-link {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+.clinic-luxury-text-link span {
+  margin-left: 8px;
+  color: #e7cb91;
+}
+.clinic-luxury-hero__promise {
+  margin-top: 58px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  max-width: 330px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.clinic-luxury-paper {
+  background: #f4f0e8;
+}
+.clinic-luxury-paper .max-w-2xl > p {
+  color: #4f514c;
+}
+.clinic-luxury-ink {
+  background: #171b19;
+  color: #fff;
+}
+.clinic-luxury-ink .max-w-2xl > p {
+  color: rgb(255 255 255 / 84%);
+}
+.clinic-luxury-intro,
+.clinic-luxury-section-head {
+  max-width: 620px;
+}
+.clinic-luxury-intro .section-heading h2,
+.clinic-luxury-section-head h2 {
+  max-width: 600px;
+}
+.clinic-luxury-experience-grid {
+  display: grid;
+  gap: 54px;
+  margin-top: 70px;
+}
+.clinic-luxury-experience-card {
+  display: grid;
+  gap: 26px;
+  align-items: end;
+  grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
+}
+.clinic-luxury-experience-card--offset {
+  grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+  margin-left: 10%;
+}
+.clinic-luxury-experience-card--offset > div:first-child {
+  grid-column: 2;
+}
+.clinic-luxury-experience-card--offset > div:last-child {
+  grid-column: 1;
+  grid-row: 1;
+}
+.clinic-luxury-image-frame {
+  position: relative;
+  min-height: 300px;
+  aspect-ratio: 1.35;
+  overflow: hidden;
+  background: #ded8cb;
+}
+.clinic-luxury-experience-card h3,
+.clinic-luxury-facilities h3 {
+  margin-top: 14px;
+  font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.clinic-luxury-experience-card p,
+.clinic-luxury-facilities p {
+  margin-top: 12px;
+  color: #5f625e;
+  line-height: 1.7;
+}
+.clinic-luxury-index {
+  color: #856f45 !important;
+  font-size: 11px !important;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.clinic-luxury-list {
+  margin-top: 64px;
+  border-top: 1px solid #d4cfc4;
+}
+.clinic-luxury-list article {
+  display: grid;
+  grid-template-columns: 60px 1fr 1.2fr 24px;
+  gap: 18px;
+  align-items: center;
+  padding: 27px 0;
+  border-bottom: 1px solid #d4cfc4;
+}
+.clinic-luxury-list span {
+  color: #856f45;
+  font-size: 12px;
+  font-weight: 800;
+}
+.clinic-luxury-list h3 {
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  font-weight: 800;
+}
+.clinic-luxury-list p {
+  color: #666963;
+  line-height: 1.6;
+}
+.clinic-luxury-list svg {
+  color: #856f45;
+}
+.clinic-luxury-doctors,
+.clinic-luxury-facilities {
+  display: grid;
+  gap: 26px;
+  margin-top: 58px;
+}
+.clinic-luxury-doctors {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.clinic-luxury-portrait {
+  position: relative;
+  aspect-ratio: 0.82;
+  overflow: hidden;
+  background: #272d29;
+}
+.clinic-luxury-doctors h3 {
+  margin-top: 10px;
+  font-size: 1.65rem;
+  font-weight: 800;
+}
+.clinic-luxury-doctor-copy {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.65;
+}
+.clinic-luxury-facilities {
+  grid-template-columns: repeat(3, 1fr);
+}
+.clinic-luxury-facilities .clinic-luxury-image-frame {
+  aspect-ratio: 1.05;
+}
+.clinic-luxury-journey {
+  background: #ebe5d9;
+}
+.clinic-luxury-journey ol {
+  max-width: 820px;
+  margin: 60px 0 0 auto;
+}
+.clinic-luxury-journey li {
+  display: grid;
+  grid-template-columns: 40px 1fr 20px;
+  gap: 20px;
+  align-items: start;
+  padding: 24px 0;
+  border-top: 1px solid #cfc8ba;
+}
+.clinic-luxury-journey li > span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #9f8a62;
+  border-radius: 50%;
+  color: #856f45;
+  font-size: 12px;
+  font-weight: 800;
+}
+.clinic-luxury-journey h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.clinic-luxury-journey p {
+  margin-top: 7px;
+  color: #666963;
+  line-height: 1.6;
+}
+.clinic-luxury-journey li > svg {
+  width: 18px;
+  color: #856f45;
+}
+.clinic-luxury-experience [data-clinic-luxury-reveal] {
+  opacity: 1;
+  transform: none;
+}
+.clinic-luxury-experience [data-clinic-luxury-reveal] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .clinic-luxury-hero > img {
+    animation: clinicLuxuryHeroImageIn 1200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .clinic-luxury-experience [data-clinic-luxury-reveal] {
+      animation: clinicLuxuryReveal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 26%;
+    }
+  }
+}
+@keyframes clinicLuxuryReveal {
+  from {
+    opacity: 0.15;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes clinicLuxuryHeroImageIn {
+  from { transform: scale(1.045); }
+  to { transform: scale(1); }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .clinic-luxury-hero > img {
+      animation:
+        clinicLuxuryHeroImageIn 1200ms cubic-bezier(0.22, 1, 0.36, 1) both,
+        clinicLuxuryHeroParallax 1s linear both;
+      animation-timeline: auto, scroll(root block);
+      animation-range: normal, 0 80vh;
+    }
+  }
+}
+@keyframes clinicLuxuryHeroParallax {
+  to {
+    translate: 0 2%;
+    scale: 1.035;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clinic-luxury-experience [data-clinic-luxury-reveal] {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .clinic-luxury-hero__content {
+    padding: 130px 20px 52px;
+  }
+  .clinic-luxury-hero h1 {
+    font-size: 3.35rem;
+  }
+  .clinic-luxury-experience-card,
+  .clinic-luxury-experience-card--offset {
+    display: block;
+    margin-left: 0;
+  }
+  .clinic-luxury-experience-card--offset > div:first-child,
+  .clinic-luxury-experience-card--offset > div:last-child {
+    display: block;
+  }
+  .clinic-luxury-experience-card > div:last-child {
+    margin-top: 20px;
+  }
+  .clinic-luxury-list article {
+    grid-template-columns: 38px 1fr 18px;
+  }
+  .clinic-luxury-list p {
+    grid-column: 2/4;
+  }
+  .clinic-luxury-facilities {
+    grid-template-columns: 1fr;
+  }
+  .clinic-luxury-journey ol {
+    margin-top: 42px;
+  }
+}

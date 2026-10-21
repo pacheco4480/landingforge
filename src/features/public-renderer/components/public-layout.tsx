@@ -5,6 +5,7 @@ import {
   PublicHeader,
   type PublicHeaderBrand,
   type PublicHeaderLink,
+  type PublicHeaderProfile,
   type PublicHeaderVariant,
 } from "@/features/public-renderer/components/public-header";
 import {
@@ -53,6 +54,7 @@ export async function PublicLayout({
         brand={header.brand}
         cta={header.cta}
         links={header.links}
+        profile={header.profile}
         variant={header.variant}
       />
       <main id="main-content" tabIndex={-1}>
@@ -63,6 +65,7 @@ export async function PublicLayout({
         cta={footer.cta}
         legalLinks={footer.legalLinks}
         links={footer.links}
+        profile={footer.profile}
         variant={footer.variant}
       />
       <CookieConsentBanner
@@ -130,6 +133,7 @@ function getPageFooter(
     cta: getFooterCta(content, defaults.cta),
     legalLinks,
     links: getFooterLinks(content, defaults.links),
+    profile: getTemplateProfile(templateKey, variantKey),
     variant,
   };
 }
@@ -156,8 +160,27 @@ function getPageHeader(
     },
     cta: getHeaderCta(content, defaults.cta),
     links: getHeaderLinks(content, defaults.links),
+    profile: getTemplateProfile(templateKey, variantKey),
     variant,
   };
+}
+
+function getTemplateProfile(
+  templateKey: string,
+  variantKey: string,
+): PublicHeaderProfile | undefined {
+  const profileByTemplate: Record<string, PublicHeaderProfile> = {
+    "real_estate:local_agency": "real-estate-local",
+    "real_estate:premium": "real-estate-premium",
+    "clinic:modern": "clinic-modern",
+    "clinic:luxury": "clinic-luxury",
+    "restaurant:fine_dining": "restaurant-fine-dining",
+    "restaurant:playful": "restaurant-playful",
+    "bakery:playful": "bakery-playful",
+    "gym:modern": "gym-modern",
+  };
+
+  return profileByTemplate[`${templateKey}:${variantKey}`];
 }
 
 function getBrandSection(context: PublicRendererContext) {

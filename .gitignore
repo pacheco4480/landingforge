@@ -61,6 +61,7 @@ portfolio/
 *.docx
 
 # Backups / temporary files
+artifacts/
 backups/
 tmp/
 temp/

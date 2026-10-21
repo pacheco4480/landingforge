@@ -65,6 +65,7 @@ const bakerySupportedSections = [
   "bakery_hero",
   "bakery_products",
   "bakery_featured_products",
+  "bakery_celebration",
   "bakery_story",
   "bakery_gallery",
   "bakery_testimonials",

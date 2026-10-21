@@ -15,3 +15,11 @@ export {
   clinicVariantLabel,
   type ClinicVariant,
 } from "@/features/public-renderer/templates/clinic/clinic-utils";
+export {
+  ClinicModernReveal,
+  ModernClinicDoctors,
+  ModernClinicFacilities,
+  ModernClinicHero,
+  ModernClinicJourney,
+  ModernClinicSpecialties,
+} from "./clinic-modern";

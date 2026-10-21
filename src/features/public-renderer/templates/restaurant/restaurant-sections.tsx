@@ -22,6 +22,15 @@ import {
 } from "@/features/public-renderer/components/section-utils";
 import type { PublicSectionProps } from "@/features/public-renderer/types";
 import {
+  FineDiningChef,
+  FineDiningDishes,
+  FineDiningExperience,
+  FineDiningGallery,
+  FineDiningHeroEditorial,
+  FineDiningMenu,
+  FineDiningReviews,
+} from "@/features/public-renderer/templates/restaurant/restaurant-fine-dining";
+import {
   brandKitText,
   recordArray,
   recordText,
@@ -29,6 +38,16 @@ import {
   restaurantVariant,
   restaurantVariantLabel,
 } from "@/features/public-renderer/templates/restaurant/restaurant-utils";
+import {
+  PlayfulExperience,
+  PlayfulGallery,
+  PlayfulLocation,
+  PlayfulMenuHighlights,
+  PlayfulReservation,
+  PlayfulRestaurantHero as PlayfulRestaurantHeroDesign,
+  PlayfulReviews,
+  PlayfulSignatureDishes,
+} from "@/features/public-renderer/templates/restaurant/restaurant-playful";
 
 function PlayfulSticker({
   children,
@@ -48,15 +67,20 @@ function PlayfulSticker({
 
 function PlayfulTicker({ items: tickerItems }: { items: string[] }) {
   return (
-    <div className="relative mt-10 overflow-hidden rounded-md border-2 border-[#2a1710] bg-[#2a1710] py-3 text-white shadow-[8px_8px_0_rgba(255,107,53,0.18)]">
-      <div className="flex w-max animate-[restaurantTicker_28s_linear_infinite] gap-8 whitespace-nowrap px-4 text-sm font-black uppercase tracking-[0.22em]">
-        {[...tickerItems, ...tickerItems].map((item, index) => (
-          <span className="inline-flex items-center gap-8" key={`${item}-${index}`}>
+    <div className="relative mt-10 rounded-md border-2 border-[#2a1710] bg-[#2a1710] py-4 text-white shadow-[8px_8px_0_rgba(255,107,53,0.18)]">
+      <ul
+        aria-label="Detalhes da experiência"
+        className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 px-5 text-center text-xs font-black uppercase tracking-[0.18em] sm:px-8 sm:text-sm"
+      >
+        {tickerItems.map((item, index) => (
+          <li className="inline-flex items-center gap-8" key={`${item}-${index}`}>
             {item}
-            <span className="text-[#ffd166]">•</span>
-          </span>
+            {index < tickerItems.length - 1 ? (
+              <span aria-hidden="true" className="text-[#ffd166]">✦</span>
+            ) : null}
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
@@ -73,20 +97,12 @@ export function RestaurantHeroSection({ context, section }: PublicSectionProps) 
   const highlights = recordArray(section.content, "highlights");
 
   if (variant === "fine_dining") {
-    return (
-      <FineDiningHero
-        context={context}
-        heroImage={heroImage}
-        heroImageAlt={heroImageAlt}
-        highlights={highlights}
-        section={section}
-      />
-    );
+    return <FineDiningHeroEditorial context={context} section={section} />;
   }
 
   if (variant === "playful") {
     return (
-      <PlayfulRestaurantHero
+      <PlayfulRestaurantHeroDesign
         context={context}
         heroImage={heroImage}
         heroImageAlt={heroImageAlt}
@@ -185,6 +201,7 @@ export function RestaurantHeroSection({ context, section }: PublicSectionProps) 
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function PlayfulRestaurantHero({
   context,
   heroImage,
@@ -397,6 +414,8 @@ function PlayfulRestaurantHero({
   );
 }
 
+// Legacy implementation retained temporarily for comparison during the rollout.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function FineDiningHero({
   context,
   heroImage,
@@ -519,11 +538,13 @@ function FineDiningHero({
   );
 }
 
-export function RestaurantMenuHighlightsSection({ section }: PublicSectionProps) {
+export function RestaurantMenuHighlightsSection({ context, section }: PublicSectionProps) {
   const list = items(section.content);
   const layout = text(section.content, "layout");
 
   if (layout === "fine_dining") {
+    return <FineDiningMenu section={section} context={context} />;
+    /*
     return (
       <PublicBand className="bg-[#f7f1e6]" id="menu">
         <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
@@ -567,6 +588,11 @@ export function RestaurantMenuHighlightsSection({ section }: PublicSectionProps)
         </div>
       </PublicBand>
     );
+    */
+  }
+
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulMenuHighlights context={context} section={section} />;
   }
 
   if (layout === "playful") {
@@ -677,9 +703,15 @@ export function RestaurantMenuHighlightsSection({ section }: PublicSectionProps)
   );
 }
 
-export function RestaurantSignatureDishesSection({ section }: PublicSectionProps) {
+export function RestaurantSignatureDishesSection({ context, section }: PublicSectionProps) {
   const dishes = items(section.content);
   const layout = text(section.content, "layout");
+
+  if (layout === "fine_dining") return <FineDiningDishes section={section} context={context} />;
+
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulSignatureDishes context={context} section={section} />;
+  }
 
   if (layout === "playful") {
     return (
@@ -787,9 +819,15 @@ export function RestaurantSignatureDishesSection({ section }: PublicSectionProps
   );
 }
 
-export function RestaurantExperienceSection({ section }: PublicSectionProps) {
+export function RestaurantExperienceSection({ context, section }: PublicSectionProps) {
   const list = items(section.content);
   const layout = text(section.content, "layout");
+
+  if (layout === "fine_dining") return <FineDiningExperience section={section} context={context} />;
+
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulExperience context={context} section={section} />;
+  }
 
   if (layout === "fine_dining") {
     return (
@@ -892,7 +930,8 @@ export function RestaurantExperienceSection({ section }: PublicSectionProps) {
   );
 }
 
-export function RestaurantChefStorySection({ section }: PublicSectionProps) {
+export function RestaurantChefStorySection({ context, section }: PublicSectionProps) {
+  if (text(section.content, "layout") === "fine_dining") return <FineDiningChef section={section} context={context} />;
   const portraitImage = text(section.content, "portraitImage");
   const portraitAlt = text(section.content, "portraitAlt", text(section.content, "title"));
 
@@ -947,7 +986,11 @@ export function RestaurantChefStorySection({ section }: PublicSectionProps) {
   );
 }
 
-export function RestaurantReviewsSection({ section }: PublicSectionProps) {
+export function RestaurantReviewsSection({ context, section }: PublicSectionProps) {
+  if (text(section.content, "layout") === "fine_dining") return <FineDiningReviews section={section} context={context} />;
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulReviews context={context} section={section} />;
+  }
   const list = items(section.content);
 
   return (
@@ -999,7 +1042,10 @@ export function RestaurantReviewsSection({ section }: PublicSectionProps) {
   );
 }
 
-export function RestaurantReservationSection({ section }: PublicSectionProps) {
+export function RestaurantReservationSection({ context, section }: PublicSectionProps) {
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulReservation context={context} section={section} />;
+  }
   const details = recordArray(section.content, "details");
 
   return (
@@ -1042,9 +1088,13 @@ export function RestaurantReservationSection({ section }: PublicSectionProps) {
   );
 }
 
-export function RestaurantLocationSection({ section }: PublicSectionProps) {
+export function RestaurantLocationSection({ context, section }: PublicSectionProps) {
   const address = text(section.content, "address", "Morada confirmada no contacto de reserva.");
   const mapQuery = text(section.content, "mapQuery", address);
+
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulLocation address={address} context={context} mapQuery={mapQuery} section={section} />;
+  }
 
   return (
     <PublicBand id="location">
@@ -1087,9 +1137,15 @@ export function RestaurantLocationSection({ section }: PublicSectionProps) {
   );
 }
 
-export function RestaurantGallerySection({ section }: PublicSectionProps) {
+export function RestaurantGallerySection({ context, section }: PublicSectionProps) {
   const list = items(section.content);
   const layout = text(section.content, "layout");
+
+  if (layout === "fine_dining") return <FineDiningGallery section={section} context={context} />;
+
+  if (restaurantVariant(context) === "playful") {
+    return <PlayfulGallery context={context} section={section} />;
+  }
 
   if (layout === "playful") {
     return (

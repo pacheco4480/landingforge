@@ -27,6 +27,20 @@ import {
   clinicVariantLabel,
   recordArray,
 } from "@/features/public-renderer/templates/clinic/clinic-utils";
+import {
+  ModernClinicDoctors,
+  ModernClinicFacilities,
+  ModernClinicHero as ModernClinicHeroEditorial,
+  ModernClinicJourney,
+  ModernClinicSpecialties,
+} from "@/features/public-renderer/templates/clinic/clinic-modern";
+import {
+  LuxuryClinicDoctors,
+  LuxuryClinicFacilities,
+  LuxuryClinicHero as LuxuryClinicHeroEditorial,
+  LuxuryClinicJourney,
+  LuxuryClinicSpecialties,
+} from "@/features/public-renderer/templates/clinic/clinic-luxury";
 
 function brandKitText(content: unknown, key: string, fallback = "") {
   if (!isRecord(content) || !isRecord(content.brandKit)) return fallback;
@@ -47,41 +61,31 @@ export function ClinicHeroSection({ context, section }: PublicSectionProps) {
   );
 
   if (variant === "modern") {
-    return (
-      <ModernClinicHero
-        context={context}
-        heroImage={heroImage}
-        heroImageAlt={heroImageAlt}
-        section={section}
-        stats={stats}
-      />
-    );
+    return <ModernClinicHeroEditorial context={context} section={section} />;
   }
 
   if (variant === "luxury") {
-    return (
-      <LuxuryClinicHero
-        context={context}
-        heroImage={heroImage}
-        heroImageAlt={heroImageAlt}
-        section={section}
-        stats={stats}
-      />
-    );
+    return <LuxuryClinicHeroEditorial context={context} section={section} />;
   }
 
   return (
     <PublicBand className="pt-10 sm:pt-16">
       <div className={`overflow-hidden rounded-md border ${tone.card}`}>
-        <div className={`grid items-center gap-8 p-5 sm:p-8 lg:grid-cols-[1.02fr_0.98fr] lg:p-12 ${tone.hero}`}>
+        <div
+          className={`grid items-center gap-8 p-5 sm:p-8 lg:grid-cols-[1.02fr_0.98fr] lg:p-12 ${tone.hero}`}
+        >
           <div>
-            <p className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wider ${tone.badge}`}>
+            <p
+              className={`inline-flex rounded-full border px-3 py-1 text-xs font-bold tracking-wider uppercase ${tone.badge}`}
+            >
               {text(section.content, "eyebrow", clinicVariantLabel(variant))}
             </p>
-            <h1 className="mt-5 max-w-4xl text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
+            <h1 className="mt-5 max-w-4xl text-4xl leading-[1.05] font-black tracking-tight sm:text-6xl">
               {text(section.content, "headline", context.page.title)}
             </h1>
-            <p className={`mt-5 max-w-2xl text-base leading-8 sm:text-lg ${tone.muted}`}>
+            <p
+              className={`mt-5 max-w-2xl text-base leading-8 sm:text-lg ${tone.muted}`}
+            >
               {text(
                 section.content,
                 "subheadline",
@@ -103,7 +107,7 @@ export function ClinicHeroSection({ context, section }: PublicSectionProps) {
                     className="rounded-md border border-current/10 bg-white/10 p-4 backdrop-blur-sm"
                     key={index}
                   >
-                    <dt className="text-xs font-bold uppercase tracking-wider opacity-70">
+                    <dt className="text-xs font-bold tracking-wider uppercase opacity-70">
                       {itemText(stat, "label", "Indicador")}
                     </dt>
                     <dd className="mt-1 text-2xl font-black">
@@ -127,14 +131,17 @@ export function ClinicHeroSection({ context, section }: PublicSectionProps) {
               />
             ) : (
               <div className="flex h-full min-h-[360px] items-center justify-center bg-gradient-to-br from-[var(--public-primary)]/75 via-[var(--public-secondary)]/60 to-[var(--public-accent)]/55">
-                <HeartPulse aria-hidden="true" className="size-20 text-white/80" />
+                <HeartPulse
+                  aria-hidden="true"
+                  className="size-20 text-white/80"
+                />
               </div>
             )}
-            <div className="absolute bottom-4 left-4 right-4 rounded-md bg-white/90 p-4 text-slate-950 shadow-xl backdrop-blur">
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--public-primary)]">
+            <div className="absolute right-4 bottom-4 left-4 rounded-md bg-white/90 p-4 text-slate-950 shadow-xl backdrop-blur">
+              <p className="text-xs font-black tracking-wider text-[var(--public-primary)] uppercase">
                 {text(section.content, "proofLabel", "Consulta segura")}
               </p>
-              <p className="mt-1 text-sm font-semibold leading-6">
+              <p className="mt-1 text-sm leading-6 font-semibold">
                 {text(
                   section.content,
                   "proofText",
@@ -149,6 +156,8 @@ export function ClinicHeroSection({ context, section }: PublicSectionProps) {
   );
 }
 
+// Legacy implementation retained temporarily for comparison during the rollout.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function LuxuryClinicHero({
   context,
   heroImage,
@@ -164,18 +173,18 @@ function LuxuryClinicHero({
 }) {
   return (
     <PublicBand className="overflow-hidden bg-[#f7f2ea] pt-8 sm:pt-14">
-      <div className="relative overflow-hidden rounded-md bg-slate-950 text-white shadow-2xl shadow-slate-950/25 ring-1 ring-slate-900/10">
+      <div className="relative overflow-hidden rounded-md bg-slate-950 text-white shadow-2xl ring-1 shadow-slate-950/25 ring-slate-900/10">
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,rgba(192,132,252,0.18),transparent_34%),radial-gradient(circle_at_82%_8%,rgba(212,175,55,0.16),transparent_28%)]"
         />
         <div className="relative grid min-h-[620px] lg:grid-cols-[0.94fr_1.06fr]">
           <div className="flex flex-col justify-center p-6 sm:p-10 lg:p-14">
-            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-xs font-black uppercase tracking-[0.24em] text-[#f3dca4] backdrop-blur">
+            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-1.5 text-xs font-black tracking-[0.24em] text-[#f3dca4] uppercase backdrop-blur">
               <span className="h-px w-7 bg-[#f3dca4]" />
               {text(section.content, "eyebrow", "Private healthcare")}
             </p>
-            <h1 className="mt-7 max-w-4xl text-4xl font-black leading-[1.02] tracking-tight sm:text-6xl lg:text-[4.7rem]">
+            <h1 className="mt-7 max-w-4xl text-4xl leading-[1.02] font-black tracking-tight sm:text-6xl lg:text-[4.7rem]">
               {text(section.content, "headline", context.page.title)}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/72 sm:text-lg">
@@ -186,18 +195,22 @@ function LuxuryClinicHero({
               )}
             </p>
             <div className="mt-7 max-w-2xl rounded-md border border-white/12 bg-white/7 p-4 backdrop-blur">
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-[#f3dca4]">
+              <p className="text-[10px] font-black tracking-[0.22em] text-[#f3dca4] uppercase">
                 Brand promise
               </p>
-              <p className="mt-2 text-sm font-semibold leading-6 text-white/78">
+              <p className="mt-2 text-sm leading-6 font-semibold text-white/78">
                 {brandKitText(
                   section.content,
                   "corePromise",
                   "Tempo protegido, escuta atenta e acompanhamento com total discrição.",
                 )}
               </p>
-              <p className="mt-2 text-xs font-bold uppercase tracking-wider text-white/40">
-                {brandKitText(section.content, "tagline", "Private care, quietly handled.")}
+              <p className="mt-2 text-xs font-bold tracking-wider text-white/40 uppercase">
+                {brandKitText(
+                  section.content,
+                  "tagline",
+                  "Private care, quietly handled.",
+                )}
               </p>
             </div>
             <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
@@ -205,13 +218,21 @@ function LuxuryClinicHero({
                 className="inline-flex items-center justify-center rounded-md bg-[#f3dca4] px-7 py-3.5 text-sm font-black text-slate-950 shadow-xl shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
                 href="#booking"
               >
-                {text(section.content, "ctaPrimary", "Solicitar consulta privada")}
+                {text(
+                  section.content,
+                  "ctaPrimary",
+                  "Solicitar consulta privada",
+                )}
               </a>
               <a
                 className="inline-flex items-center justify-center rounded-md border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-black text-white backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/10"
                 href="#private-experience"
               >
-                {text(section.content, "ctaSecondary", "Ver experiência privada")}
+                {text(
+                  section.content,
+                  "ctaSecondary",
+                  "Ver experiência privada",
+                )}
               </a>
             </div>
             {stats.length ? (
@@ -221,7 +242,7 @@ function LuxuryClinicHero({
                     className="rounded-md border border-white/10 bg-white/6 p-4 backdrop-blur transition-transform duration-300 hover:-translate-y-1"
                     key={index}
                   >
-                    <dt className="text-[11px] font-black uppercase tracking-[0.2em] text-white/48">
+                    <dt className="text-[11px] font-black tracking-[0.2em] text-white/48 uppercase">
                       {itemText(stat, "label", "Indicador")}
                     </dt>
                     <dd className="mt-2 text-2xl font-black text-[#f3dca4]">
@@ -248,11 +269,15 @@ function LuxuryClinicHero({
               <div className="h-full min-h-[420px] bg-gradient-to-br from-slate-800 via-slate-950 to-stone-900" />
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/10 to-transparent lg:bg-gradient-to-r lg:from-slate-950/40 lg:via-transparent lg:to-transparent" />
-            <div className="absolute bottom-5 left-5 right-5 rounded-md border border-white/12 bg-slate-950/78 p-5 shadow-2xl backdrop-blur-md sm:left-auto sm:max-w-sm">
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#f3dca4]">
-                {text(section.content, "proofLabel", "Discrição em cada contacto")}
+            <div className="absolute right-5 bottom-5 left-5 rounded-md border border-white/12 bg-slate-950/78 p-5 shadow-2xl backdrop-blur-md sm:left-auto sm:max-w-sm">
+              <p className="text-xs font-black tracking-[0.22em] text-[#f3dca4] uppercase">
+                {text(
+                  section.content,
+                  "proofLabel",
+                  "Discrição em cada contacto",
+                )}
               </p>
-              <p className="mt-2 text-sm font-semibold leading-6 text-white/78">
+              <p className="mt-2 text-sm leading-6 font-semibold text-white/78">
                 {text(
                   section.content,
                   "proofText",
@@ -267,6 +292,8 @@ function LuxuryClinicHero({
   );
 }
 
+// Legacy implementation kept temporarily for comparison during the visual rollout.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function ModernClinicHero({
   context,
   heroImage,
@@ -282,10 +309,10 @@ function ModernClinicHero({
 }) {
   return (
     <PublicBand className="overflow-hidden pt-8 sm:pt-14">
-      <div className="relative overflow-hidden rounded-md bg-[#eefafa] p-5 shadow-2xl shadow-teal-950/8 ring-1 ring-teal-950/8 sm:p-8 lg:p-12">
+      <div className="relative overflow-hidden rounded-md bg-[#eefafa] p-5 shadow-2xl ring-1 shadow-teal-950/8 ring-teal-950/8 sm:p-8 lg:p-12">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-24 -top-24 h-96 w-96 rounded-full bg-[var(--public-secondary)]/18 blur-3xl"
+          className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-[var(--public-secondary)]/18 blur-3xl"
         />
         <div
           aria-hidden="true"
@@ -294,11 +321,15 @@ function ModernClinicHero({
 
         <div className="relative grid items-center gap-10 lg:grid-cols-[0.96fr_1.04fr] lg:gap-14">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-teal-900/10 bg-white/75 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-[var(--public-primary)] shadow-sm backdrop-blur">
+            <p className="inline-flex items-center gap-2 rounded-full border border-teal-900/10 bg-white/75 px-4 py-1.5 text-xs font-black tracking-widest text-[var(--public-primary)] uppercase shadow-sm backdrop-blur">
               <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_0_5px_rgba(52,211,153,0.20)]" />
-              {text(section.content, "eyebrow", "NexaCare — saúde simples e humana")}
+              {text(
+                section.content,
+                "eyebrow",
+                "NexaCare — saúde simples e humana",
+              )}
             </p>
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.03] tracking-tight text-slate-950 sm:text-6xl lg:text-[4.55rem]">
+            <h1 className="mt-6 max-w-4xl text-4xl leading-[1.03] font-black tracking-tight text-slate-950 sm:text-6xl lg:text-[4.55rem]">
               {text(section.content, "headline", context.page.title)}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
@@ -310,28 +341,40 @@ function ModernClinicHero({
             </p>
 
             <div className="mt-7 max-w-2xl rounded-md border border-teal-950/10 bg-white/75 p-4 shadow-sm backdrop-blur">
-              <p className="text-[10px] font-black uppercase tracking-widest text-[var(--public-primary)]">
+              <p className="text-[10px] font-black tracking-widest text-[var(--public-primary)] uppercase">
                 Brand promise
               </p>
-              <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">
+              <p className="mt-2 text-sm leading-6 font-semibold text-slate-700">
                 {brandKitText(
                   section.content,
                   "corePromise",
                   "Saúde privada simples, clara e humana antes da primeira consulta.",
                 )}
               </p>
-              <p className="mt-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                {brandKitText(section.content, "tagline", "Saúde simples, humana e bem acompanhada.")}
+              <p className="mt-2 text-xs font-bold tracking-wider text-slate-400 uppercase">
+                {brandKitText(
+                  section.content,
+                  "tagline",
+                  "Saúde simples, humana e bem acompanhada.",
+                )}
               </p>
             </div>
 
             <div className="mt-7 grid gap-3 text-sm font-bold text-slate-700 sm:grid-cols-3">
-              {["Triagem humana", "Privacidade clara", "Marcação simples"].map((label) => (
-                <div className="flex items-center gap-2 rounded-md bg-white/75 px-3 py-2 shadow-sm ring-1 ring-black/5" key={label}>
-                  <CheckCircle2 aria-hidden="true" className="size-4 text-[var(--public-primary)]" />
-                  <span>{label}</span>
-                </div>
-              ))}
+              {["Triagem humana", "Privacidade clara", "Marcação simples"].map(
+                (label) => (
+                  <div
+                    className="flex items-center gap-2 rounded-md bg-white/75 px-3 py-2 shadow-sm ring-1 ring-black/5"
+                    key={label}
+                  >
+                    <CheckCircle2
+                      aria-hidden="true"
+                      className="size-4 text-[var(--public-primary)]"
+                    />
+                    <span>{label}</span>
+                  </div>
+                ),
+              )}
             </div>
 
             <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
@@ -339,7 +382,9 @@ function ModernClinicHero({
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-[var(--public-primary)] px-7 py-3.5 text-sm font-black text-white shadow-xl shadow-teal-950/15 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl"
                 href="#booking"
               >
-                <span>{text(section.content, "ctaPrimary", "Agendar consulta")}</span>
+                <span>
+                  {text(section.content, "ctaPrimary", "Agendar consulta")}
+                </span>
                 <span aria-hidden="true">&rarr;</span>
               </a>
               <a
@@ -354,7 +399,7 @@ function ModernClinicHero({
               <dl className="mt-12 grid grid-cols-3 gap-4 border-t border-teal-950/10 pt-7">
                 {stats.map((stat, index) => (
                   <div key={index}>
-                    <dt className="text-[11px] font-black uppercase tracking-wider text-slate-500">
+                    <dt className="text-[11px] font-black tracking-wider text-slate-500 uppercase">
                       {itemText(stat, "label", "Indicador")}
                     </dt>
                     <dd className="mt-1 text-2xl font-black tracking-tight text-[var(--public-primary)] sm:text-3xl">
@@ -367,21 +412,25 @@ function ModernClinicHero({
           </div>
 
           <div className="relative">
-            <div className="absolute -left-4 top-8 z-20 hidden max-w-60 rounded-md border border-white/80 bg-white/90 p-4 shadow-2xl backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:block">
-              <p className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+            <div className="absolute top-8 -left-4 z-20 hidden max-w-60 rounded-md border border-white/80 bg-white/90 p-4 shadow-2xl backdrop-blur-md transition-transform duration-300 hover:-translate-y-1 sm:block">
+              <p className="text-[10px] font-black tracking-wider text-slate-400 uppercase">
                 Paciente informado
               </p>
-              <p className="mt-1 text-2xl font-black text-slate-950">3 passos</p>
-              <p className="mt-1 text-[11px] font-semibold leading-normal text-slate-500">
-                Pedido, confirmação humana e consulta com próximos passos claros.
+              <p className="mt-1 text-2xl font-black text-slate-950">
+                3 passos
+              </p>
+              <p className="mt-1 text-[11px] leading-normal font-semibold text-slate-500">
+                Pedido, confirmação humana e consulta com próximos passos
+                claros.
               </p>
             </div>
-            <div className="absolute -bottom-4 -right-4 z-20 hidden max-w-64 rounded-md bg-slate-950 p-4 text-white shadow-2xl transition-transform duration-300 hover:-translate-y-1 sm:block">
-              <p className="text-[10px] font-black uppercase tracking-wider text-emerald-300">
+            <div className="absolute -right-4 -bottom-4 z-20 hidden max-w-64 rounded-md bg-slate-950 p-4 text-white shadow-2xl transition-transform duration-300 hover:-translate-y-1 sm:block">
+              <p className="text-[10px] font-black tracking-wider text-emerald-300 uppercase">
                 Dados protegidos
               </p>
-              <p className="mt-1.5 text-xs font-semibold leading-relaxed text-slate-200">
-                O primeiro contacto recolhe apenas informação essencial para a marcação.
+              <p className="mt-1.5 text-xs leading-relaxed font-semibold text-slate-200">
+                O primeiro contacto recolhe apenas informação essencial para a
+                marcação.
               </p>
             </div>
             <div className="relative min-h-[420px] overflow-hidden rounded-md bg-white shadow-2xl ring-1 ring-black/5">
@@ -397,7 +446,10 @@ function ModernClinicHero({
                 />
               ) : (
                 <div className="flex h-full min-h-[420px] items-center justify-center bg-gradient-to-br from-teal-700 via-sky-500 to-emerald-300">
-                  <HeartPulse aria-hidden="true" className="size-20 text-white/80" />
+                  <HeartPulse
+                    aria-hidden="true"
+                    className="size-20 text-white/80"
+                  />
                 </div>
               )}
             </div>
@@ -408,7 +460,14 @@ function ModernClinicHero({
   );
 }
 
-export function ClinicSpecialtiesSection({ context, section }: PublicSectionProps) {
+export function ClinicSpecialtiesSection({
+  context,
+  section,
+}: PublicSectionProps) {
+  if (clinicVariant(context) === "modern")
+    return <ModernClinicSpecialties section={section} context={context} />;
+  if (clinicVariant(context) === "luxury")
+    return <LuxuryClinicSpecialties section={section} context={context} />;
   const list = items(section.content);
   const variant = clinicVariant(context);
   const isModern = variant === "modern";
@@ -419,24 +478,42 @@ export function ClinicSpecialtiesSection({ context, section }: PublicSectionProp
       id="clinic-specialties"
       className={isModern ? "bg-white" : isLuxury ? "bg-[#f7f2ea]" : undefined}
     >
-      <div className={isModern || isLuxury ? "grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start" : ""}>
+      <div
+        className={
+          isModern || isLuxury
+            ? "grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start"
+            : ""
+        }
+      >
         <div>
           <SectionHeading
-            title={text(section.content, "title", "Especialidades e tratamentos")}
-            description={text(section.content, "text", "Áreas de cuidado explicadas com linguagem simples, segura e orientada para a marcação.")}
+            title={text(
+              section.content,
+              "title",
+              "Especialidades e tratamentos",
+            )}
+            description={text(
+              section.content,
+              "text",
+              "Áreas de cuidado explicadas com linguagem simples, segura e orientada para a marcação.",
+            )}
           />
           {isModern ? (
             <div className="mt-6 rounded-md bg-[#eefafa] p-5 text-sm leading-6 text-slate-600 ring-1 ring-teal-900/8">
-              Cada área evita promessas médicas absolutas e orienta o paciente para uma conversa segura com a equipa.
+              Cada área evita promessas médicas absolutas e orienta o paciente
+              para uma conversa segura com a equipa.
             </div>
           ) : null}
           {isLuxury ? (
             <div className="mt-6 rounded-md border border-[#c6a766]/25 bg-white/70 p-5 text-sm leading-6 text-slate-600 shadow-sm">
-              A experiência prioriza privacidade, tempo protegido e orientação sénior, sem promessas clínicas absolutas.
+              A experiência prioriza privacidade, tempo protegido e orientação
+              sénior, sem promessas clínicas absolutas.
             </div>
           ) : null}
         </div>
-        <div className={`grid gap-4 md:grid-cols-2 ${isModern || isLuxury ? "" : "mt-8 xl:grid-cols-3"}`}>
+        <div
+          className={`grid gap-4 md:grid-cols-2 ${isModern || isLuxury ? "" : "mt-8 xl:grid-cols-3"}`}
+        >
           {list.map((specialty, index) => (
             <article
               className={`group rounded-md border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
@@ -445,9 +522,7 @@ export function ClinicSpecialtiesSection({ context, section }: PublicSectionProp
                   : "border-slate-200/80 bg-white"
               } ${
                 (isModern || isLuxury) && index === 0 ? "md:col-span-2" : ""
-              } ${
-                isModern && index === 0 ? "bg-[#f8fdfd]" : ""
-              }`}
+              } ${isModern && index === 0 ? "bg-[#f8fdfd]" : ""}`}
               key={index}
             >
               <div className="flex size-11 items-center justify-center rounded-md bg-[var(--public-primary)]/10 text-[var(--public-primary)]">
@@ -457,18 +532,30 @@ export function ClinicSpecialtiesSection({ context, section }: PublicSectionProp
                   <Stethoscope aria-hidden="true" className="size-5" />
                 )}
               </div>
-              <p className="mt-5 text-xs font-black uppercase tracking-wider text-[var(--public-primary)]">
+              <p className="mt-5 text-xs font-black tracking-wider text-[var(--public-primary)] uppercase">
                 {itemText(specialty, "category", "Cuidado")}
               </p>
               <h3 className="mt-2 text-xl font-black tracking-tight text-slate-950">
-                {itemText(specialty, "name", itemText(specialty, "title", "Especialidade"))}
+                {itemText(
+                  specialty,
+                  "name",
+                  itemText(specialty, "title", "Especialidade"),
+                )}
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                {itemText(specialty, "description", "A equipa indica a especialidade adequada após avaliar o pedido.")}
+                {itemText(
+                  specialty,
+                  "description",
+                  "A equipa indica a especialidade adequada após avaliar o pedido.",
+                )}
               </p>
               <div className="mt-5 flex flex-wrap gap-2 text-xs font-bold text-slate-500">
-                {itemText(specialty, "duration") ? <span>{itemText(specialty, "duration")}</span> : null}
-                {itemText(specialty, "priceLabel") ? <span>{itemText(specialty, "priceLabel")}</span> : null}
+                {itemText(specialty, "duration") ? (
+                  <span>{itemText(specialty, "duration")}</span>
+                ) : null}
+                {itemText(specialty, "priceLabel") ? (
+                  <span>{itemText(specialty, "priceLabel")}</span>
+                ) : null}
               </div>
             </article>
           ))}
@@ -479,16 +566,33 @@ export function ClinicSpecialtiesSection({ context, section }: PublicSectionProp
 }
 
 export function ClinicDoctorsSection({ context, section }: PublicSectionProps) {
+  if (clinicVariant(context) === "modern")
+    return <ModernClinicDoctors section={section} context={context} />;
+  if (clinicVariant(context) === "luxury")
+    return <LuxuryClinicDoctors section={section} context={context} />;
   const doctors = items(section.content);
   const variant = clinicVariant(context);
   const isModern = variant === "modern";
   const isLuxury = variant === "luxury";
 
   return (
-    <PublicBand id="clinic-doctors" className={isModern ? "bg-[#f8fbfb]" : isLuxury ? "bg-slate-950 text-white" : undefined}>
+    <PublicBand
+      id="clinic-doctors"
+      className={
+        isModern
+          ? "bg-[#f8fbfb]"
+          : isLuxury
+            ? "bg-slate-950 text-white"
+            : undefined
+      }
+    >
       <SectionHeading
         title={text(section.content, "title", "Equipa clínica")}
-        description={text(section.content, "text", "Perfis com experiência, proximidade e cuidado no acompanhamento.")}
+        description={text(
+          section.content,
+          "text",
+          "Perfis com experiência, proximidade e cuidado no acompanhamento.",
+        )}
       />
       <div className="mt-8 grid gap-5 md:grid-cols-2">
         {doctors.map((doctor, index) => {
@@ -523,22 +627,38 @@ export function ClinicDoctorsSection({ context, section }: PublicSectionProps) {
                 )}
               </div>
               <div className="p-6">
-                <p className="text-xs font-black uppercase tracking-widest text-[var(--public-primary)]">
-                  {itemText(doctor, "specialty", itemText(doctor, "role", "Clinico"))}
+                <p className="text-xs font-black tracking-widest text-[var(--public-primary)] uppercase">
+                  {itemText(
+                    doctor,
+                    "specialty",
+                    itemText(doctor, "role", "Clinico"),
+                  )}
                 </p>
-                <h3 className={`mt-2 text-2xl font-black tracking-tight ${isLuxury ? "text-white" : "text-slate-950"}`}>
+                <h3
+                  className={`mt-2 text-2xl font-black tracking-tight ${isLuxury ? "text-white" : "text-slate-950"}`}
+                >
                   {name}
                 </h3>
-                <p className={`mt-3 text-sm leading-6 ${isLuxury ? "text-white/68" : "text-slate-600"}`}>
+                <p
+                  className={`mt-3 text-sm leading-6 ${isLuxury ? "text-white/68" : "text-slate-600"}`}
+                >
                   {itemText(doctor, "bio", "")}
                 </p>
-                <p className={`mt-4 text-xs font-semibold leading-5 ${isLuxury ? "text-white/48" : "text-slate-500"}`}>
+                <p
+                  className={`mt-4 text-xs leading-5 font-semibold ${isLuxury ? "text-white/48" : "text-slate-500"}`}
+                >
                   {itemText(doctor, "credentials", "")}
                 </p>
                 {isModern || isLuxury ? (
-                  <div className={`mt-5 flex flex-wrap gap-2 text-xs font-bold ${isLuxury ? "text-[#f3dca4]" : "text-slate-500"}`}>
-                    {itemText(doctor, "languages") ? <span>{itemText(doctor, "languages")}</span> : null}
-                    {itemText(doctor, "availability") ? <span>{itemText(doctor, "availability")}</span> : null}
+                  <div
+                    className={`mt-5 flex flex-wrap gap-2 text-xs font-bold ${isLuxury ? "text-[#f3dca4]" : "text-slate-500"}`}
+                  >
+                    {itemText(doctor, "languages") ? (
+                      <span>{itemText(doctor, "languages")}</span>
+                    ) : null}
+                    {itemText(doctor, "availability") ? (
+                      <span>{itemText(doctor, "availability")}</span>
+                    ) : null}
                   </div>
                 ) : null}
               </div>
@@ -550,7 +670,10 @@ export function ClinicDoctorsSection({ context, section }: PublicSectionProps) {
   );
 }
 
-export function ClinicCredentialsSection({ context, section }: PublicSectionProps) {
+export function ClinicCredentialsSection({
+  context,
+  section,
+}: PublicSectionProps) {
   const credentials = items(section.content);
   const variant = clinicVariant(context);
   const isModern = variant === "modern";
@@ -571,10 +694,20 @@ export function ClinicCredentialsSection({ context, section }: PublicSectionProp
         }`}
       >
         <SectionHeading
-          title={text(section.content, "title", "Credenciais que reduzem incerteza")}
-          description={text(section.content, "text", "Certificações, experiência e práticas que ajudam cada paciente a sentir-se acompanhado.")}
+          title={text(
+            section.content,
+            "title",
+            "Credenciais que reduzem incerteza",
+          )}
+          description={text(
+            section.content,
+            "text",
+            "Certificações, experiência e práticas que ajudam cada paciente a sentir-se acompanhado.",
+          )}
         />
-        <div className={`mt-8 grid gap-4 ${isLuxury ? "md:grid-cols-4" : "md:grid-cols-2 xl:grid-cols-4"}`}>
+        <div
+          className={`mt-8 grid gap-4 ${isLuxury ? "md:grid-cols-4" : "md:grid-cols-2 xl:grid-cols-4"}`}
+        >
           {credentials.map((credential, index) => (
             <article
               className={`rounded-md p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 ${
@@ -588,10 +721,18 @@ export function ClinicCredentialsSection({ context, section }: PublicSectionProp
                 aria-hidden="true"
                 className={`size-6 ${isLuxury ? "text-[#f3dca4]" : "text-[var(--public-primary)]"}`}
               />
-              <h3 className={`mt-4 font-black ${isLuxury ? "text-white" : "text-slate-950"}`}>
-                {itemText(credential, "title", itemText(credential, "name", "Credencial"))}
+              <h3
+                className={`mt-4 font-black ${isLuxury ? "text-white" : "text-slate-950"}`}
+              >
+                {itemText(
+                  credential,
+                  "title",
+                  itemText(credential, "name", "Credencial"),
+                )}
               </h3>
-              <p className={`mt-2 text-sm leading-6 ${isLuxury ? "text-white/62" : "text-slate-600"}`}>
+              <p
+                className={`mt-2 text-sm leading-6 ${isLuxury ? "text-white/62" : "text-slate-600"}`}
+              >
                 {itemText(credential, "description", "")}
               </p>
             </article>
@@ -602,7 +743,14 @@ export function ClinicCredentialsSection({ context, section }: PublicSectionProp
   );
 }
 
-export function ClinicPatientJourneySection({ context, section }: PublicSectionProps) {
+export function ClinicPatientJourneySection({
+  context,
+  section,
+}: PublicSectionProps) {
+  if (clinicVariant(context) === "modern")
+    return <ModernClinicJourney section={section} context={context} />;
+  if (clinicVariant(context) === "luxury")
+    return <LuxuryClinicJourney section={section} context={context} />;
   const steps = items(section.content);
   const variant = clinicVariant(context);
   const isModern = variant === "modern";
@@ -611,12 +759,24 @@ export function ClinicPatientJourneySection({ context, section }: PublicSectionP
   return (
     <PublicBand
       id="clinic-process"
-      className={isModern ? "bg-white" : isLuxury ? "bg-slate-950 text-white" : undefined}
+      className={
+        isModern ? "bg-white" : isLuxury ? "bg-slate-950 text-white" : undefined
+      }
     >
-      <div className={isModern ? "grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start" : ""}>
+      <div
+        className={
+          isModern
+            ? "grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start"
+            : ""
+        }
+      >
         <SectionHeading
           title={text(section.content, "title", "Como funciona a marcação")}
-          description={text(section.content, "text", "Um percurso simples para saber o que acontece depois de enviar o pedido.")}
+          description={text(
+            section.content,
+            "text",
+            "Um percurso simples para saber o que acontece depois de enviar o pedido.",
+          )}
         />
         <div
           className={`mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4 ${
@@ -643,10 +803,14 @@ export function ClinicPatientJourneySection({ context, section }: PublicSectionP
               >
                 {index + 1}
               </span>
-              <h3 className={`mt-5 text-lg font-black ${isLuxury ? "text-white" : "text-slate-950"}`}>
+              <h3
+                className={`mt-5 text-lg font-black ${isLuxury ? "text-white" : "text-slate-950"}`}
+              >
                 {itemText(step, "title", "Etapa")}
               </h3>
-              <p className={`mt-2 text-sm leading-6 ${isLuxury ? "text-white/62" : "text-slate-600"}`}>
+              <p
+                className={`mt-2 text-sm leading-6 ${isLuxury ? "text-white/62" : "text-slate-600"}`}
+              >
                 {itemText(step, "description", "")}
               </p>
             </article>
@@ -657,51 +821,69 @@ export function ClinicPatientJourneySection({ context, section }: PublicSectionP
   );
 }
 
-export function ClinicFacilitiesSection({ context, section }: PublicSectionProps) {
+export function ClinicFacilitiesSection({
+  context,
+  section,
+}: PublicSectionProps) {
+  if (clinicVariant(context) === "modern")
+    return <ModernClinicFacilities section={section} context={context} />;
+  if (clinicVariant(context) === "luxury")
+    return <LuxuryClinicFacilities section={section} context={context} />;
   const facilities = items(section.content);
   const isLuxury = clinicVariant(context) === "luxury";
 
   return (
-    <PublicBand id="clinic-facilities" className={isLuxury ? "bg-[#f7f2ea]" : undefined}>
+    <PublicBand
+      id="clinic-facilities"
+      className={isLuxury ? "bg-[#f7f2ea]" : undefined}
+    >
       <SectionHeading
         title={text(section.content, "title", "Espaco preparado para cuidar")}
-        description={text(section.content, "text", "Instalações, tecnologia e conforto apresentados sem exagero comercial.")}
+        description={text(
+          section.content,
+          "text",
+          "Instalações, tecnologia e conforto apresentados sem exagero comercial.",
+        )}
       />
-      <div className={`mt-8 grid gap-4 ${isLuxury ? "lg:grid-cols-[1.15fr_0.85fr_0.85fr]" : "lg:grid-cols-3"}`}>
+      <div
+        className={`mt-8 grid gap-4 ${isLuxury ? "lg:grid-cols-[1.15fr_0.85fr_0.85fr]" : "lg:grid-cols-3"}`}
+      >
         {facilities.map((facility, index) => {
           const facilityImage = itemText(facility, "image");
           const facilityTitle = itemText(facility, "title", "Instalacao");
 
           return (
-          <article
-            className={`rounded-md border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-              isLuxury
-                ? `overflow-hidden border-[#d8c28f]/35 bg-white/82 ${index === 0 ? "lg:min-h-56 lg:p-8" : ""}`
-                : "border-slate-200 bg-white"
-            }`}
-            key={index}
-          >
-            {facilityImage ? (
-              <div className={`${isLuxury && index === 0 ? "-mx-8 -mt-8" : "-mx-5 -mt-5"} mb-5`}>
-                <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-slate-100">
-                  <Image
-                    alt={itemText(facility, "imageAlt", facilityTitle)}
-                    className="object-cover transition duration-700 hover:scale-[1.03]"
-                    fill
-                    sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
-                    src={facilityImage}
-                    unoptimized
-                  />
+            <article
+              className={`rounded-md border p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                isLuxury
+                  ? `overflow-hidden border-[#d8c28f]/35 bg-white/82 ${index === 0 ? "lg:min-h-56 lg:p-8" : ""}`
+                  : "border-slate-200 bg-white"
+              }`}
+              key={index}
+            >
+              {facilityImage ? (
+                <div
+                  className={`${isLuxury && index === 0 ? "-mx-8 -mt-8" : "-mx-5 -mt-5"} mb-5`}
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-slate-100">
+                    <Image
+                      alt={itemText(facility, "imageAlt", facilityTitle)}
+                      className="object-cover transition duration-700 hover:scale-[1.03]"
+                      fill
+                      sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
+                      src={facilityImage}
+                      unoptimized
+                    />
+                  </div>
                 </div>
-              </div>
-            ) : null}
-            <h3 className="text-lg font-black text-slate-950">
-              {facilityTitle}
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {itemText(facility, "description", "")}
-            </p>
-          </article>
+              ) : null}
+              <h3 className="text-lg font-black text-slate-950">
+                {facilityTitle}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                {itemText(facility, "description", "")}
+              </p>
+            </article>
           );
         })}
       </div>
@@ -716,40 +898,63 @@ export function ClinicLocationsSection({ section }: PublicSectionProps) {
     <PublicBand id="clinic-locations">
       <SectionHeading
         title={text(section.content, "title", "Localização e horários")}
-        description={text(section.content, "text", "Detalhes práticos para marcar, chegar e preparar a consulta com tranquilidade.")}
+        description={text(
+          section.content,
+          "text",
+          "Detalhes práticos para marcar, chegar e preparar a consulta com tranquilidade.",
+        )}
       />
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
         {locations.map((location, index) => {
-          const address = itemText(location, "address", "Morada confirmada pela equipa");
+          const address = itemText(
+            location,
+            "address",
+            "Morada confirmada pela equipa",
+          );
           const mapQuery = itemText(location, "mapQuery", address);
 
           return (
-          <article className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm" key={index}>
-            {mapQuery ? (
-              <iframe
-                className="h-64 w-full border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-                title={`Mapa de ${itemText(location, "name", "clínica")}`}
-              />
-            ) : null}
-            <div className="p-6">
-            <h3 className="text-xl font-black text-slate-950">
-              {itemText(location, "name", "Clínica")}
-            </h3>
-            <div className="mt-4 grid gap-3 text-sm text-slate-600">
-              <p className="flex gap-2">
-                <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--public-primary)]" />
-                <span>{address}</span>
-              </p>
-              <p className="flex gap-2">
-                <Clock aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[var(--public-primary)]" />
-                <span>{itemText(location, "openingHours", "Horário confirmado pela equipa")}</span>
-              </p>
-            </div>
-            </div>
-          </article>
+            <article
+              className="overflow-hidden rounded-md border border-slate-200 bg-white shadow-sm"
+              key={index}
+            >
+              {mapQuery ? (
+                <iframe
+                  className="h-64 w-full border-0"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+                  title={`Mapa de ${itemText(location, "name", "clínica")}`}
+                />
+              ) : null}
+              <div className="p-6">
+                <h3 className="text-xl font-black text-slate-950">
+                  {itemText(location, "name", "Clínica")}
+                </h3>
+                <div className="mt-4 grid gap-3 text-sm text-slate-600">
+                  <p className="flex gap-2">
+                    <MapPin
+                      aria-hidden="true"
+                      className="mt-0.5 size-4 shrink-0 text-[var(--public-primary)]"
+                    />
+                    <span>{address}</span>
+                  </p>
+                  <p className="flex gap-2">
+                    <Clock
+                      aria-hidden="true"
+                      className="mt-0.5 size-4 shrink-0 text-[var(--public-primary)]"
+                    />
+                    <span>
+                      {itemText(
+                        location,
+                        "openingHours",
+                        "Horário confirmado pela equipa",
+                      )}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </article>
           );
         })}
       </div>
@@ -778,8 +983,12 @@ export function ClinicBookingSection({ context, section }: PublicSectionProps) {
             aria-hidden="true"
             className={`size-9 ${isLuxury ? "text-[#f3dca4]" : "text-white/80"}`}
           />
-          <h2 className="mt-5 text-3xl font-black leading-tight">
-            {text(section.content, "headline", "Marque uma consulta com segurança")}
+          <h2 className="mt-5 text-3xl leading-tight font-black">
+            {text(
+              section.content,
+              "headline",
+              "Marque uma consulta com segurança",
+            )}
           </h2>
           <p className="mt-3 leading-7 text-white/78">
             {text(
@@ -824,7 +1033,9 @@ export function ClinicBookingSection({ context, section }: PublicSectionProps) {
   );
 }
 
-export function ClinicPrivateExperienceSection({ section }: PublicSectionProps) {
+export function ClinicPrivateExperienceSection({
+  section,
+}: PublicSectionProps) {
   const itemsList = items(section.content);
 
   return (
@@ -836,24 +1047,37 @@ export function ClinicPrivateExperienceSection({ section }: PublicSectionProps) 
         />
         <div className="relative grid gap-10 lg:grid-cols-[0.82fr_1.18fr]">
           <SectionHeading
-            title={text(section.content, "title", "Atendimento privado e personalizado")}
-            description={text(section.content, "text", "Uma experiência discreta para pacientes que valorizam privacidade, tempo e acompanhamento especializado.")}
+            title={text(
+              section.content,
+              "title",
+              "Atendimento privado e personalizado",
+            )}
+            description={text(
+              section.content,
+              "text",
+              "Uma experiência discreta para pacientes que valorizam privacidade, tempo e acompanhamento especializado.",
+            )}
           />
           <div className="grid gap-4 md:grid-cols-3">
-          {itemsList.map((item, index) => (
-            <article
-              className={`rounded-md border border-white/10 bg-white/8 p-5 transition-all duration-300 hover:-translate-y-1 ${
-                index === 0 ? "md:col-span-3 lg:col-span-1" : ""
-              }`}
-              key={index}
-            >
-              <CheckCircle2 aria-hidden="true" className="size-5 text-[#f3dca4]" />
-              <h3 className="mt-4 font-black">{itemText(item, "title", "Beneficio")}</h3>
-              <p className="mt-2 text-sm leading-6 text-white/66">
-                {itemText(item, "description", "")}
-              </p>
-            </article>
-          ))}
+            {itemsList.map((item, index) => (
+              <article
+                className={`rounded-md border border-white/10 bg-white/8 p-5 transition-all duration-300 hover:-translate-y-1 ${
+                  index === 0 ? "md:col-span-3 lg:col-span-1" : ""
+                }`}
+                key={index}
+              >
+                <CheckCircle2
+                  aria-hidden="true"
+                  className="size-5 text-[#f3dca4]"
+                />
+                <h3 className="mt-4 font-black">
+                  {itemText(item, "title", "Beneficio")}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-white/66">
+                  {itemText(item, "description", "")}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </div>

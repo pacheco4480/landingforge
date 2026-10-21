@@ -1,0 +1,1021 @@
+.gym-modern {
+  --gm-ink: #111a1c;
+  --gm-ink-soft: #273438;
+  --gm-paper: #f3f5f2;
+  --gm-muted: #536266;
+  --gm-accent: #baf45b;
+  --gm-line: rgba(17, 26, 28, 0.18);
+  color: var(--gm-ink);
+  background: var(--gm-paper);
+}
+
+.gym-modern * {
+  letter-spacing: 0;
+}
+
+.gym-modern-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: min(850px, calc(100svh - 72px));
+  align-items: flex-end;
+  overflow: hidden;
+  background: #182225;
+  color: #fff;
+}
+
+.gym-modern-hero__image,
+.gym-modern-hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.gym-modern-hero__image {
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.gym-modern-hero__shade {
+  z-index: 0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 15, 17, 0.84) 0%,
+      rgba(8, 15, 17, 0.54) 42%,
+      rgba(8, 15, 17, 0.08) 100%
+    ),
+    linear-gradient(0deg, rgba(8, 15, 17, 0.66), transparent 62%);
+}
+
+.gym-modern-hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1440px);
+  margin-inline: auto;
+  padding: 112px 8vw 110px;
+}
+
+.gym-modern-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gm-accent);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.gym-modern-kicker--dark {
+  color: #41620f;
+}
+
+.gym-modern-hero h1 {
+  max-width: 900px;
+  margin-top: 24px;
+  font-size: 76px;
+  font-weight: 800;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.gym-modern-hero__lead {
+  max-width: 600px;
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.gym-modern-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.gym-modern-button {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--gm-accent);
+  border-radius: 4px;
+  padding: 0 22px;
+  background: var(--gm-accent);
+  color: #14200d;
+  font-size: 14px;
+  font-weight: 800;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.gym-modern-button:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  border-color: #fff;
+}
+
+.gym-modern-button:focus-visible,
+.gym-modern-text-link:focus-visible,
+.gym-modern-program a:focus-visible,
+.gym-modern-plans a:focus-visible,
+.gym-modern-gallery button:focus-visible,
+.gym-modern-gallery__track:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+}
+
+.gym-modern-text-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.gym-modern-hero__index {
+  position: absolute;
+  right: 28px;
+  bottom: 32px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.gym-modern-hero__index span {
+  width: 38px;
+  height: 1px;
+  background: var(--gm-accent);
+}
+
+.gym-modern .gym-modern-method > div {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 28px 7vw;
+  align-items: end;
+}
+
+.gym-modern .gym-modern-method {
+  background: var(--gm-paper);
+}
+
+.gym-modern-method__intro .max-w-2xl {
+  max-width: 580px;
+  margin-top: 18px;
+}
+
+.gym-modern .gym-modern-method h2,
+.gym-modern .gym-modern-section-head h2,
+.gym-modern .gym-modern-benefits h2 {
+  font-size: 44px;
+  font-weight: 750;
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.gym-modern-muted {
+  color: var(--gm-muted);
+}
+
+.gym-modern-method__visual {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  background: #d6ddd7;
+}
+
+.gym-modern-method__image {
+  object-fit: cover;
+}
+
+.gym-modern-method__caption {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 10px 12px;
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.gym-modern-method__steps {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid var(--gm-line);
+}
+
+.gym-modern-method__step {
+  display: grid;
+  grid-template-columns: 40px 1fr 18px;
+  gap: 14px;
+  align-content: start;
+  padding: 24px 18px 8px 0;
+  border-right: 1px solid var(--gm-line);
+}
+
+.gym-modern-method__step + .gym-modern-method__step {
+  padding-left: 20px;
+}
+
+.gym-modern-method__number,
+.gym-modern-schedule__row > span,
+.gym-modern-coach-image > span {
+  color: #52791b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.gym-modern-method__step h3 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.gym-modern-method__step p {
+  margin-top: 7px;
+  color: var(--gm-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gym-modern-method__check {
+  color: #52791b;
+}
+
+.gym-modern-values {
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+}
+
+.gym-modern-values__inner {
+  display: flex;
+  min-height: 76px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  gap: 16px 32px;
+  padding: 18px 24px;
+}
+
+.gym-modern-values__inner span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.gym-modern-values__inner i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gm-ink);
+}
+
+.gym-modern .gym-modern-space {
+  background: #e6eae5;
+}
+
+.gym-modern-section-head {
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  align-items: end;
+  gap: 18px 6vw;
+  margin-bottom: 34px;
+}
+
+.gym-modern-section-head .max-w-2xl {
+  max-width: 760px;
+}
+
+.gym-modern-gallery {
+  position: relative;
+}
+
+.gym-modern-gallery__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.gym-modern-gallery__controls button {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid var(--gm-line);
+  background: transparent;
+  color: var(--gm-ink);
+  cursor: pointer;
+}
+
+.gym-modern-gallery__controls button:hover {
+  background: var(--gm-ink);
+  color: #fff;
+}
+
+.gym-modern-gallery__controls button:focus-visible,
+.gym-modern-gallery__track:focus-visible {
+  outline-color: var(--gm-ink);
+}
+
+.gym-modern-gallery__track {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.gym-modern-gallery__track:focus-visible {
+  outline: 3px solid var(--gm-ink);
+  outline-offset: 5px;
+}
+
+.gym-modern-gallery__track::-webkit-scrollbar {
+  display: none;
+}
+
+.gym-modern-gallery__item {
+  flex: 0 0 min(68vw, 790px);
+  scroll-snap-align: start;
+}
+
+.gym-modern-gallery__photo {
+  position: relative;
+  aspect-ratio: 1.55;
+  overflow: hidden;
+  background: #d4dad4;
+}
+
+.gym-modern-gallery__image {
+  object-fit: cover;
+  transition: transform 420ms ease;
+}
+
+.gym-modern-gallery__item:hover .gym-modern-gallery__image {
+  transform: scale(1.025);
+}
+
+.gym-modern-gallery__count {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 9px 11px;
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.gym-modern-gallery__item figcaption {
+  padding-top: 12px;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.gym-modern .gym-modern-programs,
+.gym-modern .gym-modern-plans {
+  background: var(--gm-ink);
+  color: #fff;
+}
+
+.gym-modern-section-head--light h2 {
+  color: #fff;
+}
+
+.gym-modern-light-muted {
+  color: #c2ceca;
+}
+
+.gym-modern-program-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 18px 28px;
+}
+
+.gym-modern-program {
+  min-width: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.gym-modern-program:first-child {
+  grid-row: 1 / span 2;
+}
+
+.gym-modern-program:not(:first-child) {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.78fr) minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.gym-modern-program__image-wrap {
+  position: relative;
+  aspect-ratio: 0.95;
+  overflow: hidden;
+  background: #303b3c;
+}
+
+.gym-modern-program__image {
+  object-fit: cover;
+  transition: transform 450ms ease;
+}
+
+.gym-modern-program:hover .gym-modern-program__image {
+  transform: scale(1.035);
+}
+
+.gym-modern-program__empty {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  place-items: center;
+  background: #263234;
+  color: var(--gm-accent);
+}
+
+.gym-modern-program__number {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.gym-modern-program__copy {
+  display: grid;
+  gap: 9px;
+  padding: 20px 4px 8px;
+}
+
+.gym-modern-program:not(:first-child) .gym-modern-program__copy {
+  padding: 8px 0;
+}
+
+.gym-modern-program:not(:first-child) .gym-modern-program__image-wrap {
+  aspect-ratio: 1;
+}
+
+.gym-modern-program:not(:first-child) .gym-modern-program__copy h3 {
+  font-size: 21px;
+}
+
+.gym-modern-program:not(:first-child) .gym-modern-program__copy > span {
+  min-height: 0;
+}
+
+.gym-modern-program__copy > p,
+.gym-modern-plans article > span {
+  color: var(--gm-accent);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.gym-modern-program__copy h3 {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.gym-modern-program__copy > span {
+  min-height: 48px;
+  color: #c2ceca;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.gym-modern-program__copy a,
+.gym-modern-plans a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 9px;
+  justify-self: start;
+  color: var(--gm-accent);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.gym-modern .gym-modern-benefits {
+  background: var(--gm-accent);
+}
+
+.gym-modern-benefits__layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 6vw;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.gym-modern-benefits__layout ul {
+  border-top: 1px solid rgba(17, 26, 28, 0.36);
+}
+
+.gym-modern-benefits__layout li {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 6px 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(17, 26, 28, 0.36);
+}
+
+.gym-modern-benefits__layout li > span {
+  grid-row: span 2;
+  color: #41620f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.gym-modern-benefits__layout li strong {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.gym-modern-benefits__layout li p {
+  color: #35413f;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.gym-modern-schedule {
+  background: #f9faf8;
+}
+
+.gym-modern-schedule__rows {
+  border-top: 1px solid var(--gm-line);
+}
+
+.gym-modern-schedule__row {
+  display: grid;
+  grid-template-columns: 60px minmax(140px, 0.7fr) 1.3fr;
+  gap: 18px;
+  align-items: baseline;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--gm-line);
+}
+
+.gym-modern-schedule__row h3 {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.gym-modern-schedule__row p {
+  color: var(--gm-muted);
+  font-size: 14px;
+  text-align: right;
+}
+
+.gym-modern-plans__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 26px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.gym-modern-plans article {
+  padding: 26px 22px 24px 0;
+}
+
+.gym-modern-plans article + article {
+  padding-left: 22px;
+  border-left: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.gym-modern-plans h3 {
+  margin-top: 34px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.gym-modern-plans p {
+  min-height: 70px;
+  margin-top: 10px;
+  color: #c2ceca;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.gym-modern-coaches {
+  background: var(--gm-paper);
+}
+
+.gym-modern-coaches__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.gym-modern-coach-image {
+  position: relative;
+  aspect-ratio: 0.9;
+  overflow: hidden;
+  background: #d4dad4;
+}
+
+.gym-modern-coach-image__photo {
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+
+.gym-modern-coaches article:hover .gym-modern-coach-image__photo {
+  transform: scale(1.025);
+}
+
+.gym-modern-coach-image > span {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 8px 10px;
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+}
+
+.gym-modern-coaches h3 {
+  margin-top: 14px;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.gym-modern-coaches article > p {
+  margin-top: 4px;
+  color: var(--gm-muted);
+  font-size: 14px;
+}
+
+.gym-modern-trial {
+  position: relative;
+  display: flex;
+  min-height: 440px;
+  align-items: center;
+  overflow: hidden;
+  padding: 80px max(24px, calc((100vw - 1180px) / 2));
+  background: var(--gm-accent);
+  color: var(--gm-ink);
+}
+
+.gym-modern-trial__content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+}
+
+.gym-modern-trial h2 {
+  margin-top: 18px;
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.gym-modern-trial__content > p:not(.gym-modern-kicker) {
+  max-width: 580px;
+  margin-top: 18px;
+  color: #35413f;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.gym-modern-trial .gym-modern-button {
+  margin-top: 26px;
+  border-color: var(--gm-ink);
+  background: var(--gm-ink);
+  color: #fff;
+}
+
+.gym-modern-trial .gym-modern-button:hover {
+  border-color: #fff;
+  background: #fff;
+  color: var(--gm-ink);
+}
+
+.gym-modern-trial__mark {
+  position: absolute;
+  right: 5vw;
+  bottom: -90px;
+  color: rgba(17, 26, 28, 0.08);
+  font-size: 380px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gym-modern-trial__mark span {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  font-size: 110px;
+}
+
+.gym-modern .gym-modern-contact {
+  background: #f3f5f2;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .gym-modern-method__step,
+    .gym-modern-program,
+    .gym-modern-coaches article {
+      animation: gym-modern-enter 520ms both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 28%;
+    }
+  }
+}
+
+@keyframes gym-modern-enter {
+  from {
+    opacity: 0.45;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gym-modern-hero__content {
+    animation: gym-modern-enter 720ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .gym-modern-hero__image {
+    animation: gym-modern-image-arrive 1200ms cubic-bezier(0.2, 0.7, 0.2, 1)
+      both;
+  }
+}
+
+@keyframes gym-modern-image-arrive {
+  from {
+    transform: scale(1.04);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .gym-modern-hero__image {
+      animation:
+        gym-modern-image-arrive 1200ms cubic-bezier(0.2, 0.7, 0.2, 1) both,
+        gym-modern-hero-parallax 1s linear both;
+      animation-timeline: auto, scroll(root block);
+      animation-range: normal, 0 80vh;
+    }
+  }
+}
+@keyframes gym-modern-hero-parallax {
+  to {
+    translate: 0 2%;
+    scale: 1.035;
+  }
+}
+
+@media (max-width: 899px) {
+  .gym-modern .gym-modern-method {
+    display: block;
+  }
+
+  .gym-modern .gym-modern-method > div {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .gym-modern-method__visual {
+    min-height: 360px;
+  }
+
+  .gym-modern-method__steps {
+    grid-column: auto;
+  }
+
+  .gym-modern .gym-modern-method h2,
+  .gym-modern .gym-modern-section-head h2,
+  .gym-modern .gym-modern-benefits h2 {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 767px) {
+  .gym-modern-hero {
+    min-height: max(720px, calc(100svh - 64px));
+  }
+
+  .gym-modern-hero__image {
+    object-position: 56% center;
+  }
+
+  .gym-modern-hero__shade {
+    background:
+      linear-gradient(90deg, rgba(8, 15, 17, 0.77), rgba(8, 15, 17, 0.2)),
+      linear-gradient(0deg, rgba(8, 15, 17, 0.72), transparent 76%);
+  }
+
+  .gym-modern-hero__content {
+    padding: 90px 22px 112px;
+  }
+
+  .gym-modern-hero h1 {
+    max-width: 600px;
+    margin-top: 18px;
+    font-size: 46px;
+    line-height: 1.02;
+  }
+
+  .gym-modern-hero__lead {
+    max-width: 480px;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .gym-modern-hero__actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .gym-modern-hero__index {
+    right: 22px;
+    bottom: 24px;
+    font-size: 9px;
+  }
+
+  .gym-modern .gym-modern-method {
+    display: block;
+  }
+
+  .gym-modern .gym-modern-method > div {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .gym-modern .gym-modern-method h2,
+  .gym-modern .gym-modern-section-head h2,
+  .gym-modern .gym-modern-benefits h2 {
+    font-size: 34px;
+  }
+
+  .gym-modern-method__visual {
+    min-height: 320px;
+  }
+
+  .gym-modern-method__steps {
+    grid-column: auto;
+    grid-template-columns: 1fr;
+  }
+
+  .gym-modern-method__step,
+  .gym-modern-method__step + .gym-modern-method__step {
+    padding: 18px 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--gm-line);
+  }
+
+  .gym-modern-values__inner {
+    justify-content: flex-start;
+    gap: 12px 22px;
+  }
+
+  .gym-modern-values__inner span {
+    font-size: 10px;
+  }
+
+  .gym-modern-section-head {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .gym-modern-gallery__item {
+    flex-basis: 88vw;
+  }
+
+  .gym-modern-gallery__photo {
+    aspect-ratio: 1.15;
+  }
+
+  .gym-modern-program-list {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 34px;
+  }
+
+  .gym-modern-program:first-child {
+    grid-row: auto;
+  }
+
+  .gym-modern-program:not(:first-child) {
+    display: block;
+  }
+
+  .gym-modern-program__image-wrap,
+  .gym-modern-program:not(:first-child) .gym-modern-program__image-wrap {
+    aspect-ratio: 1.18;
+  }
+
+  .gym-modern-program__copy > span {
+    min-height: 0;
+  }
+
+  .gym-modern-benefits__layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .gym-modern-schedule__row {
+    grid-template-columns: 34px 1fr;
+    gap: 7px 12px;
+  }
+
+  .gym-modern-schedule__row p {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .gym-modern-plans__list,
+  .gym-modern-coaches__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gym-modern-plans article,
+  .gym-modern-plans article + article {
+    padding: 22px 0;
+    border-left: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  }
+
+  .gym-modern-plans h3 {
+    margin-top: 20px;
+  }
+
+  .gym-modern-plans p {
+    min-height: 0;
+  }
+
+  .gym-modern-coaches__grid {
+    gap: 28px;
+  }
+
+  .gym-modern-coach-image {
+    aspect-ratio: 1.08;
+  }
+
+  .gym-modern-trial {
+    min-height: 0;
+    padding: 68px 22px;
+  }
+
+  .gym-modern-trial h2 {
+    font-size: 38px;
+  }
+
+  .gym-modern-trial__mark {
+    right: -35px;
+    bottom: -32px;
+    font-size: 220px;
+  }
+
+  .gym-modern-trial__mark span {
+    font-size: 70px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gym-modern *,
+  .gym-modern *::before,
+  .gym-modern *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -98,16 +98,6 @@ body {
   outline-offset: 3px;
 }
 
-@keyframes restaurantTicker {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 @keyframes bakeryFloat {
   0%,
   100% {
@@ -125,10 +115,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-\[restaurantTicker_28s_linear_infinite\] {
-    animation: none;
-  }
-
   .animate-\[bakeryFloat_5s_ease-in-out_infinite\] {
     animation: none;
   }

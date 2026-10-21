@@ -48,9 +48,13 @@ function SectionActionForm({
 export function SectionList({
   sections,
   canWrite,
+  templateKey,
+  templateVariantKey,
 }: {
   sections: SectionRow[];
   canWrite: boolean;
+  templateKey?: string | null;
+  templateVariantKey?: string | null;
 }) {
   if (sections.length === 0) {
     return (
@@ -155,7 +159,13 @@ export function SectionList({
               </div>
             ) : null}
           </CardHeader>
-          {canWrite ? <SectionForm section={section} /> : null}
+          {canWrite ? (
+            <SectionForm
+              section={section}
+              templateKey={templateKey}
+              templateVariantKey={templateVariantKey}
+            />
+          ) : null}
         </Card>
       ))}
     </Stack>

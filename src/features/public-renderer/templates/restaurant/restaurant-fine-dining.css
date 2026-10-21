@@ -1,0 +1,395 @@
+.restaurant-fine-hero {
+  position: relative;
+  min-height: clamp(620px, 84vh, 850px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #111;
+  color: #fff;
+}
+.restaurant-fine-hero__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(8, 8, 8, 0.88), rgba(8, 8, 8, 0.25) 70%),
+    linear-gradient(0deg, rgba(8, 8, 8, 0.72), transparent 55%);
+}
+.restaurant-fine-hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1280px);
+  padding: 140px 24px 72px;
+  margin: auto;
+}
+.restaurant-fine-hero h1 {
+  max-width: 860px;
+  margin-top: 24px;
+  font-size: clamp(3.3rem, 7.8vw, 7.8rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-weight: 800;
+}
+.restaurant-fine-hero__lead {
+  max-width: 570px;
+  margin-top: 28px;
+  color: #d4d4d0;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.7;
+}
+.restaurant-fine-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e6c77a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.restaurant-fine-kicker span {
+  width: 30px;
+  height: 1px;
+  background: currentColor;
+}
+.restaurant-fine-kicker--dark {
+  color: #876b2e;
+}
+.restaurant-fine-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+.restaurant-fine-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 21px;
+  background: #e6c77a;
+  color: #121212;
+  font-size: 13px;
+  font-weight: 800;
+}
+.restaurant-fine-button svg {
+  width: 17px;
+}
+.restaurant-fine-link {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+.restaurant-fine-hero__note {
+  max-width: 360px;
+  margin-top: 58px;
+  padding-top: 15px;
+  border-top: 1px solid #ffffff3b;
+  color: #c8c8c3;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.restaurant-fine-paper {
+  background: #f4f0e7;
+}
+.restaurant-fine-ink {
+  background: #111;
+  color: #fff;
+}
+.restaurant-fine-heading {
+  max-width: 650px;
+}
+.restaurant-fine-menu {
+  max-width: 850px;
+  margin: 60px 0 0 auto;
+  border-top: 1px solid #d5cdbf;
+}
+.restaurant-fine-menu article {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  padding: 26px 0;
+  border-bottom: 1px solid #d5cdbf;
+}
+.restaurant-fine-menu article > span,
+.restaurant-fine-menu article > div > p {
+  color: #876b2e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.restaurant-fine-menu h3 {
+  margin-top: 8px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+.restaurant-fine-menu small {
+  display: block;
+  margin-top: 7px;
+  color: #676762;
+  line-height: 1.6;
+}
+.restaurant-fine-menu strong {
+  font-size: 13px;
+  font-weight: 800;
+}
+.restaurant-fine-dishes {
+  display: grid;
+  gap: 70px;
+  margin-top: 62px;
+}
+.restaurant-fine-dish {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 44px;
+  align-items: end;
+}
+.restaurant-fine-dish--reverse {
+  grid-template-columns: 0.75fr 1.25fr;
+}
+.restaurant-fine-dish--reverse .restaurant-fine-image {
+  order: 2;
+}
+.restaurant-fine-dish--reverse > div:last-child {
+  order: 1;
+}
+.restaurant-fine-image {
+  position: relative;
+  min-height: 290px;
+  aspect-ratio: 1.35;
+  overflow: hidden;
+  background: #2a2a25;
+}
+.restaurant-fine-dish h3 {
+  margin-top: 14px;
+  font-size: clamp(1.5rem, 2.7vw, 2.8rem);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.restaurant-fine-dish p {
+  margin-top: 14px;
+  color: #bdbdb5;
+  line-height: 1.7;
+}
+.restaurant-fine-dish > div:last-child > span {
+  color: #e6c77a;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.restaurant-fine-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 62px;
+}
+.restaurant-fine-chapters article {
+  padding-top: 18px;
+  border-top: 1px solid #d5cdbf;
+}
+.restaurant-fine-chapters span {
+  color: #876b2e;
+  font-size: 12px;
+  font-weight: 800;
+}
+.restaurant-fine-chapters h3 {
+  margin-top: 24px;
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+.restaurant-fine-chapters p {
+  margin-top: 10px;
+  color: #676762;
+  line-height: 1.65;
+}
+.restaurant-fine-chef {
+  background: #191b19;
+  color: #fff;
+}
+.restaurant-fine-chef-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 55px;
+  align-items: center;
+}
+.restaurant-fine-chef h2 {
+  max-width: 590px;
+  margin-top: 22px;
+  font-size: clamp(2.3rem, 4.5vw, 5rem);
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+.restaurant-fine-chef
+  p:not(.restaurant-fine-kicker):not(.restaurant-fine-chef-name) {
+  max-width: 500px;
+  margin-top: 25px;
+  color: #c3c3bd;
+  line-height: 1.75;
+}
+.restaurant-fine-chef-name {
+  margin-top: 35px;
+  color: #e6c77a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.restaurant-fine-quotes {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 26px;
+  margin-top: 58px;
+}
+.restaurant-fine-quotes blockquote {
+  padding: 28px;
+  border-top: 2px solid #876b2e;
+  color: #2d302d;
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+.restaurant-fine-quotes blockquote:first-child {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+.restaurant-fine-quotes cite {
+  display: block;
+  margin-top: 25px;
+  color: #876b2e;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.restaurant-fine-gallery {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 18px;
+  margin-top: 55px;
+}
+.restaurant-fine-gallery .restaurant-fine-image {
+  min-height: 220px;
+  aspect-ratio: 1.2;
+}
+.restaurant-fine-gallery .restaurant-fine-image:nth-child(2) {
+  margin-top: 50px;
+}
+.restaurant-fine-gallery__wide {
+  grid-row: span 2;
+  aspect-ratio: 0.9 !important;
+  min-height: 500px !important;
+}
+.restaurant-fine-experience [data-fine-reveal] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .restaurant-fine-hero__content {
+    animation: fineHeroIn 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .restaurant-fine-hero > img {
+    animation: fineHeroImageIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .restaurant-fine-experience [data-fine-reveal] {
+      animation: fineReveal 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 25%;
+    }
+  }
+}
+@keyframes fineReveal {
+  from {
+    opacity: 0.12;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fineHeroIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fineHeroImageIn {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .restaurant-fine-hero > img {
+      animation:
+        fineHeroImageIn 1300ms cubic-bezier(0.22, 1, 0.36, 1) both,
+        fineHeroParallax 1s linear both;
+      animation-timeline: auto, scroll(root block);
+      animation-range: normal, 0 80vh;
+    }
+  }
+}
+@keyframes fineHeroParallax {
+  to {
+    translate: 0 2%;
+    scale: 1.035;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .restaurant-fine-experience [data-fine-reveal] {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 767px) {
+  .restaurant-fine-hero__content {
+    padding: 130px 20px 52px;
+  }
+  .restaurant-fine-hero h1 {
+    font-size: 3.4rem;
+  }
+  .restaurant-fine-menu article {
+    grid-template-columns: 38px 1fr;
+  }
+  .restaurant-fine-menu strong {
+    grid-column: 2;
+  }
+  .restaurant-fine-dish,
+  .restaurant-fine-dish--reverse,
+  .restaurant-fine-chef-grid {
+    display: block;
+  }
+  .restaurant-fine-dish--reverse .restaurant-fine-image,
+  .restaurant-fine-dish--reverse > div:last-child {
+    order: initial;
+  }
+  .restaurant-fine-dish > div:last-child {
+    margin-top: 22px;
+  }
+  .restaurant-fine-chapters,
+  .restaurant-fine-quotes,
+  .restaurant-fine-gallery {
+    grid-template-columns: 1fr;
+  }
+  .restaurant-fine-gallery .restaurant-fine-image,
+  .restaurant-fine-gallery__wide {
+    min-height: 280px !important;
+    aspect-ratio: 1.25 !important;
+    margin-top: 0 !important;
+  }
+}

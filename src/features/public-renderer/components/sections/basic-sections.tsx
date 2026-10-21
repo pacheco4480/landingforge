@@ -1,7 +1,13 @@
 import Image from "next/image";
 
 import type { PublicSectionProps } from "@/features/public-renderer/types";
-import { itemText, items, text } from "@/features/public-renderer/components/section-utils";
+import {
+  itemText,
+  items,
+  text,
+} from "@/features/public-renderer/components/section-utils";
+import { resolvePresentation } from "@/features/public-renderer/section-presentation";
+import { FaqAccordion } from "@/features/public-renderer/components/sections/faq-accordion";
 
 export function HeroSection({ section, context }: PublicSectionProps) {
   const c = section.content;
@@ -9,14 +15,18 @@ export function HeroSection({ section, context }: PublicSectionProps) {
     <PublicBand className="pt-16 sm:pt-24">
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
         <div>
-          <p className="text-sm font-semibold uppercase text-[var(--public-primary)]">
+          <p className="text-sm font-semibold text-[var(--public-primary)] uppercase">
             {text(c, "eyebrow", context.site.businessName)}
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">
+          <h1 className="mt-4 max-w-4xl text-4xl leading-tight font-bold sm:text-6xl">
             {text(c, "headline", text(c, "title", context.page.title))}
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--public-muted)]">
-            {text(c, "subheadline", text(c, "description", context.site.businessType))}
+            {text(
+              c,
+              "subheadline",
+              text(c, "description", context.site.businessType),
+            )}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a className="public-button-primary" href="#contact">
@@ -44,35 +54,46 @@ export function CardsSection({ section }: PublicSectionProps) {
         description={text(section.content, "text")}
       />
       <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {(list.length ? list : [{ title: section.name, description: "A equipa partilha mais detalhes após o primeiro contacto." }]).map((item, index) => {
+        {(list.length
+          ? list
+          : [
+              {
+                title: section.name,
+                description:
+                  "A equipa partilha mais detalhes após o primeiro contacto.",
+              },
+            ]
+        ).map((item, index) => {
           const image = itemText(item, "image");
           const imagePosition = itemText(item, "imagePosition", "center");
           const title = itemText(item, "title", itemText(item, "name", "Item"));
 
           return (
-          <article className="public-card overflow-hidden" key={index}>
-            {image ? (
-              <div className="-mx-6 -mt-6 mb-5">
-                <div className="relative aspect-[16/10] overflow-hidden bg-[var(--public-surface)]">
-                  <Image
-                    alt={itemText(item, "imageAlt", title)}
-                    className="object-cover"
-                    fill
-                    sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
-                    src={image}
-                    style={{ objectPosition: imagePosition }}
-                    unoptimized
-                  />
+            <article className="public-card overflow-hidden" key={index}>
+              {image ? (
+                <div className="-mx-6 -mt-6 mb-5">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-[var(--public-surface)]">
+                    <Image
+                      alt={itemText(item, "imageAlt", title)}
+                      className="object-cover"
+                      fill
+                      sizes="(min-width: 1280px) 30vw, (min-width: 768px) 45vw, 100vw"
+                      src={image}
+                      style={{ objectPosition: imagePosition }}
+                      unoptimized
+                    />
+                  </div>
                 </div>
-              </div>
-            ) : null}
-            <h3 className="text-lg font-semibold">
-              {title}
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-[var(--public-muted)]">
-              {itemText(item, "description", itemText(item, "text", itemText(item, "quote", "")))}
-            </p>
-          </article>
+              ) : null}
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-[var(--public-muted)]">
+                {itemText(
+                  item,
+                  "description",
+                  itemText(item, "text", itemText(item, "quote", "")),
+                )}
+              </p>
+            </article>
           );
         })}
       </div>
@@ -80,23 +101,58 @@ export function CardsSection({ section }: PublicSectionProps) {
   );
 }
 
-export function FaqSection({ section }: PublicSectionProps) {
+export function FaqSection({ section, context }: PublicSectionProps) {
   const list = items(section.content);
+  const variant = resolvePresentation(
+    section.sectionType,
+    section.settings,
+    context.page.template?.key,
+    context.page.templateVariant?.key,
+  );
+  const faqItems = list.map((item) => ({
+    question: itemText(item, "question", "Pergunta"),
+    answer: itemText(item, "answer", "Resposta"),
+  }));
+
   return (
-    <PublicBand id="faq">
+    <PublicBand id={section.sectionKey || "faq"}>
       <SectionHeading title={text(section.content, "title", section.name)} />
-      <div className="mt-8 grid gap-3 lg:grid-cols-2">
-        {list.map((item, index) => (
-          <details className="public-card" key={index}>
-            <summary className="cursor-pointer font-semibold">
-              {itemText(item, "question", "Pergunta")}
-            </summary>
-            <p className="mt-3 text-sm leading-6 text-[var(--public-muted)]">
-              {itemText(item, "answer", "Resposta")}
-            </p>
-          </details>
-        ))}
-      </div>
+      {variant === "accordion" ? (
+        <FaqAccordion items={faqItems} sectionId={section.id} />
+      ) : variant === "editorial" ? (
+        <div className="mt-8 max-w-4xl divide-y divide-[var(--public-border)] border-y border-[var(--public-border)]">
+          {faqItems.map((item, index) => (
+            <article
+              className="grid gap-2 py-6 sm:grid-cols-[4rem_1fr] sm:gap-6"
+              key={`${section.id}-${index}`}
+            >
+              <span
+                aria-hidden="true"
+                className="font-mono text-sm text-[var(--public-primary)]"
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold">{item.question}</h3>
+                <p className="mt-2 leading-7 text-[var(--public-muted)]">
+                  {item.answer}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {faqItems.map((item, index) => (
+            <article className="public-card" key={`${section.id}-${index}`}>
+              <h3 className="text-lg font-semibold">{item.question}</h3>
+              <p className="mt-3 leading-7 text-[var(--public-muted)]">
+                {item.answer}
+              </p>
+            </article>
+          ))}
+        </div>
+      )}
     </PublicBand>
   );
 }
@@ -110,16 +166,18 @@ export function StatsSection({ section }: PublicSectionProps) {
         description={text(section.content, "text")}
       />
       <div className="grid gap-4 md:grid-cols-4">
-        {(list.length ? list : [{ value: "100%", label: section.name }]).map((item, index) => (
-          <div className="public-card text-center" key={index}>
-            <p className="text-3xl font-bold text-[var(--public-primary)]">
-              {itemText(item, "value", "0")}
-            </p>
-            <p className="mt-2 text-sm text-[var(--public-muted)]">
-              {itemText(item, "label", itemText(item, "title", "Metric"))}
-            </p>
-          </div>
-        ))}
+        {(list.length ? list : [{ value: "100%", label: section.name }]).map(
+          (item, index) => (
+            <div className="public-card text-center" key={index}>
+              <p className="text-3xl font-bold text-[var(--public-primary)]">
+                {itemText(item, "value", "0")}
+              </p>
+              <p className="mt-2 text-sm text-[var(--public-muted)]">
+                {itemText(item, "label", itemText(item, "title", "Metric"))}
+              </p>
+            </div>
+          ),
+        )}
       </div>
     </PublicBand>
   );
@@ -133,9 +191,16 @@ export function CtaSection({ section }: PublicSectionProps) {
           {text(section.content, "headline", section.name)}
         </h2>
         <p className="mt-3 max-w-2xl text-white/80">
-        {text(section.content, "text", "Dê o próximo passo com uma experiência clara, rápida e focada no contacto certo.")}
+          {text(
+            section.content,
+            "text",
+            "Dê o próximo passo com uma experiência clara, rápida e focada no contacto certo.",
+          )}
         </p>
-        <a className="mt-6 inline-flex rounded-md bg-white px-5 py-3 text-sm font-semibold text-[var(--public-primary)]" href="#contact">
+        <a
+          className="mt-6 inline-flex rounded-md bg-white px-5 py-3 text-sm font-semibold text-[var(--public-primary)]"
+          href="#contact"
+        >
           {text(section.content, "ctaPrimary", "Contactar")}
         </a>
       </div>
@@ -148,7 +213,11 @@ export function MapSection({ section }: PublicSectionProps) {
     <PublicBand id="map">
       <SectionHeading title={text(section.content, "title", section.name)} />
       <div className="mt-6 min-h-64 rounded-md border border-dashed border-slate-300 bg-[var(--public-surface)] p-6 text-[var(--public-muted)]">
-        {text(section.content, "address", "Morada partilhada após confirmação do contacto.")}
+        {text(
+          section.content,
+          "address",
+          "Morada partilhada após confirmação do contacto.",
+        )}
       </div>
     </PublicBand>
   );
@@ -221,9 +290,11 @@ export function SectionHeading({
 }) {
   return (
     <div className="max-w-2xl">
-      <h2 className="text-3xl font-bold leading-tight">{title}</h2>
+      <h2 className="text-3xl leading-tight font-bold">{title}</h2>
       {description ? (
-        <p className={`mt-3 leading-7 ${descriptionClassName ?? "text-[var(--public-muted)]"}`}>
+        <p
+          className={`mt-3 leading-7 ${descriptionClassName ?? "text-[var(--public-muted)]"}`}
+        >
           {description}
         </p>
       ) : null}

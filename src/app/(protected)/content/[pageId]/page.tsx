@@ -41,7 +41,12 @@ export default async function ContentEditorPage({
         <DemoSettingsPanel page={page} templates={templates} themes={themes} />
       ) : null}
       {canWrite ? <CreateSectionForm pageId={page.id} /> : null}
-      <SectionList canWrite={canWrite} sections={page.sections} />
+      <SectionList
+        canWrite={canWrite}
+        sections={page.sections}
+        templateKey={page.template?.key}
+        templateVariantKey={page.templateVariant?.key}
+      />
       <ContentPreview sections={page.sections} />
       <ContentHistoryFoundation />
     </div>

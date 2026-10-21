@@ -6,6 +6,11 @@ import {
   updateSectionAction,
 } from "@/features/content/actions/section.actions";
 import { sectionTypeOptions } from "@/features/content/section-types";
+import { SectionPresentationControl } from "@/features/content/components/section-presentation-control";
+import {
+  presentationOptions,
+  resolvePresentation,
+} from "@/features/public-renderer/section-presentation";
 
 type SectionValue = {
   id: string;
@@ -53,7 +58,27 @@ export function CreateSectionForm({ pageId }: { pageId: string }) {
   );
 }
 
-export function SectionForm({ section }: { section: SectionValue }) {
+export function SectionForm({
+  section,
+  templateKey,
+  templateVariantKey,
+}: {
+  section: SectionValue;
+  templateKey?: string | null;
+  templateVariantKey?: string | null;
+}) {
+  const options = presentationOptions(
+    section.sectionType,
+    templateKey,
+    templateVariantKey,
+  );
+  const currentPresentation = resolvePresentation(
+    section.sectionType,
+    section.settings,
+    templateKey,
+    templateVariantKey,
+  );
+
   return (
     <form action={updateSectionAction}>
       <input name="id" type="hidden" value={section.id} />
@@ -93,6 +118,35 @@ export function SectionForm({ section }: { section: SectionValue }) {
             defaultValue={toJsonText(section.content)}
             required
           />
+        </Field>
+        <Field>
+          {options.length ? (
+            <>
+              <SectionPresentationControl
+                defaultValue={currentPresentation}
+                id={`section-presentation-${section.id}`}
+                options={options}
+                selectedValue={
+                  section.settings &&
+                  typeof section.settings === "object" &&
+                  !Array.isArray(section.settings) &&
+                  typeof (section.settings as Record<string, unknown>)
+                    .presentationVariant === "string" &&
+                  options.some(
+                    (option) =>
+                      option.value ===
+                      (section.settings as Record<string, unknown>)
+                        .presentationVariant,
+                  )
+                    ? String(
+                        (section.settings as Record<string, unknown>)
+                          .presentationVariant,
+                      )
+                    : "__default"
+                }
+              />
+            </>
+          ) : null}
         </Field>
         <Field>
           <Label htmlFor={`section-settings-${section.id}`}>

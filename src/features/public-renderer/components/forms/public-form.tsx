@@ -25,6 +25,7 @@ export function PublicForm({
   gdprConsentRequired,
   gdprConsentVersion,
   turnstileSiteKey,
+  className,
 }: {
   formId: string;
   pageId: string;
@@ -33,6 +34,7 @@ export function PublicForm({
   gdprConsentRequired: boolean;
   gdprConsentVersion: string;
   turnstileSiteKey?: string | null;
+  className?: string;
 }) {
   const [status, setStatus] = React.useState<"idle" | "success" | "error">(
     "idle",
@@ -52,7 +54,7 @@ export function PublicForm({
   return (
     <form
       aria-describedby="public-form-status"
-      className="grid gap-4"
+      className={`grid gap-4 ${className ?? ""}`}
       noValidate
       onChange={(event) => {
         const target = event.target;
@@ -103,7 +105,11 @@ export function PublicForm({
     >
       <input name="formId" type="hidden" value={formId} />
       <input name="pageId" type="hidden" value={pageId} />
-      <input name="gdprConsentVersion" type="hidden" value={gdprConsentVersion} />
+      <input
+        name="gdprConsentVersion"
+        type="hidden"
+        value={gdprConsentVersion}
+      />
       <div className="hidden" aria-hidden="true">
         <label>
           Website
@@ -128,7 +134,10 @@ export function PublicForm({
           />
           <span>
             {gdprConsentLabel}{" "}
-            <Link className="font-semibold underline" href="/politica-privacidade">
+            <Link
+              className="font-semibold underline"
+              href="/politica-privacidade"
+            >
               Politica de Privacidade
             </Link>
           </span>
@@ -250,7 +259,11 @@ function PublicField({ error, field }: { error?: string; field: FormField }) {
         </p>
       ) : null}
       {error ? (
-        <p className="text-sm font-medium text-red-600" id={errorId} role="alert">
+        <p
+          className="text-sm font-medium text-red-600"
+          id={errorId}
+          role="alert"
+        >
           {error}
         </p>
       ) : null}

@@ -14,6 +14,7 @@ import {
   updateSection,
 } from "@/features/content/services/section.service";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { normalizePresentationSettings } from "@/features/public-renderer/section-presentation";
 
 function formValue(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -53,14 +54,22 @@ export async function createSectionAction(formData: FormData) {
 
 export async function updateSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
+  const sectionType = formValue(formData, "sectionType");
+  const settings = normalizePresentationSettings(
+    parseJsonObject(formValue(formData, "settings") || "{}"),
+    sectionType,
+    formValue(formData, "presentationVariant"),
+    page.template?.key,
+    page.templateVariant?.key,
+  );
   await updateSection(
     {
       id: formValue(formData, "id"),
       pageId,
       name: formValue(formData, "name"),
-      sectionType: formValue(formData, "sectionType"),
+      sectionType,
       content: parseJsonObject(formValue(formData, "content")),
-      settings: parseJsonObject(formValue(formData, "settings") || "{}"),
+      settings,
     },
     user.id,
   );

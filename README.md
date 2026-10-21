@@ -57,13 +57,13 @@ Agencies, freelancers and businesses that deliver landing pages for clients face
 <td width="50%">
 
 ### 🎨 Public Renderer
-Modular rendering engine that converts CMS content into polished, responsive landing pages with theme-aware styling and structured data.
+Modular rendering engine that converts CMS content into polished, responsive landing pages with template-specific layouts, configurable presentation patterns, theme-aware styling and structured data.
 
 ### 📋 Focused CMS
 Purpose-built content management for landing pages — pages, sections, media, forms, leads, SEO, branding and analytics. No bloat.
 
 ### 🏗️ Template System
-Industry-specific templates organized by vertical and visual positioning. Each industry defines reusable foundations, section types, themes and demo content.
+Industry-specific templates organized by vertical and visual positioning. Each template can use its own brand-led header, footer, FAQ/contact presentation and restrained motion while keeping page content CMS-editable.
 
 ### 📊 Lead Management
 Full lead capture pipeline — form submissions, lead dashboard, export workflows, consent tracking and audit logging.
@@ -91,6 +91,7 @@ Transactional email delivery with Resend, lead notifications, digest scheduling 
 
 - ⚡ Performance-first architecture (Lighthouse > 90 target)
 - ♿ Accessibility-aware implementation
+- 🎞️ Lightweight, template-specific motion with reduced-motion support
 - 📱 Mobile-first responsive design
 - 🖼️ Media management with Supabase Storage
 - 🛡️ Monitoring & error tracking with Sentry
@@ -108,16 +109,16 @@ Templates are organized by **industry** and **visual positioning**. Each industr
 | 🏠 Real Estate | Local Agency · Premium | ✅ Implemented |
 | 🏥 Clinic | Modern · Luxury | ✅ Implemented |
 | 🍽️ Restaurant | Fine Dining · Playful | ✅ Implemented |
-| 🧁 Bakery | — | 🔜 Planned |
-| 💪 Gym | — | 🔜 Planned |
+| 🧁 Bakery | Playful | ✅ Implemented |
+| 💪 Gym | Modern | ✅ Implemented |
 | 🏗️ Construction | — | 🔜 Planned |
 | 💄 Beauty | — | 🔜 Planned |
 
 Each template includes:
-- Reusable section definitions
-- Industry-specific content structure
-- Theme and branding presets
-- Fictional demo content for preview
+- Reusable section definitions and industry-specific content structure
+- A distinct visual direction, with tailored public header/footer and section presentation where implemented
+- Theme and branding presets, plus fictional demo content for preview
+- Responsive layouts and lightweight motion designed to respect reduced-motion preferences
 
 ### 🖼️ Template Previews
 
@@ -325,12 +326,12 @@ Curated public documentation is available in [`public-docs/`](./public-docs/):
 - [x] Performance & accessibility review
 - [x] MVP audit & QA
 
-**Industry Templates** 🔄 (3 of 7 Complete)
+**Industry Templates** 🔄 (5 of 7 Industries Started)
 - [x] Real Estate — Local Agency · Premium
 - [x] Clinic & Healthcare — Modern · Luxury
 - [x] Restaurant — Fine Dining · Playful
-- [ ] Bakery — Warm · Playful
-- [ ] Gym & Fitness — Performance · Modern
+- [x] Bakery — Playful (Warm variant planned)
+- [x] Gym & Fitness — Modern (Performance variant planned)
 - [ ] Construction — Reliable · Premium
 - [ ] Beauty & Wellness — Elegant · Playful
 
