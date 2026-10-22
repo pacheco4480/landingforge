@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">LandingForge data model groups</title>
+  <desc id="desc">Conceptual groups of relational models persisted by Prisma in PostgreSQL. This is not a complete entity relationship diagram.</desc>
+  <defs><style>text{font-family:Inter,Arial,sans-serif;fill:#152820}.title{font-size:38px;font-weight:700}.sub{font-size:17px;fill:#53665c}.head{font-size:21px;font-weight:700}.body{font-size:16px;fill:#34483d}.small{font-size:14px;fill:#53665c}.box{fill:#fff;stroke:#bfcfc4;stroke-width:2}.a{fill:#e4f1e9;stroke:#91b8a0;stroke-width:2}.b{fill:#f8f0d9;stroke:#d5bd77;stroke-width:2}.db{fill:#183d2b;stroke:#183d2b;stroke-width:2}.dbtext{font-size:22px;font-weight:700;fill:#fff}</style></defs>
+  <rect width="1440" height="860" rx="28" fill="#f5f7f4"/>
+  <text x="72" y="82" class="title">Relational data, grouped by product domain</text>
+  <text x="74" y="117" class="sub">Conceptual model · simplified from the Prisma schema</text>
+  <rect x="72" y="190" width="340" height="170" rx="18" class="a"/><text x="106" y="235" class="head">Access &amp; settings</text><text x="106" y="278" class="body">Users · Roles · Permissions</text><text x="106" y="310" class="body">Site and security settings</text>
+  <rect x="454" y="190" width="340" height="170" rx="18" class="box"/><text x="488" y="235" class="head">Template system</text><text x="488" y="278" class="body">Industries · Templates · Variants</text><text x="488" y="310" class="body">Themes · Section definitions</text>
+  <rect x="836" y="190" width="340" height="170" rx="18" class="b"/><text x="870" y="235" class="head">Landing pages</text><text x="870" y="278" class="body">Pages · Sections · SEO settings</text><text x="870" y="310" class="body">Published page content</text>
+  <rect x="263" y="414" width="340" height="170" rx="18" class="box"/><text x="297" y="459" class="head">Lead capture</text><text x="297" y="502" class="body">Forms · Fields · Submissions</text><text x="297" y="534" class="body">Leads · Consent · Notes</text>
+  <rect x="645" y="414" width="340" height="170" rx="18" class="a"/><text x="679" y="459" class="head">Media &amp; portfolio</text><text x="679" y="502" class="body">Media assets and folders</text><text x="679" y="534" class="body">Screenshot metadata and visibility</text>
+  <rect x="1027" y="414" width="340" height="170" rx="18" class="box"/><text x="1061" y="459" class="head">Operations</text><text x="1061" y="502" class="body">Audit · Notifications · Email</text><text x="1061" y="534" class="body">Security · Backups · Analytics</text>
+  <path d="M420 660h600" stroke="#62736b" stroke-width="3"/><path d="M720 584v76" stroke="#62736b" stroke-width="3"/>
+  <rect x="484" y="682" width="472" height="100" rx="18" class="db"/><text x="572" y="744" class="dbtext">Prisma ORM → PostgreSQL</text>
+  <text x="72" y="825" class="small">Illustrative domain groups only. Consult the current schema for exact fields, relations and constraints.</text>
+</svg>

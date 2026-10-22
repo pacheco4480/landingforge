@@ -8,6 +8,7 @@ import {
   PageType,
 } from "../../src/generated/prisma/client";
 import type { PrismaClient } from "../../src/generated/prisma/client";
+import { getPublicSiteUrl } from "../../src/config/deployment";
 
 const templates = [
   ["universal", "Universal Base"],
@@ -370,7 +371,7 @@ export async function seedContent(prisma: PrismaClient) {
           pageId: demoPage.id,
           metaTitle: `${template.name} ${variantName} Demo Landing Page`,
           metaDescription: `${template.name} ${variantName} demo landing page prepared with editable content, structured sections and SEO-ready metadata.`,
-          canonicalUrl: `http://localhost:3000/${demoKey}`,
+          canonicalUrl: `${getPublicSiteUrl()}/${demoKey}`,
           robotsIndex: false,
           robotsFollow: false,
           twitterCardType: "summary_large_image",
@@ -558,17 +559,17 @@ async function seedClinicDemos(prisma: PrismaClient) {
         subheadline:
           "Uma clínica urbana que combina triagem humana, explicações claras e marcação simples para pacientes que procuram tempo, respeito e privacidade.",
         ctaPrimary: "Agendar consulta",
-        ctaSecondary: "Conhecer areas de cuidado",
+        ctaSecondary: "Conhecer áreas de cuidado",
         proofLabel: "Resposta em linguagem clara",
         proofText:
-          "O primeiro contacto recolhe apenas o essencial. A equipa confirma disponibilidade e explica o próximo passo sem pedir histórico médico detalhado.",
+          "O primeiro contacto recolhe apenas o essencial. A equipa confirma disponibilidade e explica o próximo passo sem pedir informação clínica detalhada.",
         heroImage:
           "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
         heroImageAlt: "Clínica moderna luminosa com profissional de saúde a acompanhar paciente",
         stats: [
-          { label: "Pedidos respondidos", value: "< 24h" },
-          { label: "Areas de cuidado", value: "8" },
-          { label: "Reviews verificadas", value: "4.8/5" },
+          { label: "Marcação", value: "Pedido simples" },
+          { label: "Cuidados", value: "Acompanhamento" },
+          { label: "Privacidade", value: "Desde o primeiro contacto" },
         ],
         brandKit: {
           audience: "Pacientes urbanos que querem marcar rápido sem perder cuidado humano.",
@@ -578,7 +579,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
             "Privacy-first form detail",
           ],
           corePromise: "Saúde privada simples, clara e humana antes da primeira consulta.",
-          personality: "Calma, moderna, proxima, transparente.",
+          personality: "Calma, moderna, próxima e transparente.",
           photographyStyle: "Clínica luminosa, retratos naturais, detalhes de cuidado humano.",
           tagline: "Saúde simples, humana e bem acompanhada.",
           typography: "Sans-serif limpa, headings fortes, microcopy muito legivel.",
@@ -626,9 +627,9 @@ async function seedClinicDemos(prisma: PrismaClient) {
           "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80",
         heroImageAlt: "Ambiente premium de clínica privada com consulta discreta e luminosa",
         stats: [
-          { label: "Consulta inicial", value: "75m" },
-          { label: "Especialistas senior", value: "7" },
-          { label: "Acesso privado", value: "24h" },
+          { label: "Consulta", value: "Tempo protegido" },
+          { label: "Contacto", value: "Discreto" },
+          { label: "Plano", value: "Acompanhamento" },
         ],
         brandKit: {
           audience: "Pacientes premium que valorizam discrição, tempo e acompanhamento sénior.",
@@ -668,8 +669,8 @@ async function seedClinicDemos(prisma: PrismaClient) {
     {
       category: "Seguimento",
       description:
-        "Follow-up para quem precisa de continuidade, revisão, exames ou acompanhamento depois da primeira consulta.",
-      duration: "Follow-up",
+        "Acompanhamento para quem precisa de continuidade, revisão, exames ou orientação depois da primeira consulta.",
+      duration: "Acompanhamento",
       name: "Acompanhamento próximo",
       priceLabel: "Por consulta",
     },
@@ -677,7 +678,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
       category: "Contacto rápido",
       description:
         "Pedido simples para quem quer falar com a equipa antes de marcar e perceber o acompanhamento indicado.",
-      duration: "Resposta < 24h",
+      duration: "Mediante contacto",
       name: "Pedido de orientação",
       priceLabel: "Sem custo inicial",
     },
@@ -687,10 +688,10 @@ async function seedClinicDemos(prisma: PrismaClient) {
     {
       bio: "Coordena consultas de avaliação, comunicação com pacientes e definição de planos seguros.",
       credentials: "Ordem profissional ativa, formação contínua e experiência em contexto privado.",
-      availability: "Consultas presenciais e follow-up",
+      availability: "Consultas presenciais e acompanhamento",
       image:
         "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=700&q=80",
-      imageAlt: "Medica senior em ambiente clinico",
+      imageAlt: "Médica sénior em ambiente clínico",
       languages: "PT / EN",
       name: "Dra. Leonor Maia",
       role: "Diretora Clínica",
@@ -705,7 +706,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
       imageAlt: "Médico especialista com bata branca",
       imagePosition: "center",
       languages: "PT / ES",
-      name: "Dr. Vicente Araujo",
+      name: "Dr. Vicente Araújo",
       role: "Especialista",
       specialty: "Consulta e acompanhamento",
     },
@@ -725,7 +726,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
       title: "Experiência moderna",
     },
     {
-      description: "Conteudo factual, sem promessas exageradas, claims absolutos ou linguagem alarmista.",
+      description: "Conteúdo factual, sem promessas exageradas, afirmações absolutas ou linguagem alarmista.",
       title: "Informação responsável",
     },
   ] as const;
@@ -744,7 +745,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
       title: "Consulta",
     },
     {
-      description: "O paciente recebe indicacao de seguimento, exames ou tratamento quando aplicavel.",
+      description: "O paciente recebe indicação de acompanhamento, exames ou tratamento quando aplicável.",
       title: "Plano claro",
     },
   ] as const;
@@ -782,7 +783,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
               description:
                 "Coordenação privada para pacientes que precisam de continuidade, seguimento ou articulação com outros especialistas.",
               duration: "Acesso reservado",
-              name: "Concierge clinico",
+              name: "Acompanhamento clínico privado",
               priceLabel: "Por plano",
             },
           ]
@@ -794,17 +795,17 @@ async function seedClinicDemos(prisma: PrismaClient) {
               availability: "Consultas privadas e plano anual",
               bio: "Coordena percursos de medicina privada, prevenção e acompanhamento para pacientes que exigem tempo protegido e comunicação discreta.",
               credentials:
-                "Especialista senior, experiência em medicina privada e acompanhamento personalizado.",
+                "Especialista sénior, experiência em medicina privada e acompanhamento personalizado.",
               image:
                 "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=700&q=80",
               imageAlt: "Médica sénior de clínica privada",
               languages: "PT / EN / FR",
               name: "Dra. Matilde Vilar",
-              role: "Diretora Medica",
+              role: "Diretora Médica",
               specialty: "Medicina privada",
             },
             {
-              availability: "Longevidade, estética médica e follow-up",
+              availability: "Longevidade, estética médica e acompanhamento",
               bio: "Desenha planos discretos para bem-estar, tratamentos progressivos e decisões clínicas com expectativas realistas.",
               credentials:
                 "Formação avançada em longevidade, estética médica e comunicação clínica privada.",
@@ -813,7 +814,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
               imageAlt: "Especialista de clínica premium em consulta",
               languages: "PT / EN",
               name: "Dr. Henrique Salgado",
-              role: "Especialista Senior",
+              role: "Especialista Sénior",
               specialty: "Longevidade e estética médica",
             },
           ]
@@ -888,7 +889,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         themeId: theme.id,
         isDemo: true,
         demoStatus: DemoStatus.READY,
-        portfolioVisible: config.variantKey !== "corporate",
+        portfolioVisible: false,
         portfolioOrder: config.portfolioOrder,
         status: PageStatus.PUBLISHED,
         publishedAt: new Date(),
@@ -901,7 +902,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         isDemo: true,
         demoKey: config.demoKey,
         demoStatus: DemoStatus.READY,
-        portfolioVisible: config.variantKey !== "corporate",
+        portfolioVisible: false,
         portfolioOrder: config.portfolioOrder,
         templateId: template.id,
         templateVariantId: variant.id,
@@ -913,7 +914,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
     await prisma.seoSetting.upsert({
       where: { pageId: page.id },
       update: {
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         metaDescription: config.seoDescription,
         metaTitle: config.seoTitle,
         robotsFollow: false,
@@ -923,12 +924,12 @@ async function seedClinicDemos(prisma: PrismaClient) {
           "@type": "MedicalClinic",
           medicalSpecialty: ["Consultation", "PrivateHealthcare"],
           name: config.title,
-          url: `http://localhost:3000/${config.demoKey}`,
+          url: `${getPublicSiteUrl()}/${config.demoKey}`,
         },
       },
       create: {
         pageId: page.id,
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         metaDescription: config.seoDescription,
         metaTitle: config.seoTitle,
         robotsFollow: false,
@@ -939,7 +940,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
           "@type": "MedicalClinic",
           medicalSpecialty: ["Consultation", "PrivateHealthcare"],
           name: config.title,
-          url: `http://localhost:3000/${config.demoKey}`,
+          url: `${getPublicSiteUrl()}/${config.demoKey}`,
         },
       },
     });
@@ -961,10 +962,10 @@ async function seedClinicDemos(prisma: PrismaClient) {
                   },
                   {
                     title: "Consulta prolongada",
-                    description: "Tempo para contexto, prioridades, perguntas e decisao acompanhada por especialista senior.",
+                    description: "Tempo para contexto, prioridades e perguntas, com acompanhamento de um especialista sénior.",
                   },
                   {
-                    title: "Follow-up reservado",
+                    title: "Acompanhamento reservado",
                     description: "Próximos passos documentados, canais apropriados e acompanhamento sem pressão comercial.",
                   },
                 ],
@@ -982,9 +983,9 @@ async function seedClinicDemos(prisma: PrismaClient) {
         {
           title:
             config.variantKey === "luxury"
-              ? "Consultas signature para decisoes cuidadas"
+              ? "Consultas personalizadas para decisões cuidadas"
               : config.variantKey === "modern"
-              ? "Areas de cuidado para uma escolha tranquila"
+              ? "Áreas de cuidado para uma escolha tranquila"
                 : "Especialidades explicadas com clareza",
           text:
             config.variantKey === "luxury"
@@ -1004,7 +1005,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
           title: "Porque os pacientes confiam na equipa",
           text:
             config.variantKey === "luxury"
-              ? "A confiança nasce de privacidade operacional, equipa sénior, tempo protegido e comunicação sem pressão."
+              ? "A confiança nasce da privacidade, do tempo protegido e de uma comunicação sem pressão."
               : config.variantKey === "modern"
                 ? "Equipa identificada, privacidade clara e processo simples para quem procura marcar com tranquilidade."
                 : "Credenciais, privacidade e informação clara para reduzir ansiedade.",
@@ -1020,7 +1021,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
             config.variantKey === "modern"
               ? "Profissionais que explicam antes de avançar"
               : config.variantKey === "luxury"
-                ? "Especialistas senior para acompanhamento reservado"
+                ? "Especialistas sénior para acompanhamento reservado"
               : "Equipa preparada para explicar e acompanhar",
           text:
             config.variantKey === "luxury"
@@ -1383,7 +1384,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         type: FormType.APPOINTMENT,
       },
       create: {
-        errorMessage: "Nao foi possivel enviar o pedido. Tente novamente.",
+        errorMessage: "Não foi possível enviar o pedido. Tente novamente.",
         key: "clinic-appointment",
         name: "Clinic Appointment Form",
         pageId: page.id,
@@ -1480,9 +1481,9 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         ctaPrimary: "Pedir avaliação gratuita",
         ctaSecondary: "Ver casas selecionadas",
         stats: [
-          { label: "Reviews verificadas", value: "4.9/5" },
-          { label: "Anos de bairro", value: "+10" },
-          { label: "Familias apoiadas", value: "850+" },
+          { label: "Conhecimento", value: "De bairro" },
+          { label: "Acompanhamento", value: "Próximo" },
+          { label: "Visitas", value: "Por marcação" },
         ],
         brandKit: {
           audience: "Famílias, proprietários locais e compradores que valorizam confiança de bairro.",
@@ -1646,9 +1647,9 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         },
       ],
       localProof: [
-        { label: "Reviews verificadas", value: "4.9/5" },
-        { label: "Negócios locais", value: "260+" },
-        { label: "Resposta média", value: "< 24h" },
+        { label: "Conhecimento", value: "Local" },
+        { label: "Acompanhamento", value: "Próximo" },
+        { label: "Visitas", value: "Por marcação" },
       ],
     },
     {
@@ -1663,7 +1664,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
       hero: {
         brandName: "Vela Estates",
         headerVariant: "premium",
-        headerCtaLabel: "Agendar reuniao",
+        headerCtaLabel: "Agendar reunião",
         headerCtaHref: "#contact",
         headerLinks: [
           { label: "Casas", href: "#featured-properties" },
@@ -1671,7 +1672,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           { label: "Processo", href: "#process" },
         ],
         footerVariant: "premium",
-        footerCtaLabel: "Solicitar market brief",
+        footerCtaLabel: "Solicitar análise de mercado",
         footerCtaHref: "#contact",
         footerLinks: [
           { label: "Casas selecionadas", href: "#featured-properties" },
@@ -1679,16 +1680,16 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           { label: "Processo", href: "#process" },
           { label: "Contacto privado", href: "#contact" },
         ],
-        eyebrow: "Vela Estates — Premium Real Estate Advisory",
+        eyebrow: "Vela Estates — consultoria imobiliária premium",
         headline: "Casas premium apresentadas como ativos de desejo",
         subheadline:
-          "A Vela Estates combina casas cuidadosamente selecionadas, leitura de mercado e acompanhamento discreto para compradores, vendedores e investidores exigentes.",
+          "A Vela Estates combina casas cuidadosamente selecionadas, análise de mercado e acompanhamento discreto para compradores, vendedores e investidores exigentes.",
         ctaPrimary: "Agendar reunião privada",
         ctaSecondary: "Ver casas selecionadas",
         stats: [
-          { label: "Casas acompanhadas", value: "32" },
-          { label: "Valor médio", value: "740k" },
-          { label: "Visitas preparadas", value: "68%" },
+          { label: "Seleção", value: "Critério editorial" },
+          { label: "Análise", value: "Contexto de mercado" },
+          { label: "Acompanhamento", value: "Do início ao fecho" },
         ],
         brandKit: {
           audience: "Compradores, vendedores e investidores premium que querem critério e dados.",
@@ -1700,17 +1701,17 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           corePromise: "Transformar casas premium em ativos desejáveis, bem posicionados e bem negociados.",
           personality: "Editorial, analítica, sofisticada, precisa.",
           photographyStyle: "Arquitetura premium, detalhes de materiais, interiores com luz dramática.",
-          tagline: "Curated homes. Sharper decisions.",
+          tagline: "Casas com critério. Decisões mais claras.",
           typography: "Editorial premium com sans-serif refinada e numeros fortes.",
           voice: "Consultiva, segura, seletiva e orientada por dados.",
         },
         properties: [
           {
-            tag: "Private dossier",
-            title: "Penthouse skyline com terraço social",
+            tag: "Dossier privado",
+            title: "Penthouse com terraço panorâmico",
             location: "Avenida da Liberdade, Lisboa",
             price: "895.000 EUR",
-            status: "Curated",
+            status: "Seleção Vela",
             type: "Penthouse",
             beds: "4",
             baths: "3",
@@ -1726,10 +1727,10 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
       },
       properties: [
         {
-          title: "Penthouse skyline com terraço social",
+          title: "Penthouse com terraço panorâmico",
           location: "Avenida da Liberdade, Lisboa",
           price: "895.000 EUR",
-          status: "Curated",
+          status: "Seleção Vela",
           type: "Penthouse",
           beds: "4",
           baths: "3",
@@ -1739,10 +1740,10 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           imageAlt: "Penthouse premium com arquitetura contemporânea e terraço panorâmico",
         },
         {
-          title: "Apartamento waterfront com luz poente",
-          location: "Parque das Nacoes, Lisboa",
+          title: "Apartamento junto ao rio com luz poente",
+          location: "Parque das Nações, Lisboa",
           price: "735.000 EUR",
-          status: "Disponivel",
+          status: "Disponível",
           type: "Apartamento",
           beds: "3",
           baths: "3",
@@ -1752,7 +1753,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           imageAlt: "Apartamento contemporâneo junto ao rio com interiores luminosos",
         },
         {
-          title: "Moradia atelier em condominio reservado",
+          title: "Moradia contemporânea em condomínio reservado",
           location: "Cascais, Quinta da Marinha",
           price: "1.150.000 EUR",
           status: "Exclusivo",
@@ -1762,7 +1763,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           area: "360 m2",
           image:
             "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
-          imageAlt: "Moradia contemporanea com piscina e jardim em condominio reservado",
+          imageAlt: "Moradia contemporânea com piscina e jardim em condomínio reservado",
         },
       ],
       highlights: [
@@ -1789,24 +1790,24 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
       ],
       agents: [
         {
-          name: "Ines Valente",
-          role: "Head of Curated Homes",
+          name: "Inês Valente",
+          role: "Diretora de seleção imobiliária",
           phone: "+351 210 000 011",
           email: "ines@vela-estates.example",
           bio: "Especialista em posicionamento de casas premium, storytelling imobiliário e experiência de compra para clientes exigentes.",
           image:
             "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
-          imageAlt: "Advisor imobiliaria Ines Valente",
+          imageAlt: "Consultora imobiliária Inês Valente",
         },
         {
           name: "Marco Seixas",
-          role: "Investment and Market Advisor",
+          role: "Consultor de investimento e mercado",
           phone: "+351 210 000 012",
           email: "marco@vela-estates.example",
           bio: "Analisa liquidez, comparáveis, yield potencial e timing de mercado para compradores e proprietários premium.",
           image:
             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
-          imageAlt: "Advisor imobiliário Marco Seixas",
+          imageAlt: "Consultor imobiliário Marco Seixas",
         },
       ],
     },
@@ -1976,7 +1977,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         themeId: theme.id,
         isDemo: true,
         demoStatus: DemoStatus.READY,
-        portfolioVisible: true,
+        portfolioVisible: false,
         portfolioOrder: config.portfolioOrder,
         status: PageStatus.PUBLISHED,
         publishedAt: new Date(),
@@ -1989,7 +1990,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         isDemo: true,
         demoKey: config.demoKey,
         demoStatus: DemoStatus.READY,
-        portfolioVisible: true,
+        portfolioVisible: false,
         portfolioOrder: config.portfolioOrder,
         templateId: template.id,
         templateVariantId: variant.id,
@@ -2003,14 +2004,14 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
       update: {
         metaTitle: config.seoTitle,
         metaDescription: config.seoDescription,
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         robotsIndex: false,
         robotsFollow: false,
         schemaJson: {
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
           name: config.title,
-          url: `http://localhost:3000/${config.demoKey}`,
+          url: `${getPublicSiteUrl()}/${config.demoKey}`,
           ...(config.variantKey === "local_agency"
             ? {
                 areaServed: [
@@ -2027,7 +2028,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         pageId: page.id,
         metaTitle: config.seoTitle,
         metaDescription: config.seoDescription,
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         robotsIndex: false,
         robotsFollow: false,
         twitterCardType: "summary_large_image",
@@ -2035,7 +2036,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           "@context": "https://schema.org",
           "@type": "RealEstateAgent",
           name: config.title,
-          url: `http://localhost:3000/${config.demoKey}`,
+          url: `${getPublicSiteUrl()}/${config.demoKey}`,
           ...(config.variantKey === "local_agency"
             ? {
                 areaServed: [
@@ -2117,7 +2118,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           eyebrow:
             config.variantKey === "premium"
-              ? "Vela Market Brief"
+              ? "Vela — análise de mercado"
               : "Avaliação",
           headline:
             config.variantKey === "premium"
@@ -2129,7 +2130,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
               : "Recolhemos os dados essenciais e ajudamos a perceber o melhor posicionamento.",
           ctaPrimary:
             config.variantKey === "premium"
-              ? "Solicitar market brief"
+              ? "Solicitar análise de mercado"
               : "Pedir avaliação",
         },
       ],
@@ -2140,11 +2141,11 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title:
             config.variantKey === "premium"
-              ? "Advisors para decisoes premium"
+              ? "Consultores para decisões premium"
               : "Consultores que conhecem a zona",
           text:
             config.variantKey === "premium"
-              ? "Uma equipa pequena e senior para compradores exigentes, venda estrategica e investimento residencial."
+              ? "Uma equipa experiente para compradores exigentes, vendas estratégicas e investimento residencial."
               : "Uma equipa próxima, disponível e habituada a acompanhar famílias em momentos importantes.",
           items: config.agents,
         },
@@ -2374,7 +2375,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         type: FormType.QUOTE,
         status: FormStatus.PUBLISHED,
         successMessage: "Pedido recebido. Entraremos em contacto em breve.",
-        errorMessage: "Nao foi possivel enviar. Tente novamente.",
+        errorMessage: "Não foi possível enviar. Tente novamente.",
         recipientEmail: "hello@example.com",
       },
     });
@@ -2433,9 +2434,9 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       variantKey: "fine_dining",
       title: "Nocturne Table | Fine Dining",
       seo: {
-        metaTitle: "Nocturne Table | Menu Degustação e Fine Dining em Lisboa",
+        metaTitle: "Nocturne Table | Menu de degustação em Lisboa",
         metaDescription:
-          "Reserve mesa no Nocturne Table, uma experiência fine dining em Lisboa com menu degustação, chef residente e ambiente editorial.",
+          "Reserve mesa no Nocturne Table, uma experiência de alta cozinha em Lisboa com menu de degustação, chef residente e ambiente intimista.",
         schemaType: "Restaurant",
       },
       sections: [
@@ -2531,7 +2532,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
         },
         {
           key: "signature-dishes",
-          name: "Signature Dishes",
+          name: "Pratos de assinatura",
           type: "restaurant_signature_dishes",
           content: {
             text: "Produto, vinho, ritmo e sala alinhados para uma noite calma e memorável.",
@@ -2553,7 +2554,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
                   "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Vinhos selecionados para harmonização de menu",
                 label: "Vinhos",
-                title: "Pairing sem pressa",
+                title: "Harmonização sem pressa",
               },
               {
                 description:
@@ -2668,10 +2669,10 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
             ctaPrimary: "Pedir mesa",
             details: [
               { label: "Horário", value: "Quarta a sábado, 19:30-23:00" },
-              { label: "Mesa", value: "Reserva recomendada com 48h" },
+              { label: "Mesa", value: "Reserva antecipada recomendada" },
               { label: "Notas", value: "Alergias e restrições no pedido" },
             ],
-            eyebrow: "Mesa limitada",
+            eyebrow: "Uma mesa para a noite",
             text: "Pedido simples, resposta humana e uma chegada preparada ao detalhe.",
             title: "Reserve uma noite com intenção.",
           },
@@ -2744,7 +2745,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       seo: {
         metaTitle: "Boca Pop | Restaurante Vibrante para Grupos em Lisboa",
         metaDescription:
-          "Reserve mesa no Boca Pop, restaurante vibrante em Lisboa para grupos, pratos partilhados, cocktails autorais e noites com energia.",
+          "Reserve mesa no Boca Pop, restaurante vibrante em Lisboa com pratos para partilhar, cocktails de autor e espaço para grupos.",
         schemaType: "Restaurant",
       },
       sections: [
@@ -2755,7 +2756,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
           content: {
             brandKit: {
               audience:
-                "Grupos de amigos, aniversários, after-work e clientes que escolhem restaurantes pelo ambiente social.",
+                "Grupos de amigos, aniversários e jantares de equipa para quem escolhe um restaurante pelo ambiente social.",
               behanceAssets:
                 "Stickers, cartões de menu, sinalética luminosa, guardanapos ilustrados e posts coloridos",
               corePromise:
@@ -2799,7 +2800,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
               "Prato colorido com massa e ingredientes vibrantes",
             highlights: [
               { label: "Grupos", value: "2-14 pax" },
-              { label: "Cocktails", value: "18 autorais" },
+              { label: "Cocktails", value: "De autor" },
               { label: "Energia", value: "Todos os dias" },
             ],
             proofLabel: "Reserva sem drama",
@@ -2857,7 +2858,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
         },
         {
           key: "signature-dishes",
-          name: "Signature Dishes",
+          name: "Pratos de assinatura",
           type: "restaurant_signature_dishes",
           content: {
             layout: "playful",
@@ -2884,16 +2885,16 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
               },
               {
                 description:
-                  "Cocktails autorais com cor, sabor e brinde fácil para começar a noite.",
+                  "Cocktails de autor com cor e sabor para começar a noite.",
                 image:
                   "https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Cocktails coloridos servidos numa mesa vibrante",
                 label: "Cocktails",
-                title: "Primeiro brinde garantido",
+                title: "O primeiro brinde",
               },
               {
                 description:
-                  "Aniversários, after-work e pré-noite tratados com pedido simples e resposta clara.",
+                  "Aniversários, jantares de equipa e convívios depois do trabalho, com pedido simples e resposta clara.",
                 image:
                   "https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Equipa de restaurante a preparar reserva de grupo",
@@ -2914,7 +2915,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
             items: [
               {
                 description:
-                  "Reserva rápida para amigos, aniversários e after-work, sem perguntas desnecessárias.",
+                  "Reserva simples para amigos, aniversários e jantares de equipa.",
                 title: "01. Alguém manda o link",
               },
               {
@@ -2957,10 +2958,10 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
                   "Perfeito para grupo. Fácil de reservar e menu sem complicações.",
               },
               {
-                context: "After-work",
+                context: "Convívio depois do trabalho",
                 image:
                   "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-                imageAlt: "Cliente Inês em after-work no restaurante",
+                imageAlt: "Cliente Inês num convívio depois do trabalho",
                 name: "Inês P.",
                 quote:
                   "Colorido, bom som e comida que toda a mesa quis provar.",
@@ -2987,7 +2988,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
               },
               {
                 description:
-                  "Cocktails autorais com sabores fortes, boa apresentação e primeiro brinde garantido.",
+                  "Cocktails de autor com sabores marcantes e apresentação cuidada.",
                 image:
                   "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Cocktails coloridos com garnish vibrante",
@@ -2995,7 +2996,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
               },
               {
                 description:
-                  "Mesas para amigos, aniversários e after-work com pedido simples e resposta clara.",
+                  "Mesas para amigos, aniversários e convívios depois do trabalho, com pedido simples e resposta clara.",
                 image:
                   "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Mesa de grupo em ambiente animado",
@@ -3021,11 +3022,11 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
             details: [
               { label: "Grupos", value: "Mesas até 14 pessoas" },
               { label: "Horário", value: "Todos os dias, 12:00-00:00" },
-              { label: "Eventos", value: "Aniversários e after-work" },
+              { label: "Eventos", value: "Aniversários e jantares de equipa" },
             ],
             eyebrow: "Grupos e eventos",
             text: "Reservas individuais, aniversários e mesas de grupo tratados pela mesma equipa, com resposta clara.",
-            title: "Junta a mesa antes que esgote.",
+            title: "Junta a mesa e escolhe a próxima noite.",
           },
         },
         {
@@ -3063,11 +3064,11 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
     const page = await prisma.page.upsert({
       where: { demoKey: config.demoKey },
       update: {
-        demoStatus: DemoStatus.PUBLISHED,
+        demoStatus: DemoStatus.READY,
         isDemo: true,
         pageType: PageType.LANDING,
         portfolioOrder: config.portfolioOrder,
-        portfolioVisible: true,
+        portfolioVisible: false,
         publishedAt: new Date(),
         status: PageStatus.PUBLISHED,
         templateId: template.id,
@@ -3077,11 +3078,11 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       },
       create: {
         demoKey: config.demoKey,
-        demoStatus: DemoStatus.PUBLISHED,
+        demoStatus: DemoStatus.READY,
         isDemo: true,
         pageType: PageType.LANDING,
         portfolioOrder: config.portfolioOrder,
-        portfolioVisible: true,
+        portfolioVisible: false,
         publishedAt: new Date(),
         slug: config.demoKey,
         status: PageStatus.PUBLISHED,
@@ -3095,7 +3096,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
     await prisma.seoSetting.upsert({
       where: { pageId: page.id },
       update: {
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         metaDescription: config.seo.metaDescription,
         metaTitle: config.seo.metaTitle,
         robotsFollow: false,
@@ -3108,7 +3109,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
         twitterCardType: "summary_large_image",
       },
       create: {
-        canonicalUrl: `http://localhost:3000/${config.demoKey}`,
+        canonicalUrl: `${getPublicSiteUrl()}/${config.demoKey}`,
         metaDescription: config.seo.metaDescription,
         metaTitle: config.seo.metaTitle,
         pageId: page.id,
@@ -3161,24 +3162,24 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       where: { pageId_key: { pageId: page.id, key: "restaurant-reservation" } },
       update: {
         errorMessage:
-          "Nao foi possivel enviar o pedido. Tente novamente ou contacte o restaurante.",
+          "Não foi possível enviar o pedido. Tente novamente ou contacte o restaurante.",
         recipientEmail: "hello@example.com",
         status: FormStatus.PUBLISHED,
         successMessage:
-          "Pedido recebido. A equipa confirmara a disponibilidade em breve.",
+          "Pedido recebido. A equipa confirmará a disponibilidade em breve.",
         type: FormType.BOOKING,
       },
       create: {
         description: "Pedido de reserva recebido atraves da pagina publica do restaurante.",
         errorMessage:
-          "Nao foi possivel enviar o pedido. Tente novamente ou contacte o restaurante.",
+          "Não foi possível enviar o pedido. Tente novamente ou contacte o restaurante.",
         key: "restaurant-reservation",
         name: "Restaurant Reservation Form",
         pageId: page.id,
         recipientEmail: "hello@example.com",
         status: FormStatus.PUBLISHED,
         successMessage:
-          "Pedido recebido. A equipa confirmara a disponibilidade em breve.",
+          "Pedido recebido. A equipa confirmará a disponibilidade em breve.",
         type: FormType.BOOKING,
       },
     });
@@ -3187,7 +3188,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
       ["name", "Nome", FormFieldType.TEXT, true],
       ["email", "Email", FormFieldType.EMAIL, true],
       ["phone", "Telefone", FormFieldType.PHONE, true],
-      ["partySize", "Numero de pessoas", FormFieldType.NUMBER, true],
+      ["partySize", "Número de pessoas", FormFieldType.NUMBER, true],
       ["preferredDate", "Data pretendida", FormFieldType.TEXT, true],
       ["preferredTime", "Hora pretendida", FormFieldType.TEXT, false],
       ["occasion", "Ocasião", FormFieldType.TEXT, false],
@@ -3222,25 +3223,26 @@ async function seedGymModernDemo(prisma: PrismaClient) {
   const variant = await prisma.templateVariant.findUniqueOrThrow({ where: { templateId_key: { templateId: template.id, key: "modern" } }, select: { id: true } });
   const theme = await prisma.theme.findUniqueOrThrow({ where: { key: "gym-modern" }, select: { id: true } });
   const demoKey = "gym-modern-demo";
-  const page = await prisma.page.upsert({ where: { demoKey }, update: { title: "Norte Studio | Performance com método", templateId: template.id, templateVariantId: variant.id, themeId: theme.id, isDemo: true, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 10, status: PageStatus.PUBLISHED, publishedAt: new Date() }, create: { title: "Norte Studio | Performance com método", slug: demoKey, status: PageStatus.PUBLISHED, pageType: PageType.LANDING, isDemo: true, demoKey, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 10, templateId: template.id, templateVariantId: variant.id, themeId: theme.id, publishedAt: new Date() } });
-  await prisma.seoSetting.upsert({ where: { pageId: page.id }, update: { metaTitle: "Norte Studio — Treino com método em Lisboa", metaDescription: "Estúdio de performance com treino personalizado, acompanhamento próximo e evolução consistente em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, schemaJson: { "@context": "https://schema.org", "@type": "HealthClub", name: "Norte Studio", url: `http://localhost:3000/${demoKey}` } }, create: { pageId: page.id, metaTitle: "Norte Studio — Treino com método em Lisboa", metaDescription: "Estúdio de performance com treino personalizado, acompanhamento próximo e evolução consistente em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, twitterCardType: "summary_large_image", schemaJson: { "@context": "https://schema.org", "@type": "HealthClub", name: "Norte Studio", url: `http://localhost:3000/${demoKey}` } } });
+  const page = await prisma.page.upsert({ where: { demoKey }, update: { title: "Norte Studio | Performance com método", templateId: template.id, templateVariantId: variant.id, themeId: theme.id, isDemo: true, demoStatus: DemoStatus.READY, portfolioVisible: false, portfolioOrder: 10, status: PageStatus.PUBLISHED, publishedAt: new Date() }, create: { title: "Norte Studio | Performance com método", slug: demoKey, status: PageStatus.PUBLISHED, pageType: PageType.LANDING, isDemo: true, demoKey, demoStatus: DemoStatus.READY, portfolioVisible: false, portfolioOrder: 10, templateId: template.id, templateVariantId: variant.id, themeId: theme.id, publishedAt: new Date() } });
+  const gymCanonicalUrl = `${getPublicSiteUrl()}/${demoKey}`;
+  await prisma.seoSetting.upsert({ where: { pageId: page.id }, update: { metaTitle: "Norte Studio — Treino com método em Lisboa", metaDescription: "Estúdio de performance com treino personalizado, acompanhamento próximo e evolução consistente em Lisboa.", canonicalUrl: gymCanonicalUrl, robotsIndex: false, robotsFollow: false, schemaJson: { "@context": "https://schema.org", "@type": "HealthClub", name: "Norte Studio", url: gymCanonicalUrl } }, create: { pageId: page.id, metaTitle: "Norte Studio — Treino com método em Lisboa", metaDescription: "Estúdio de performance com treino personalizado, acompanhamento próximo e evolução consistente em Lisboa.", canonicalUrl: gymCanonicalUrl, robotsIndex: false, robotsFollow: false, twitterCardType: "summary_large_image", schemaJson: { "@context": "https://schema.org", "@type": "HealthClub", name: "Norte Studio", url: gymCanonicalUrl } } });
   const sections = [
-    ["hero", "gym_hero", "Gym Hero", { brandName: "Norte Studio", headerVariant: "minimal", headerCtaLabel: "Marcar avaliação", headerCtaHref: "#trial", headerLinks: [{ label: "Método", href: "#programs" }, { label: "Coaches", href: "#coaches" }, { label: "Contacto", href: "#contact" }], footerVariant: "minimal-legal", eyebrow: "Norte Studio · Treino com método", headline: "Treina com intenção. Evolui com consistência.", subheadline: "Um estúdio de performance para quem quer mais força, mais energia e um plano que cabe na vida real.", ctaPrimary: "Marcar avaliação", ctaSecondary: "Conhecer o método", heroImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1400&q=84", heroImageAlt: "Atleta a treinar num estúdio de performance" }],
+    ["hero", "gym_hero", "Gym Hero", { brandName: "Norte Studio", headerVariant: "minimal", headerCtaLabel: "Marcar avaliação", headerCtaHref: "#trial", headerLinks: [{ label: "Método", href: "#programs" }, { label: "Treinadores", href: "#coaches" }, { label: "Contacto", href: "#contact" }], footerVariant: "minimal-legal", eyebrow: "Norte Studio · Treino com método", headline: "Treina com intenção. Evolui com consistência.", subheadline: "Um estúdio de performance para quem quer mais força, mais energia e um plano que cabe na vida real.", ctaPrimary: "Marcar avaliação", ctaSecondary: "Conhecer o método", heroImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1400&q=84", heroImageAlt: "Atleta a treinar num estúdio de performance" }],
     ["method", "gym_method", "Método", { title: "Treinar melhor começa antes da primeira repetição.", text: "Cada pessoa chega com um ponto de partida diferente. O nosso trabalho é transformar esse ponto de partida num caminho claro.", image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1000&q=84", imageAlt: "Treinador a acompanhar uma sessão de treino", items: [{ title: "Avaliar", description: "Perceber o ponto de partida, sem julgamentos nem atalhos." }, { title: "Construir", description: "Escolher um programa que respeita o teu tempo e a tua realidade." }, { title: "Progredir", description: "Medir o que importa e ajustar o plano à medida que evoluis." }] }],
     ["values", "gym_values_rail", "Valores", { items: [{ title: "FORÇA" }, { title: "MOVIMENTO" }, { title: "ENERGIA" }, { title: "CONSISTÊNCIA" }] }],
     ["space", "gym_space", "Espaço", { title: "Um espaço desenhado para te pôr em movimento", text: "Equipamento, luz e espaço para treinar com foco. Sem ruído visual, sem excesso de promessa.", items: [{ title: "Zona de força", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1100&q=84", imageAlt: "Zona de força do Norte Studio" }, { title: "Luz para continuar", image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?auto=format&fit=crop&w=800&q=84", imageAlt: "Espaço interior do Norte Studio" }] }],
-    ["programs", "gym_programs", "Programas", { title: "O teu treino começa com um plano", text: "Sessões claras, acompanhamento próximo e progressão visível desde a primeira semana.", items: [{ title: "Performance", label: "01", description: "Força, técnica e capacidade para treinar melhor.", image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=900&q=82", imageAlt: "Pessoa a fazer treino de força" }, { title: "Base", label: "02", description: "O ponto de partida certo para criar consistência.", image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=900&q=82", imageAlt: "Pessoa a treinar num estúdio" }, { title: "Personal", label: "03", description: "Acompanhamento individual para objectivos específicos.", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82", imageAlt: "Treino acompanhado por treinador" }] }],
-    ["benefits", "gym_benefits", "Evolução", { title: "Resultados que se sentem fora do ginásio", text: "O objectivo não é treinar mais por treinar. É ter mais energia, confiança e controlo no teu dia.", items: [{ title: "+ energia", description: "para a semana" }, { title: "mais força", description: "com progressão" }, { title: "menos ruído", description: "com método" }] }],
+    ["programs", "gym_programs", "Programas", { title: "O teu treino começa com um plano", text: "Sessões claras, acompanhamento próximo e progressão visível desde a primeira semana.", items: [{ title: "Performance", label: "01", description: "Força, técnica e capacidade para treinar melhor.", image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=900&q=82", imageAlt: "Pessoa a fazer treino de força" }, { title: "Base", label: "02", description: "O ponto de partida certo para criar consistência.", image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=900&q=82", imageAlt: "Pessoa a treinar num estúdio" }, { title: "Acompanhamento individual", label: "03", description: "Acompanhamento individual para objetivos específicos.", image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=82", imageAlt: "Treino acompanhado por treinador" }] }],
+    ["benefits", "gym_benefits", "Evolução", { title: "Resultados que se sentem fora do ginásio", text: "O objetivo não é treinar mais por treinar. É ter mais energia, confiança e controlo no teu dia.", items: [{ title: "Mais energia", description: "para a semana" }, { title: "Mais força", description: "com progressão" }, { title: "Menos ruído", description: "com método" }] }],
     ["schedule", "gym_schedule", "Horários", { title: "Encontra o teu ritmo", text: "Horários simples para começares com uma sessão que faz sentido para ti.", items: [{ title: "Segunda", description: "Força / 07:00 · 18:30" }, { title: "Quarta", description: "Performance / 08:00 · 19:30" }, { title: "Sábado", description: "Base / 10:00 · 11:30" }] }],
-    ["plans", "gym_plans", "Planos", { title: "Escolhe o nível de acompanhamento", text: "Sem fórmulas escondidas. Falamos contigo para encontrar o formato certo.", items: [{ title: "Base", description: "Para começares com acompanhamento e consistência.", label: "A partir de 3 sessões" }, { title: "Performance", description: "Para treinares com um plano e acompanhamento próximo.", label: "Mais escolhido" }, { title: "Personal", description: "Para objectivos específicos e atenção individual.", label: "Sob consulta" }] }],
-    ["coaches", "gym_coaches", "Coaches", { title: "A experiência certa muda o treino", text: "Treinadores que explicam, corrigem e acompanham sem transformar cada sessão numa prova de ego.", items: [{ name: "Marta Costa", title: "Força e mobilidade", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=82", imageAlt: "Marta Costa, treinadora de força e mobilidade" }, { name: "João Reis", title: "Performance", image: "https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=700&q=82", imageAlt: "João Reis, treinador de performance" }, { name: "Inês Silva", title: "Treino individual", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=82", imageAlt: "Inês Silva, treinadora de treino individual" }] }],
-    ["trial", "gym_trial", "Primeiro passo", { title: "Vem experimentar uma sessão com método.", text: "Conta-nos o teu objectivo. Nós mostramos-te como pode ser um plano mais claro, mais humano e mais sustentável.", cta: "Marcar avaliação" }],
-    ["contact", "gym_contact", "Contacto", { title: "Começa com uma conversa", text: "Partilha o teu objectivo e a equipa do Norte Studio responde com o próximo passo.", email: "hello@example.com", phone: "+351 210 000 000" }],
+    ["plans", "gym_plans", "Planos", { title: "Escolhe o nível de acompanhamento", text: "Sem fórmulas escondidas. Falamos contigo para encontrar o formato certo.", items: [{ title: "Base", description: "Para começares com acompanhamento e consistência.", label: "Plano de entrada" }, { title: "Performance", description: "Para treinares com um plano e acompanhamento próximo.", label: "Plano estruturado" }, { title: "Acompanhamento individual", description: "Para objetivos específicos e atenção individual.", label: "Sob consulta" }] }],
+    ["coaches", "gym_coaches", "Treinadores", { title: "A experiência certa muda o treino", text: "Treinadores que explicam, corrigem e acompanham sem transformar cada sessão numa prova de ego.", items: [{ name: "Marta Costa", title: "Força e mobilidade", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=82", imageAlt: "Marta Costa, treinadora de força e mobilidade" }, { name: "João Reis", title: "Performance", image: "https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=700&q=82", imageAlt: "João Reis, treinador de performance" }, { name: "Inês Silva", title: "Treino individual", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=82", imageAlt: "Inês Silva, treinadora de treino individual" }] }],
+    ["trial", "gym_trial", "Primeiro passo", { title: "Vem experimentar uma sessão com método.", text: "Conta-nos o teu objetivo. A equipa explica-te como pode ser um plano mais claro, humano e sustentável.", cta: "Marcar avaliação" }],
+    ["contact", "gym_contact", "Contacto", { title: "Começa com uma conversa", text: "Partilha o teu objetivo e a equipa do Norte Studio responde com o próximo passo.", email: "hello@example.com", phone: "+351 210 000 000" }],
   ] as const;
   for (const [sortOrder, [sectionKey, sectionType, name, content]] of sections.entries()) await prisma.pageSection.upsert({ where: { pageId_sectionKey: { pageId: page.id, sectionKey } }, update: { sectionType, name, sortOrder, isVisible: true, content }, create: { pageId: page.id, sectionKey, sectionType, name, sortOrder, isVisible: true, content, settings: { variant: "modern" } } });
   await hideGenericDemoSections(prisma, page.id, sections.map(([sectionKey]) => sectionKey));
   const form = await prisma.form.upsert({ where: { pageId_key: { pageId: page.id, key: "gym-evaluation" } }, update: { name: "Pedido de avaliação", type: FormType.CONTACT, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. O Norte Studio responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." }, create: { pageId: page.id, key: "gym-evaluation", name: "Pedido de avaliação", description: "Pedido de avaliação inicial.", type: FormType.CONTACT, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. O Norte Studio responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." } });
-  const fields = [["name", "Nome", FormFieldType.TEXT, true], ["email", "Email", FormFieldType.EMAIL, true], ["phone", "Telefone", FormFieldType.PHONE, false], ["goal", "Objectivo", FormFieldType.TEXT, true], ["message", "Conta-nos o teu ponto de partida", FormFieldType.TEXTAREA, true]] as const;
+  const fields = [["name", "Nome", FormFieldType.TEXT, true], ["email", "Email", FormFieldType.EMAIL, true], ["phone", "Telefone", FormFieldType.PHONE, false], ["goal", "Objetivo", FormFieldType.TEXT, true], ["message", "Conta-nos o teu ponto de partida", FormFieldType.TEXTAREA, true]] as const;
   for (const [sortOrder, [name, label, type, isRequired]] of fields.entries()) await prisma.formField.upsert({ where: { formId_name: { formId: form.id, name } }, update: { label, type, isRequired, sortOrder }, create: { formId: form.id, name, label, type, isRequired, sortOrder } });
 }
 
@@ -3251,22 +3253,22 @@ async function seedBakeryPlayfulDemo(prisma: PrismaClient) {
   const demoKey = "bakery-playful-demo";
   const page = await prisma.page.upsert({
     where: { demoKey },
-    update: { title: "Boca Doce | Pastelaria Criativa", templateId: template.id, templateVariantId: variant.id, themeId: theme.id, isDemo: true, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 9, status: PageStatus.PUBLISHED, publishedAt: new Date() },
-    create: { title: "Boca Doce | Pastelaria Criativa", slug: demoKey, status: PageStatus.PUBLISHED, pageType: PageType.LANDING, isDemo: true, demoKey, demoStatus: DemoStatus.READY, portfolioVisible: true, portfolioOrder: 9, templateId: template.id, templateVariantId: variant.id, themeId: theme.id, publishedAt: new Date() },
+    update: { title: "Boca Doce | Pastelaria Criativa", templateId: template.id, templateVariantId: variant.id, themeId: theme.id, isDemo: true, demoStatus: DemoStatus.READY, portfolioVisible: false, portfolioOrder: 9, status: PageStatus.PUBLISHED, publishedAt: new Date() },
+    create: { title: "Boca Doce | Pastelaria Criativa", slug: demoKey, status: PageStatus.PUBLISHED, pageType: PageType.LANDING, isDemo: true, demoKey, demoStatus: DemoStatus.READY, portfolioVisible: false, portfolioOrder: 9, templateId: template.id, templateVariantId: variant.id, themeId: theme.id, publishedAt: new Date() },
   });
   await prisma.seoSetting.upsert({
     where: { pageId: page.id },
-    update: { metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `http://localhost:3000/${demoKey}` } },
-    create: { pageId: page.id, metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `http://localhost:3000/${demoKey}`, robotsIndex: false, robotsFollow: false, twitterCardType: "summary_large_image", schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `http://localhost:3000/${demoKey}` } },
+    update: { metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `${getPublicSiteUrl()}/${demoKey}`, robotsIndex: false, robotsFollow: false, schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `${getPublicSiteUrl()}/${demoKey}` } },
+    create: { pageId: page.id, metaTitle: "Boca Doce — Bolos personalizados e doces coloridos em Lisboa", metaDescription: "Bolos personalizados, doces coloridos e encomendas para celebrações em Lisboa.", canonicalUrl: `${getPublicSiteUrl()}/${demoKey}`, robotsIndex: false, robotsFollow: false, twitterCardType: "summary_large_image", schemaJson: { "@context": "https://schema.org", "@type": "Bakery", name: "Boca Doce", url: `${getPublicSiteUrl()}/${demoKey}` } },
   });
   const sections = [
     ["hero", "bakery_hero", "Bakery Hero", { brandName: "Boca Doce", headerVariant: "cta-focused", headerCtaLabel: "Criar o meu bolo", headerCtaHref: "#custom-orders", headerLinks: [{ label: "Mais pedidos", href: "#products" }, { label: "Encomendas", href: "#custom-orders" }, { label: "Contacto", href: "#contact" }], footerVariant: "cta-focused", footerCtaLabel: "Criar o meu bolo", footerCtaHref: "#custom-orders", footerLinks: [{ label: "Produtos", href: "#products" }, { label: "Galeria", href: "#gallery" }, { label: "Contacto", href: "#contact" }], eyebrow: "Boca Doce · Pastelaria criativa", headline: "A tua próxima fatia favorita chegou.", subheadline: "Bolos personalizados, doces coloridos e encomendas feitas para transformar qualquer dia numa celebração.", ctaPrimary: "Criar o meu bolo", ctaSecondary: "Ver os mais pedidos", heroImage: "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=82", heroImageAlt: "Bolo colorido decorado para uma celebração" }],
-    ["products", "bakery_products", "Mais pedidos", { title: "Os mais pedidos", text: "Doces com cor, textura e personalidade, preparados para levar ou partilhar.", items: [{ title: "Bolo arco-íris", label: "feito hoje", description: "Camadas macias, creme de baunilha e uma festa de cor em cada fatia.", image: "https://images.unsplash.com/photo-1552689486-ce080445fbb6?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo de aniversário coberto com decoração colorida" }, { title: "Cookie confetti", label: "mais pedido", description: "Crocante por fora, macio no centro e cheio de chocolate em cada dentada.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=82", imageAlt: "Cookies com pepitas de chocolate" }, { title: "Rolo de canela", label: "acabado de sair", description: "Massa fofa, canela perfumada e cobertura cremosa para comer sem cerimónia.", image: "https://images.unsplash.com/photo-1694632288834-17d86b340745?auto=format&fit=crop&w=900&q=82", imageAlt: "Rolos de canela acabados de sair do forno, cobertos com glacé" }] }],
+    ["products", "bakery_products", "Mais pedidos", { title: "Mais pedidos", text: "Doces com cor, textura e personalidade, preparados para levar ou partilhar.", items: [{ title: "Bolo arco-íris", label: "feito na pastelaria", description: "Camadas macias, creme de baunilha e uma festa de cor em cada fatia.", image: "https://images.unsplash.com/photo-1552689486-ce080445fbb6?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo de aniversário coberto com decoração colorida" }, { title: "Bolacha de chocolate", label: "receita da casa", description: "Crocante por fora, macia no centro e com chocolate em cada dentada.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolachas com pepitas de chocolate" }, { title: "Rolo de canela", label: "feito na pastelaria", description: "Massa fofa, canela perfumada e cobertura cremosa para saborear sem cerimónia.", image: "https://images.unsplash.com/photo-1694632288834-17d86b340745?auto=format&fit=crop&w=900&q=82", imageAlt: "Rolos de canela acabados de sair do forno, cobertos com glacé" }] }],
     ["custom-orders", "bakery_story", "Encomendas personalizadas", { title: "Uma pequena fábrica de grandes momentos", text: "A Boca Doce junta receitas de família, cor e uma dose generosa de imaginação em cada encomenda.", items: [{ title: "Conta a ideia", description: "Partilha a ocasião, as cores e o momento que queres levar para a mesa." }, { title: "Desenhamos juntos", description: "A equipa transforma a tua ideia num bolo bonito, possível e delicioso." }, { title: "Levanta o sorriso", description: "A encomenda fica pronta para fotografar, partilhar e celebrar." }] }],
     ["celebration", "bakery_celebration", "O teu momento", { title: "Que sabor tem a tua celebração?", text: "Escolhe a energia. A Boca Doce trata do resto, com cor, cuidado e uma receita feita para a tua ocasião.", items: [{ title: "Uma festa colorida", description: "Camadas alegres, cobertura leve e detalhes para pôr toda a mesa a sorrir.", icon: "palette" }, { title: "Um momento só teu", description: "Uma criação desenhada à medida da ocasião, das cores e das pessoas que queres surpreender.", icon: "cake" }, { title: "Para levar e partilhar", description: "Doces frescos, fáceis de escolher e prontos para aparecer nas fotografias certas.", icon: "party" }] }],
     ["gallery", "bakery_gallery", "Galeria", { title: "Visto na mesa", text: "Cor, cobertura e detalhes que pedem uma fotografia.", items: [{ title: "Bolos de festa", label: "celebrar", image: "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=82", imageAlt: "Bolo de celebração colorido" }, { title: "Detalhes doces", label: "feito à mão", image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=82", imageAlt: "Donuts coloridos" }, { title: "Mesa Boca Doce", label: "partilhar", image: "https://images.unsplash.com/photo-1707528904105-4a97ac86feb5?auto=format&fit=crop&w=900&q=82", imageAlt: "Mesa com pastelaria e bolos variados" }] }],
-    ["testimonials", "bakery_testimonials", "Testimonials", { title: "Quem provou, voltou", text: "Pequenas mensagens de quem trouxe a Boca Doce para a sua mesa.", items: [{ name: "Inês Carvalho", quote: "O bolo chegou lindo e ainda mais delicioso do que imaginava." }, { name: "Rita Matos", quote: "A equipa percebeu a ideia, acrescentou magia e entregou tudo no dia certo." }, { name: "João Sousa", quote: "Os miúdos escolheram as cores. Os adultos repetiram a fatia." }] }],
-    ["seasonal-offers", "bakery_seasonal_offers", "Seasonal Offers", { title: "A edição desta semana", text: "Sabores sazonais, quantidades limitadas e uma boa desculpa para passar por cá.", items: [{ title: "Citrus pop", description: "Bolo de limão, creme leve e merengue tostado.", label: "esta semana", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo fresco com frutos" }] }],
+    ["testimonials", "bakery_testimonials", "Testemunhos", { title: "Quem provou, voltou", text: "Pequenas mensagens de quem trouxe a Boca Doce para a sua mesa.", items: [{ name: "Inês Carvalho", quote: "O bolo chegou lindo e ainda mais delicioso do que imaginava." }, { name: "Rita Matos", quote: "A equipa percebeu a ideia, acrescentou magia e entregou tudo no dia certo." }, { name: "João Sousa", quote: "Os miúdos escolheram as cores. Os adultos repetiram a fatia." }] }],
+    ["seasonal-offers", "bakery_seasonal_offers", "Edições sazonais", { title: "Sabores da estação", text: "Receitas sazonais preparadas na pastelaria. Confirma a disponibilidade do dia antes de encomendar.", items: [{ title: "Citrus pop", description: "Bolo de limão, creme leve e merengue tostado.", label: "Sazonal", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo fresco com frutos" }] }],
     ["hours", "bakery_opening_hours", "Opening Hours", { title: "Passa por cá", text: "A vitrine muda com a semana. A vontade pode aparecer a qualquer hora.", hours: "Terça a sábado · 09:00–18:30", address: "Rua da Alegria, Lisboa" }],
     ["faq", "bakery_faq", "FAQ", { title: "Perguntas com cobertura", items: [{ question: "Com quanto tempo devo pedir um bolo personalizado?", answer: "Para bolos personalizados, recomendamos falar connosco com pelo menos cinco dias de antecedência." }, { question: "Posso escolher cores e sabores?", answer: "Sim. Partilhe a ocasião e as preferências no pedido; a equipa confirma as combinações disponíveis." }, { question: "Onde levantamos a encomenda?", answer: "A encomenda é levantada na loja, em Lisboa, no horário combinado." }] }],
     ["contact", "bakery_contact", "Contact", { title: "Vamos fazer acontecer?", text: "Conta-nos a ocasião e a ideia. Respondemos com os próximos passos.", email: "hello@example.com", phone: "+351 210 000 000" }],
@@ -3303,8 +3305,8 @@ async function seedUniversalDemo(prisma: PrismaClient) {
       templateVariantId: variant.id,
       themeId: theme.id,
       isDemo: true,
-      demoStatus: DemoStatus.PUBLISHED,
-      portfolioVisible: true,
+      demoStatus: DemoStatus.READY,
+      portfolioVisible: false,
       portfolioOrder: 1,
       status: PageStatus.PUBLISHED,
       publishedAt: new Date(),
@@ -3316,8 +3318,8 @@ async function seedUniversalDemo(prisma: PrismaClient) {
       pageType: PageType.LANDING,
       isDemo: true,
       demoKey: "universal-demo",
-      demoStatus: DemoStatus.PUBLISHED,
-      portfolioVisible: true,
+      demoStatus: DemoStatus.READY,
+      portfolioVisible: false,
       portfolioOrder: 1,
       templateId: template.id,
       templateVariantId: variant.id,
@@ -3332,18 +3334,18 @@ async function seedUniversalDemo(prisma: PrismaClient) {
       metaTitle: "Universal Base Template for High-Converting Landing Pages",
       metaDescription:
         "Universal Base is the LandingForge reference template for fast, responsive and conversion-focused landing pages with SEO, forms and leads.",
-      canonicalUrl: "http://localhost:3000/universal-demo",
-      robotsIndex: true,
-      robotsFollow: true,
+      canonicalUrl: `${getPublicSiteUrl()}/universal-demo`,
+      robotsIndex: false,
+      robotsFollow: false,
     },
     create: {
       pageId: page.id,
       metaTitle: "Universal Base Template for High-Converting Landing Pages",
       metaDescription:
         "Universal Base is the LandingForge reference template for fast, responsive and conversion-focused landing pages with SEO, forms and leads.",
-      canonicalUrl: "http://localhost:3000/universal-demo",
-      robotsIndex: true,
-      robotsFollow: true,
+      canonicalUrl: `${getPublicSiteUrl()}/universal-demo`,
+      robotsIndex: false,
+      robotsFollow: false,
       twitterCardType: "summary_large_image",
       schemaJson: {
         "@context": "https://schema.org",

@@ -53,13 +53,13 @@ export async function submitForm(
     },
   });
   if (form.status !== FormStatus.PUBLISHED || form.deletedAt) {
-    throw new Error("This form is not accepting submissions.");
+    throw new Error("Este formulário não está disponível para submissões.");
   }
   const consentGiven = values.gdprConsent === "yes";
   if (form.gdprConsentRequired && !consentGiven) {
     throw new FormSubmissionValidationError(
-      "Aceita a Politica de Privacidade para enviar o formulario.",
-      { gdprConsent: "Aceita a Politica de Privacidade para enviar." },
+      "Aceita a Política de Privacidade para enviar o formulário.",
+      { gdprConsent: "Aceita a Política de Privacidade para enviar." },
     );
   }
 

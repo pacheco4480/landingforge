@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+  <title id="title">LandingForge CMS flow</title>
+  <desc id="desc">A CMS user edits page content, role checks and Zod validation run before server actions and services persist through Prisma. The public renderer reads published content.</desc>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#62736b"/></marker><style>text{font-family:Inter,Arial,sans-serif;fill:#152820}.title{font-size:38px;font-weight:700}.sub{font-size:17px;fill:#53665c}.head{font-size:20px;font-weight:700}.body{font-size:15px;fill:#34483d}.small{font-size:14px;fill:#53665c}.box{fill:#fff;stroke:#bdcbc2;stroke-width:2}.green{fill:#e4f1e9;stroke:#91b8a0;stroke-width:2}.gold{fill:#f8f0d9;stroke:#d5bd77;stroke-width:2}.line{stroke:#62736b;stroke-width:3;fill:none;marker-end:url(#arrow)}</style></defs>
+  <rect width="1440" height="760" rx="28" fill="#f5f7f4"/><text x="72" y="82" class="title">From a controlled CMS edit to a public landing</text><text x="74" y="117" class="sub">Content remains structured; the selected template controls its presentation.</text>
+  <rect x="72" y="260" width="190" height="130" rx="16" class="box"/><text x="104" y="309" class="head">CMS user</text><text x="100" y="347" class="body">role-aware access</text>
+  <rect x="310" y="260" width="220" height="130" rx="16" class="green"/><text x="344" y="309" class="head">Edit content</text><text x="340" y="347" class="body">page · sections · SEO</text>
+  <rect x="578" y="260" width="208" height="130" rx="16" class="box"/><text x="612" y="309" class="head">Validate</text><text x="608" y="347" class="body">RBAC · Zod</text>
+  <rect x="834" y="260" width="224" height="130" rx="16" class="green"/><text x="867" y="309" class="head">Server layer</text><text x="866" y="347" class="body">action · service</text>
+  <rect x="1106" y="260" width="250" height="130" rx="16" class="gold"/><text x="1141" y="309" class="head">Persist</text><text x="1138" y="347" class="body">Prisma · PostgreSQL</text>
+  <path d="M262 325h42" class="line"/><path d="M530 325h42" class="line"/><path d="M786 325h42" class="line"/><path d="M1058 325h42" class="line"/>
+  <path d="M1230 390v105H420v25" class="line"/>
+  <rect x="310" y="520" width="220" height="122" rx="16" class="box"/><text x="344" y="568" class="head">Public renderer</text><text x="340" y="605" class="body">template + sections</text>
+  <rect x="578" y="520" width="265" height="122" rx="16" class="box"/><text x="612" y="568" class="head">Published landing</text><text x="608" y="605" class="body">forms · metadata · theme</text>
+  <path d="M530 581h42" class="line"/><text x="72" y="704" class="small">Form submissions use their own validation and lead-capture flow; this diagram is a high-level overview.</text>
+</svg>

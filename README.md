@@ -4,7 +4,7 @@
 
 ### Premium Landing Page Platform
 
-**Create, manage and deploy high-converting landing pages — fast.**
+**Create and manage conversion-focused landing pages — with a system behind them.**
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -30,13 +30,13 @@
 
 > **Active Development** — This project is under active development and is not yet feature-complete.
 
-The full-stack platform (CMS, authentication, forms, leads, SEO, branding, media, email, monitoring) is fully implemented. The current focus is on expanding industry-specific templates.
+The core platform foundations are implemented, including the focused CMS, public renderer, forms, leads, SEO, branding and portfolio catalogue. Template reviews and commercial workflows are still in progress; this repository should not be read as a claim that every planned capability is complete.
 
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 | Platform & CMS Foundation (23 tasks) | ✅ Complete |
 | Phase 2 | Industry Research & Specification (7 industries) | ✅ Complete |
-| Phase 3 | Template Implementation | 🔄 In Progress (3 of 7 industries) |
+| Phase 3 | Template Implementation | 🔄 In Progress (5 of 7 industries) |
 
 ---
 
@@ -44,7 +44,7 @@ The full-stack platform (CMS, authentication, forms, leads, SEO, branding, media
 
 Agencies, freelancers and businesses that deliver landing pages for clients face the same challenge every time: **rebuilding the same foundations from scratch** — layout systems, form handling, SEO setup, CMS, lead capture, branding, responsive design.
 
-**LandingForge solves this** by providing a complete platform purpose-built for landing pages, with reusable industry-specific templates, a focused CMS, and a production-ready architecture.
+**LandingForge addresses this** with a platform purpose-built for landing pages, reusable industry-specific templates and a focused CMS.
 
 > **This is not a generic website builder.** LandingForge is intentionally focused on landing pages that need to look premium, load fast, and convert visitors into leads.
 
@@ -66,7 +66,7 @@ Purpose-built content management for landing pages — pages, sections, media, f
 Industry-specific templates organized by vertical and visual positioning. Each template can use its own brand-led header, footer, FAQ/contact presentation and restrained motion while keeping page content CMS-editable.
 
 ### 📊 Lead Management
-Full lead capture pipeline — form submissions, lead dashboard, export workflows, consent tracking and audit logging.
+Lead capture and management with statuses, filtering, consent records and CSV export.
 
 </td>
 <td width="50%">
@@ -75,13 +75,13 @@ Full lead capture pipeline — form submissions, lead dashboard, export workflow
 Technical SEO foundations including metadata management, structured data, semantic HTML and search engine optimization controls.
 
 ### 🎭 Branding & Themes
-Per-client branding configuration with theme engine, color schemes, typography and visual identity controls.
+Brand and theme controls for supported site identity, colors, typography and media.
 
 ### 🔒 Security First
-Auth.js authentication, role-based access control, Zod validation, rate limiting, Cloudflare Turnstile, honeypot protection and input sanitization.
+Auth.js authentication, role-based access control, Zod validation, rate limiting, honeypot protection and optional Cloudflare Turnstile.
 
 ### 📧 Email System
-Transactional email delivery with Resend, lead notifications, digest scheduling and delivery tracking.
+Email notifications and scheduled digests through Resend when the integration is configured.
 
 </td>
 </tr>
@@ -89,12 +89,12 @@ Transactional email delivery with Resend, lead notifications, digest scheduling 
 
 **Additional capabilities:**
 
-- ⚡ Performance-first architecture (Lighthouse > 90 target)
+- ⚡ Performance-conscious architecture (Lighthouse score above 90 is a target, not a published measurement)
 - ♿ Accessibility-aware implementation
 - 🎞️ Lightweight, template-specific motion with reduced-motion support
 - 📱 Mobile-first responsive design
 - 🖼️ Media management with Supabase Storage
-- 🛡️ Monitoring & error tracking with Sentry
+- 🛡️ Error tracking with Sentry when configured
 - 👥 Role-based CMS access (Super Admin, Client Admin, Viewer)
 - 🌱 Fictional demo seed data for local development
 
@@ -106,19 +106,21 @@ Templates are organized by **industry** and **visual positioning**. Each industr
 
 | Industry | Variants | Status |
 |---|---|---|
-| 🏠 Real Estate | Local Agency · Premium | ✅ Implemented |
-| 🏥 Clinic | Modern · Luxury | ✅ Implemented |
-| 🍽️ Restaurant | Fine Dining · Playful | ✅ Implemented |
-| 🧁 Bakery | Playful | ✅ Implemented |
-| 💪 Gym | Modern | ✅ Implemented |
-| 🏗️ Construction | — | 🔜 Planned |
-| 💄 Beauty | — | 🔜 Planned |
+| 🏠 Real Estate | Local Agency · Premium | Implemented; final public demo review pending |
+| 🏥 Clinic | Modern · Luxury | Implemented; final public demo review pending |
+| 🍽️ Restaurant | Fine Dining · Playful | Implemented; final public demo review pending |
+| 🧁 Bakery | Playful | Implemented; final public demo review pending |
+| 💪 Gym | Modern | Implemented; final public demo review pending |
+| 🏗️ Construction | — | Planned |
+| 💄 Beauty | — | Planned |
 
 Each template includes:
 - Reusable section definitions and industry-specific content structure
 - A distinct visual direction, with tailored public header/footer and section presentation where implemented
 - Theme and branding presets, plus fictional demo content for preview
 - Responsive layouts and lightweight motion designed to respect reduced-motion preferences
+
+The public list is limited to demos approved for publication. The table describes implementation progress, not approval to publish every variant; selected demos are being reconciled in the demo review.
 
 ### 🖼️ Template Previews
 
@@ -145,6 +147,8 @@ Each template includes:
   </tr>
 </table>
 
+These are implementation snapshots, not customer case studies or measured commercial results. Refresh and approve each image against the current demo before using it as final sales material.
+
 ---
 
 ## 📊 Focused CMS & Lead Pipeline
@@ -153,14 +157,12 @@ LandingForge includes an internal content management system and lead pipeline ta
 
 <br />
 
-<img src="public/screenshots/cms-leads.png" alt="LandingForge Lead Pipeline Kanban" width="100%" />
+The dashboard screenshot above shows a local demonstration state. Its counts and operational status are interface examples, not production metrics or customer results. A leads screenshot is intentionally withheld until a fresh capture can be made with synthetic, non-identifying data.
 
-<br />
-
-- **Kanban Lead Flow:** Visual pipeline with automatic stage transitions (*Novo* → *Contactado* → *Em negociação* → *Convertido* → *Perdido*).
-- **One-Click Export:** Instant CSV export with consent timestamps and source tracking.
+- **Lead Pipeline:** Review captured leads and manage their statuses.
+- **CSV Export:** Export leads with relevant source and consent information, subject to the user's permissions.
 - **Granular Filters:** Filter by period, origin form, landing page, and status.
-- **Audit & Security:** Role-based access control, rate limiting, Turnstile anti-spam, and audit log entries for every lead interaction.
+- **Abuse Protection:** Role-based access control, rate limiting, honeypot protection and optional Turnstile verification for public submissions.
 
 ---
 
@@ -183,6 +185,7 @@ src/
 │   ├── media/              → Media management
 │   ├── email/              → Email delivery & digests
 │   ├── monitoring/         → Error tracking & system logs
+│   ├── portfolio/          → Approved public demos and screenshot visibility
 │   └── settings/           → App & notification settings
 ├── services/               → Shared service layer
 ├── lib/                    → Shared infrastructure & utilities
@@ -217,17 +220,17 @@ CMS Input → Zod Validation → Server Action / Route Handler → Service Layer
 <tr><td>Language</td><td>TypeScript 6</td></tr>
 <tr><td>Styling</td><td>Tailwind CSS 4</td></tr>
 <tr><td>UI Components</td><td>shadcn/ui</td></tr>
-<tr><td>Animations</td><td>Framer Motion</td></tr>
+<tr><td>Motion</td><td>CSS and browser-native motion with reduced-motion support</td></tr>
 <tr><td>Database</td><td>PostgreSQL + Prisma ORM</td></tr>
 <tr><td>Authentication</td><td>Auth.js (NextAuth v5)</td></tr>
 <tr><td>Storage</td><td>Supabase Storage</td></tr>
 <tr><td>Forms</td><td>React Hook Form + Zod</td></tr>
 <tr><td>Email</td><td>Resend</td></tr>
-<tr><td>Anti-Spam</td><td>Cloudflare Turnstile + Honeypot</td></tr>
+<tr><td>Anti-Spam</td><td>Honeypot + optional Cloudflare Turnstile</td></tr>
 <tr><td>Monitoring</td><td>Sentry</td></tr>
 <tr><td>Testing</td><td>Vitest</td></tr>
 <tr><td>Linting</td><td>ESLint + Prettier</td></tr>
-<tr><td>Hosting</td><td>Vercel</td></tr>
+<tr><td>Hosting target</td><td>Vercel / compatible Next.js host (deployment is environment-specific)</td></tr>
 </table>
 
 ---
@@ -287,6 +290,10 @@ npm run test          # Vitest test suite
 npx prisma validate   # Schema validation
 ```
 
+### Deployment
+
+The repository provides a Next.js application and local setup instructions; it does not currently provide an automated client export or one-click deployment pipeline. A deployment requires a configured PostgreSQL database, environment variables and any integrations enabled for that environment. Vercel is a target hosting option, not a guarantee that a deployment has been tested for every account or client configuration. Validate migrations, build output, storage permissions and public routes in the target environment before release.
+
 ---
 
 ## 📖 Documentation
@@ -301,12 +308,23 @@ Curated public documentation is available in [`public-docs/`](./public-docs/):
 | [Security & Privacy](./public-docs/SECURITY_AND_PRIVACY.md) | Security practices, authentication and data handling |
 | [Local Setup](./public-docs/LOCAL_SETUP.md) | Detailed local development setup instructions |
 | [Public Roadmap](./public-docs/ROADMAP.md) | Product direction and planned features |
+| [Showcase Asset Manifest](./public-docs/SHOWCASE_ASSET_MANIFEST.md) | Screenshot provenance, review status and outstanding captures |
+
+## 🧩 Showcase Diagrams
+
+These diagrams explain the implementation at a high level; they are not screenshots or deployment automation.
+
+![LandingForge system architecture](./public-docs/assets/system-architecture.svg)
+
+- [Data model groups](./public-docs/assets/data-model.svg)
+- [CMS content flow](./public-docs/assets/cms-flow.svg)
+- [Environment deployment setup](./public-docs/assets/deployment-flow.svg)
 
 ---
 
 ## 🗺️ Roadmap
 
-**Platform Foundation** ✅
+**Platform Foundations**
 - [x] Next.js App Router foundation with TypeScript
 - [x] Prisma/PostgreSQL data model & migrations
 - [x] Authentication (Auth.js) & role-based access control
@@ -326,21 +344,22 @@ Curated public documentation is available in [`public-docs/`](./public-docs/):
 - [x] Performance & accessibility review
 - [x] MVP audit & QA
 
-**Industry Templates** 🔄 (5 of 7 Industries Started)
-- [x] Real Estate — Local Agency · Premium
-- [x] Clinic & Healthcare — Modern · Luxury
-- [x] Restaurant — Fine Dining · Playful
-- [x] Bakery — Playful (Warm variant planned)
-- [x] Gym & Fitness — Modern (Performance variant planned)
-- [ ] Construction — Reliable · Premium
-- [ ] Beauty & Wellness — Elegant · Playful
+**Industry Templates** — 5 of 7 industries have selected implementations
+- Real Estate — Local Agency · Premium (final demo review pending)
+- Clinic & Healthcare — Modern · Luxury (final demo review pending)
+- Restaurant — Fine Dining · Playful (final demo review pending)
+- Bakery — Playful (Warm planned)
+- Gym & Fitness — Modern (Performance planned)
+- Construction — Reliable · Premium (planned)
+- Beauty & Wellness — Elegant · Playful (planned)
 
-**Commercial & Agency Operations** 🔜 (Phase 4)
-- [ ] **Public Portfolio Showcase:** Interactive template browser with industry filters, live preview switcher and conversion goals
+**Commercial & Agency Operations**
+- [x] **Public Portfolio Catalogue:** Approved demos with industry/template/variant filtering and detail pages
+- [ ] **Demo Review:** Final visual, responsive, accessibility and content approval for selected public demos
 - [ ] **Client Provisioning & Standalone Export:** Automated packaging engine to deploy isolated landing page bundles for client handoff
 - [ ] **Smart Briefing & Client Hub:** Centralized workspace replacing spreadsheets with client assets, structured requirements, and AI context prompts
 - [ ] **Client Handover & Delivery Kits:** White-label documentation, client manuals, and automated DNS/domain setup checklists
-- [ ] **Behance & Marketing Showcase:** Case studies, creative direction boards, and high-impact presentation assets
+- [ ] **Behance & Marketing Showcase:** Final case studies and visual assets after demo review
 
 ---
 
@@ -354,7 +373,7 @@ Use [`.env.example`](./.env.example) as the public reference.
 
 ## 📄 License
 
-All rights reserved. A license will be selected in a future release.
+No open-source license is currently provided. Public visibility of this portfolio repository does not grant permission to reuse, distribute or deploy the code. A license decision is reserved for the repository owner.
 
 ---
 

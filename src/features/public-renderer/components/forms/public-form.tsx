@@ -28,7 +28,7 @@ export function PublicForm({
   className,
 }: {
   formId: string;
-  pageId: string;
+  pageId?: string | null;
   fields: FormField[];
   gdprConsentLabel: string;
   gdprConsentRequired: boolean;
@@ -104,7 +104,7 @@ export function PublicForm({
       }}
     >
       <input name="formId" type="hidden" value={formId} />
-      <input name="pageId" type="hidden" value={pageId} />
+      <input name="pageId" type="hidden" value={pageId ?? ""} />
       <input
         name="gdprConsentVersion"
         type="hidden"
@@ -138,7 +138,7 @@ export function PublicForm({
               className="font-semibold underline"
               href="/politica-privacidade"
             >
-              Politica de Privacidade
+              Política de Privacidade
             </Link>
           </span>
         </label>
@@ -185,7 +185,7 @@ export function PublicForm({
           role="alert"
         >
           {formError ??
-            "Nao foi possivel enviar. Verifica os campos e tenta novamente."}
+            "Não foi possível enviar. Verifica os campos e tenta novamente."}
         </p>
       ) : null}
     </form>
@@ -212,12 +212,12 @@ function validateVisibleFields({
       .filter((value) => typeof value === "string" && value.trim());
 
     if (values.length === 0) {
-      errors[field.name] = "Este campo e obrigatorio.";
+      errors[field.name] = "Este campo é obrigatório.";
     }
   }
 
   if (gdprConsentRequired && formData.get("gdprConsent") !== "yes") {
-    errors.gdprConsent = "Aceita a Politica de Privacidade para enviar.";
+    errors.gdprConsent = "Aceita a Política de Privacidade para enviar.";
   }
 
   if (turnstileSiteKey && !formData.get("cf-turnstile-response")) {
@@ -247,7 +247,7 @@ function PublicField({ error, field }: { error?: string; field: FormField }) {
       <Label htmlFor={id}>
         {field.label}
         {field.isRequired ? (
-          <span className="ml-1 text-red-600" aria-label="obrigatorio">
+          <span className="ml-1 text-red-600" aria-label="obrigatório">
             *
           </span>
         ) : null}

@@ -303,6 +303,9 @@
 }
 
 .gym-modern-gallery {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
   position: relative;
 }
 
@@ -471,6 +474,7 @@
 .gym-modern-program__copy {
   display: grid;
   gap: 9px;
+  min-width: 0;
   padding: 20px 4px 8px;
 }
 
@@ -502,6 +506,7 @@
   font-size: 26px;
   font-weight: 800;
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .gym-modern-program__copy > span {
@@ -800,6 +805,11 @@
 }
 
 @media (max-width: 899px) {
+  .gym-modern-plans__list,
+  .gym-modern-coaches__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .gym-modern .gym-modern-method {
     display: block;
   }

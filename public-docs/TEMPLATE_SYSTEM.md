@@ -96,3 +96,5 @@ Each template can become a case study with:
 - CMS-editable story;
 - SEO/performance/accessibility notes.
 
+Only implemented variants with a reviewed, explicitly published demo should appear as available in the public catalogue or showcase. Screenshots are snapshots and must be refreshed against the current demo before commercial use. Fictional demo brands and metrics must never be presented as real clients or measured outcomes.
+

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+  <title id="title">LandingForge system architecture</title>
+  <desc id="desc">High-level flow from public and CMS routes through feature services and validation to Prisma and PostgreSQL, with optional external integrations.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#62736b"/></marker>
+    <style>
+      text{font-family:Inter,Arial,sans-serif;fill:#152820}.title{font-size:38px;font-weight:700}.sub{font-size:17px;fill:#53665c}.head{font-size:21px;font-weight:700}.body{font-size:16px;fill:#34483d}.small{font-size:14px;fill:#53665c}.box{fill:#fff;stroke:#cad7cf;stroke-width:2}.green{fill:#e4f1e9;stroke:#91b8a0;stroke-width:2}.gold{fill:#f8f0d9;stroke:#d5bd77;stroke-width:2}.line{stroke:#62736b;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1440" height="860" rx="28" fill="#f5f7f4"/>
+  <text x="72" y="82" class="title">A focused platform, with clear boundaries</text>
+  <text x="74" y="117" class="sub">High-level architecture · integrations depend on environment configuration</text>
+  <rect x="72" y="176" width="270" height="210" rx="18" class="box"/>
+  <text x="100" y="218" class="head">App Router</text>
+  <text x="100" y="255" class="body">Public landing pages</text>
+  <text x="100" y="285" class="body">Protected CMS</text>
+  <text x="100" y="315" class="body">Route handlers</text>
+  <text x="100" y="355" class="small">Next.js · TypeScript · React</text>
+  <rect x="405" y="176" width="365" height="210" rx="18" class="green"/>
+  <text x="435" y="218" class="head">Feature modules</text>
+  <text x="435" y="255" class="body">Pages · Content · Templates</text>
+  <text x="435" y="285" class="body">Forms · Leads · SEO · Branding</text>
+  <text x="435" y="315" class="body">Media · RBAC · Portfolio</text>
+  <text x="435" y="355" class="small">UI stays separate from domain operations</text>
+  <rect x="833" y="176" width="265" height="210" rx="18" class="box"/>
+  <text x="861" y="218" class="head">Services layer</text>
+  <text x="861" y="255" class="body">Zod validation</text>
+  <text x="861" y="285" class="body">Server Actions</text>
+  <text x="861" y="315" class="body">Route Handlers</text>
+  <text x="861" y="355" class="small">Authorization and domain rules</text>
+  <rect x="1160" y="176" width="210" height="210" rx="18" class="gold"/>
+  <text x="1188" y="218" class="head">Persistence</text>
+  <text x="1188" y="255" class="body">Prisma ORM</text>
+  <text x="1188" y="285" class="body">PostgreSQL</text>
+  <text x="1188" y="355" class="small">Relational data</text>
+  <path d="M342 280h55" class="line"/><path d="M770 280h55" class="line"/><path d="M1098 280h55" class="line"/>
+  <rect x="255" y="492" width="930" height="220" rx="22" fill="#e9eeeb" stroke="#bdcbc2" stroke-width="2"/>
+  <text x="292" y="535" class="head">External services (optional/configured per environment)</text>
+  <rect x="292" y="575" width="190" height="86" rx="14" class="box"/><text x="327" y="628" class="body">Supabase Storage</text>
+  <rect x="510" y="575" width="150" height="86" rx="14" class="box"/><text x="551" y="628" class="body">Resend</text>
+  <rect x="688" y="575" width="185" height="86" rx="14" class="box"/><text x="724" y="628" class="body">Turnstile</text>
+  <rect x="901" y="575" width="220" height="86" rx="14" class="box"/><text x="948" y="628" class="body">Sentry</text>
+  <text x="74" y="784" class="small">The diagram omits implementation details and does not imply automated client provisioning or export.</text>
+</svg>

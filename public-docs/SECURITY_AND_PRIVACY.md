@@ -78,3 +78,7 @@ Do not publish:
 - raw client data;
 - service credentials.
 
+## Showcase Screenshots
+
+Screenshots committed under `public/` are public static assets. Use synthetic records, inspect every image at full resolution and remove names, email addresses, account identifiers and private operational data. CMS/dashboard captures managed by the application remain private; repository screenshots need their own separate review and must not bypass portfolio visibility or consent rules.
+

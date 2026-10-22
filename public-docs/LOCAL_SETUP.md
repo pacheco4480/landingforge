@@ -89,7 +89,11 @@ Public demo pages may include:
 /clinic-luxury-demo
 /restaurant-fine-dining-demo
 /restaurant-playful-demo
+/bakery-playful-demo
+/gym-modern-demo
 ```
 
-Available demos depend on the current seed data.
+Available demos depend on the current seed data. These are local development examples; they are not automatically approved for public portfolio or commercial claims.
+
+The public portfolio catalogue is available at `/portfolio` when the database contains demos that satisfy publication rules.
 

@@ -52,7 +52,7 @@ prompts/
 docs/
 
 # Portfolio work-in-progress material
-portfolio/
+/portfolio/
 
 # Internal application workspace
 .landingforge/

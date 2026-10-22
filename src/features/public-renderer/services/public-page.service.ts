@@ -1,4 +1,5 @@
 import { PageStatus } from "@/generated/prisma/client";
+import { publicPortfolioWhere } from "@/features/portfolio/policies/public-portfolio.policy";
 import type { PublicRendererContext } from "@/features/public-renderer/types";
 import { db } from "@/lib/db";
 
@@ -29,6 +30,7 @@ export async function getPublishedPageBySlug(
         slug,
         deletedAt: null,
         status: PageStatus.PUBLISHED,
+        OR: [{ isDemo: false }, publicPortfolioWhere],
       },
       include: pageInclude,
     }),
@@ -53,6 +55,7 @@ export async function getPublishedPageMetadataBySlug(slug: string) {
         slug,
         deletedAt: null,
         status: PageStatus.PUBLISHED,
+        OR: [{ isDemo: false }, publicPortfolioWhere],
       },
       select: {
         id: true,
@@ -123,7 +126,11 @@ export async function getDemoPreviewPageById(
 
 export async function listPublishedPageSlugs() {
   return db.page.findMany({
-    where: { deletedAt: null, status: PageStatus.PUBLISHED },
+    where: {
+      deletedAt: null,
+      status: PageStatus.PUBLISHED,
+      OR: [{ isDemo: false }, publicPortfolioWhere],
+    },
     select: { slug: true },
   });
 }

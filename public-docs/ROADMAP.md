@@ -23,21 +23,21 @@ It intentionally avoids private implementation notes and internal task planning.
 - Real Estate demos
 - Clinic demos
 - Restaurant demos
+- Public portfolio catalogue foundation with demo visibility controls
 
 ## Current Focus
 
-- Expanding industry-specific templates
+- Reviewing and approving selected demos for public presentation
+- Refreshing screenshots against the current implementation
 - Improving visual differentiation between template variants
-- Strengthening public portfolio presentation
-- Refining reusable section systems
-- Improving template storytelling and conversion flow
+- Preparing curated product and engineering showcases
 
 ## Planned Template Industries
 
-- Bakery
-- Gym
 - Construction
 - Beauty
+
+Bakery and Gym foundations/selected variants exist; further variants and final demo approval remain separate work.
 
 ## Planned Product Improvements
 
@@ -48,6 +48,9 @@ It intentionally avoids private implementation notes and internal task planning.
 - More analytics and reporting capabilities
 - Better deployment documentation
 - More automated quality checks
+- Client provisioning, standalone export and handover workflows
+
+The roadmap describes direction, not a delivery commitment. No client export or one-click deployment workflow is currently represented as available.
 
 ## Long-Term Direction
 

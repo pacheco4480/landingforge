@@ -8,7 +8,12 @@ import {
 import { text } from "@/features/public-renderer/components/section-utils";
 import { resolvePresentation } from "@/features/public-renderer/section-presentation";
 
-export async function ContactSection({ section, context }: PublicSectionProps) {
+export async function ContactSection({
+  section,
+  context,
+  title,
+  description,
+}: PublicSectionProps & { title?: string; description?: string }) {
   const form = context.page.forms[0] ?? null;
   const security = await getSecuritySettings();
   const turnstileSiteKey =
@@ -37,13 +42,16 @@ export async function ContactSection({ section, context }: PublicSectionProps) {
           }
         >
           <SectionHeading
-            title={text(section.content, "title", "Contacte-nos")}
+            title={title ?? text(section.content, "title", "Contacte-nos")}
             descriptionClassName="text-[var(--public-muted)]"
-            description={text(
-              section.content,
-              "text",
-              "Envie o seu pedido e entraremos em contacto.",
-            )}
+            description={
+              description ??
+              text(
+                section.content,
+                "text",
+                "Envie o seu pedido e entraremos em contacto.",
+              )
+            }
           />
           <dl className="mt-6 grid gap-3 text-sm text-[var(--public-muted)] sm:grid-cols-2">
             <div>

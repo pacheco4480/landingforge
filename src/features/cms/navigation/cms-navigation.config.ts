@@ -100,6 +100,13 @@ export const cmsNavigationItems = [
     description: "Audit logs, backups and exports.",
   },
   {
+    label: "Portfolio",
+    href: "/portfolio/manage",
+    permission: permissions.adminAccess,
+    icon: "pages",
+    description: "Approved public demos and screenshot visibility.",
+  },
+  {
     label: "Notifications",
     href: "/dashboard#notifications",
     permission: permissions.dashboardRead,

@@ -18,7 +18,40 @@ export function FineDiningMenu({ section }: PublicSectionProps) { return <Public
 
 export function FineDiningDishes({ section }: PublicSectionProps) { return <PublicBand className="restaurant-fine-ink" id="signature-dishes"><SectionHeading title={text(section.content, "title", "Da cozinha para a mesa")} description={text(section.content, "text", "Pratos que traduzem a estação com precisão, textura e intenção.")} /><div className="restaurant-fine-dishes">{items(section.content).slice(0, 4).map((item, index) => <article data-fine-reveal className={index % 2 ? "restaurant-fine-dish restaurant-fine-dish--reverse" : "restaurant-fine-dish"} key={index}><FineImage item={item} /><div><span>0{index + 1} · {itemText(item, "label", "Da cozinha")}</span><h3>{itemText(item, "title", "Prato de assinatura")}</h3><p>{itemText(item, "description", "Uma composição da estação, apresentada com tempo e detalhe.")}</p></div></article>)}</div></PublicBand>; }
 
-export function FineDiningExperience({ section }: PublicSectionProps) { return <PublicBand className="restaurant-fine-paper"><div className="restaurant-fine-heading"><p className="restaurant-fine-kicker restaurant-fine-kicker--dark"><span />O serviço</p><SectionHeading title={text(section.content, "title", "Uma noite em capítulos")} description={text(section.content, "text", "Cozinha, harmonização e sala trabalham no mesmo ritmo para que a experiência permaneça simples e memorável.")} /></div><div className="restaurant-fine-chapters">{items(section.content).map((item, index) => <article data-fine-reveal key={index}><span>0{index + 1}</span><h3>{itemText(item, "title", "Momento da noite")}</h3><p>{itemText(item, "description", "Um momento pensado para acompanhar a mesa sem pressa.")}</p></article>)}</div></PublicBand>; }
+export function FineDiningExperience({ section }: PublicSectionProps) {
+  return (
+    <PublicBand id="experience" className="restaurant-fine-paper">
+      <div className="restaurant-fine-heading">
+        <p className="restaurant-fine-kicker restaurant-fine-kicker--dark">
+          <span />O serviço
+        </p>
+        <SectionHeading
+          title={text(section.content, "title", "Uma noite em capítulos")}
+          description={text(
+            section.content,
+            "text",
+            "Cozinha, harmonização e sala trabalham no mesmo ritmo para que a experiência permaneça simples e memorável.",
+          )}
+        />
+      </div>
+      <div className="restaurant-fine-chapters">
+        {items(section.content).map((item, index) => (
+          <article data-fine-reveal key={index}>
+            <span>0{index + 1}</span>
+            <h3>{itemText(item, "title", "Momento da noite")}</h3>
+            <p>
+              {itemText(
+                item,
+                "description",
+                "Um momento pensado para acompanhar a mesa sem pressa.",
+              )}
+            </p>
+          </article>
+        ))}
+      </div>
+    </PublicBand>
+  );
+}
 
 export function FineDiningChef({ section }: PublicSectionProps) { const item = items(section.content)[0] ?? {}; return <PublicBand id="chef" className="restaurant-fine-chef"><div className="restaurant-fine-chef-grid" data-fine-reveal><FineImage item={item} /><div><p className="restaurant-fine-kicker"><span />A cozinha</p><h2>{text(section.content, "title", "Uma cozinha com atenção ao detalhe")}</h2><p>{text(section.content, "text", itemText(item, "description", "A carta nasce do produto, da estação e de uma cozinha que prefere precisão ao excesso."))}</p><p className="restaurant-fine-chef-name">{itemText(item, "name", "Equipa Nocturne Table")}</p></div></div></PublicBand>; }
 

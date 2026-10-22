@@ -22,6 +22,7 @@ Features
   Media
   Monitoring
   Public renderer
+  Portfolio catalogue and publication policy
 
 Infrastructure
   Prisma
@@ -94,6 +95,17 @@ Industry foundation
   -> Public route
   -> CMS-editable landing page
 ```
+
+## Portfolio Publication Flow
+
+```txt
+Demo page
+  -> explicit review and portfolio visibility
+  -> public catalogue/detail routes
+  -> approved public page content and screenshots
+```
+
+CMS and dashboard screenshots are operational material and are not made public by the portfolio screenshot flow. Public repository screenshots require a separate review for consent, synthetic data and sensitive information.
 
 ## Quality Goals
 

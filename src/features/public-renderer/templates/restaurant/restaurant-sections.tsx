@@ -15,6 +15,7 @@ import {
   PublicBand,
   SectionHeading,
 } from "@/features/public-renderer/components/sections/basic-sections";
+import { ContactSection } from "@/features/public-renderer/components/sections/contact-section";
 import {
   itemText,
   items,
@@ -1049,42 +1050,52 @@ export function RestaurantReservationSection({ context, section }: PublicSection
   const details = recordArray(section.content, "details");
 
   return (
-    <PublicBand className="bg-[var(--public-primary)] text-white" id="reservation">
-      <div className="relative overflow-hidden rounded-md border border-white/10 bg-black/18 p-6 sm:p-10">
-        <div
-          aria-hidden="true"
-          className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_70%_35%,rgba(245,217,139,0.24),transparent_32%)] lg:block"
-        />
-        <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_0.82fr]">
-          <div>
-          <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-[0.22em]">
-            {text(section.content, "eyebrow", "Reservas")}
-          </p>
-          <h2 className="mt-4 max-w-3xl text-3xl font-black leading-tight sm:text-5xl">
-            {text(section.content, "title", "Reserve a proxima mesa")}
-          </h2>
-          <p className="mt-4 max-w-2xl leading-7 text-white/75">
-            {text(section.content, "text", "Pedido de reserva claro, rápido e respondido por uma equipa atenta.")}
-          </p>
-          <a className="mt-7 inline-flex rounded-md bg-white px-6 py-3 text-sm font-black text-[var(--public-primary)] transition hover:-translate-y-0.5" href="#contact">
-            {text(section.content, "ctaPrimary", "Pedir reserva")}
-          </a>
-          </div>
-          <div className="grid gap-3">
-          {details.map((item, index) => (
-            <div className="rounded-md border border-white/12 bg-white/10 p-4" key={index}>
-              <p className="text-xs font-black uppercase tracking-wider text-white/50">
-                {recordText(item, ["label", "title"], "Detalhe")}
+    <>
+      <PublicBand className="bg-[var(--public-primary)] text-white" id="reservation">
+        <div className="relative overflow-hidden rounded-md border border-white/10 bg-black/18 p-6 sm:p-10">
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 right-0 hidden w-1/2 bg-[radial-gradient(circle_at_70%_35%,rgba(245,217,139,0.24),transparent_32%)] lg:block"
+          />
+          <div className="relative grid items-center gap-8 lg:grid-cols-[1fr_0.82fr]">
+            <div>
+              <p className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-[0.22em]">
+                {text(section.content, "eyebrow", "Reservas")}
               </p>
-              <p className="mt-1 font-semibold">
-                {recordText(item, ["value", "text"], "")}
+              <h2 className="mt-4 max-w-3xl text-3xl font-black leading-tight sm:text-5xl">
+                {text(section.content, "title", "Reserve a próxima mesa")}
+              </h2>
+              <p className="mt-4 max-w-2xl leading-7 text-white/75">
+                {text(section.content, "text", "Pedido de reserva claro, rápido e respondido por uma equipa atenta.")}
               </p>
+              <a className="mt-7 inline-flex rounded-md bg-white px-6 py-3 text-sm font-black text-[var(--public-primary)] transition hover:-translate-y-0.5" href="#contact">
+                {text(section.content, "ctaPrimary", "Pedir reserva")}
+              </a>
             </div>
-          ))}
+            <div className="grid gap-3">
+              {details.map((item, index) => (
+                <div className="rounded-md border border-white/12 bg-white/10 p-4" key={index}>
+                  <p className="text-xs font-black uppercase tracking-wider text-white/50">
+                    {recordText(item, ["label", "title"], "Detalhe")}
+                  </p>
+                  <p className="mt-1 font-semibold">
+                    {recordText(item, ["value", "text"], "")}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </PublicBand>
+      </PublicBand>
+      {restaurantVariant(context) === "fine_dining" ? (
+        <ContactSection
+          context={context}
+          description="Indique a data, a hora e o número de pessoas. A equipa confirmará a disponibilidade por email."
+          section={section}
+          title="Pedir uma reserva"
+        />
+      ) : null}
+    </>
   );
 }
 

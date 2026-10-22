@@ -464,6 +464,7 @@ model Page {
   cookieLegalSettings  LegalSetting[] @relation("CookieLegalPage")
   termsLegalSettings   LegalSetting[] @relation("TermsLegalPage")
   legalDocumentVersions LegalDocumentVersion[]
+  portfolioScreenshots PortfolioScreenshot[]
 
   @@index([templateId])
   @@index([templateVariantId])
@@ -716,12 +717,38 @@ model MediaAsset {
   seoImages               SeoSetting[]
   sectionTemplatePreviews SectionTemplate[] @relation("SectionTemplatePreview")
   submissionFiles         SubmissionFile[]
+  portfolioScreenshots PortfolioScreenshot[]
 
   @@index([folderId])
   @@index([mimeType])
   @@index([createdAt])
   @@index([createdByUserId])
   @@map("media_assets")
+}
+
+model PortfolioScreenshot {
+  id                String     @id @default(uuid()) @db.Uuid
+  pageId            String     @map("page_id") @db.Uuid
+  mediaAssetId      String?    @map("media_asset_id") @db.Uuid
+  privateStoragePath String?   @map("private_storage_path")
+  category          String
+  viewport          String
+  sourceRoute       String     @map("source_route")
+  consentState      String     @map("consent_state")
+  contentOrigin     String     @map("content_origin")
+  altText           String     @map("alt_text")
+  isPublic          Boolean    @default(false) @map("is_public")
+  sortOrder         Int        @default(0) @map("sort_order")
+  capturedAt        DateTime   @default(now()) @map("captured_at")
+  deletedAt         DateTime?  @map("deleted_at")
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime   @updatedAt @map("updated_at")
+  page              Page       @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  mediaAsset        MediaAsset? @relation(fields: [mediaAssetId], references: [id], onDelete: Restrict)
+
+  @@index([pageId, isPublic, sortOrder])
+  @@index([mediaAssetId])
+  @@map("portfolio_screenshots")
 }
 
 model SeoSetting {
