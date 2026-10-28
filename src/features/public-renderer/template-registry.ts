@@ -119,3 +119,8 @@ const templates: Record<string, TemplateDefinition> = {
 export function resolveTemplate(context: PublicRendererContext) {
   return templates[context.page.template?.key ?? "base"] ?? templates.base;
 }
+
+export function getTemplateDefinition(templateKey: string | null) {
+  if (!templateKey) return null;
+  return templates[templateKey] ?? null;
+}

@@ -28,6 +28,24 @@ function remotePatterns() {
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  outputFileTracingExcludes: {
+    "/*": [
+      "./.git/**/*",
+      "./.env*",
+      "./.codex/**/*",
+      "./docs/**/*",
+      "./portfolio/**/*",
+      "./prompts/**/*",
+      "./tasks/**/*",
+      "./tests/**/*",
+      "./prisma/seeds/**/*",
+    ],
+    "/api/projects/\\[projectId\\]/exports": [
+      "./src/features/clients/**/*",
+      "./src/features/projects/**/*",
+      "./src/features/cms/**/*",
+    ],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: remotePatterns(),

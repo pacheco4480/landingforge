@@ -4,7 +4,6 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/form";
-import { saveCookieConsentAction } from "@/features/legal/actions/legal.actions";
 
 type CookieConsentState = {
   consentId: string;
@@ -15,14 +14,17 @@ type CookieConsentState = {
 
 const storageKey = "landingforge-cookie-consent";
 const emptySubscribe = () => () => undefined;
+type SaveCookieConsentAction = (formData: FormData) => Promise<void>;
 
 export function CookieConsentBanner({
+  saveConsentAction,
   analyticsEnabled,
   cookiePolicyHref,
   enabled,
   marketingEnabled,
   version,
 }: {
+  saveConsentAction: SaveCookieConsentAction;
   analyticsEnabled: boolean;
   cookiePolicyHref: string;
   enabled: boolean;
@@ -60,10 +62,10 @@ export function CookieConsentBanner({
       formData.set("version", consent.version);
       if (consent.analytics) formData.set("analytics", "on");
       if (consent.marketing) formData.set("marketing", "on");
-      await saveCookieConsentAction(formData);
+      await saveConsentAction(formData);
       setIsDismissed(true);
     },
-    [version],
+    [saveConsentAction, version],
   );
 
   React.useEffect(() => {

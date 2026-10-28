@@ -496,7 +496,12 @@ export function PlayfulReservation({ context, section }: PublicSectionProps) {
           </dl>
         </div>
       </PublicBand>
-      <ContactSection context={context} section={section} />
+      <ContactSection
+        context={context}
+        description="Indica o dia, o horário e o tamanho do grupo. A equipa confirma a disponibilidade por email."
+        section={section}
+        title="Pede a tua reserva"
+      />
     </>
   );
 }
@@ -545,24 +550,26 @@ export function PlayfulLocation({
               </dd>
             </div>
           </dl>
-          {mapQuery ? (
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
-              rel="noreferrer"
-              target="_blank"
-            >
-              Abrir no Google Maps <ArrowUpRight aria-hidden="true" />
-            </a>
-          ) : null}
         </div>
         {mapQuery ? (
-          <iframe
-            className="restaurant-playful-location__map"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-            title={`Mapa: ${text(section.content, "title", "Localização do restaurante")}`}
-          />
+          <a
+            aria-label={`Abrir direções para ${address} no Google Maps`}
+            className="restaurant-playful-location__map-note"
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span className="restaurant-playful-location__map-icon">
+              <Utensils aria-hidden="true" />
+            </span>
+            <span>
+              <strong>O Boca Pop fica à tua espera</strong>
+              <span>{address}</span>
+              <span className="restaurant-playful-location__directions">
+                Abrir direções no Google Maps <ArrowUpRight aria-hidden="true" />
+              </span>
+            </span>
+          </a>
         ) : (
           <div className="restaurant-playful-location__map-note">
             {text(

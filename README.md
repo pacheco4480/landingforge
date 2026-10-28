@@ -30,13 +30,14 @@
 
 > **Active Development** — This project is under active development and is not yet feature-complete.
 
-The core platform foundations are implemented, including the focused CMS, public renderer, forms, leads, SEO, branding and portfolio catalogue. Template reviews and commercial workflows are still in progress; this repository should not be read as a claim that every planned capability is complete.
+The core platform and several commercial workflow foundations are implemented locally, including the focused CMS, public renderer, templates, client/project workspace and package generation. Final demo approval and end-to-end release acceptance are still in progress. Local implementation and automated checks do not imply that every hosting destination or external integration has been production-verified.
 
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 | Platform & CMS Foundation (23 tasks) | ✅ Complete |
 | Phase 2 | Industry Research & Specification (7 industries) | ✅ Complete |
 | Phase 3 | Template Implementation | 🔄 In Progress (5 of 7 industries) |
+| Phase 4 | Portfolio & Commercial Operations | 🔄 Core workflows implemented locally; integrated acceptance and release sign-off remain in progress |
 
 ---
 
@@ -68,6 +69,9 @@ Industry-specific templates organized by vertical and visual positioning. Each t
 ### 📊 Lead Management
 Lead capture and management with statuses, filtering, consent records and CSV export.
 
+### 👥 Client & Project Workspace
+Internal client/project records, structured briefings, review decisions, maintenance workflows and delivery tracking. End-to-end commercial acceptance is still in progress.
+
 </td>
 <td width="50%">
 
@@ -82,6 +86,9 @@ Auth.js authentication, role-based access control, Zod validation, rate limiting
 
 ### 📧 Email System
 Email notifications and scheduled digests through Resend when the integration is configured.
+
+### 📦 Client Package Generation
+On-demand, audited Landing Only and Landing + CMS package generation. Local package workflows exist; target-host deployment and final release sign-off have not been certified.
 
 </td>
 </tr>
@@ -178,6 +185,10 @@ src/
 │   ├── public-renderer/    → Public landing page rendering engine
 │   ├── cms/                → CMS shell & dashboard
 │   ├── content/            → Content & section management
+│   ├── clients/            → Internal client records and knowledge
+│   ├── projects/           → Project provisioning and maintenance
+│   ├── briefings/          → Briefs, reviews and delivery specifications
+│   ├── exports/            → Audited client package assembly and runtime
 │   ├── forms/              → Form engine & validation
 │   ├── leads/              → Lead capture & management
 │   ├── seo/                → SEO metadata management
@@ -186,6 +197,7 @@ src/
 │   ├── email/              → Email delivery & digests
 │   ├── monitoring/         → Error tracking & system logs
 │   ├── portfolio/          → Approved public demos and screenshot visibility
+│   ├── privacy/             → Operational privacy request and review workflows
 │   └── settings/           → App & notification settings
 ├── services/               → Shared service layer
 ├── lib/                    → Shared infrastructure & utilities
@@ -292,7 +304,7 @@ npx prisma validate   # Schema validation
 
 ### Deployment
 
-The repository provides a Next.js application and local setup instructions; it does not currently provide an automated client export or one-click deployment pipeline. A deployment requires a configured PostgreSQL database, environment variables and any integrations enabled for that environment. Vercel is a target hosting option, not a guarantee that a deployment has been tested for every account or client configuration. Validate migrations, build output, storage permissions and public routes in the target environment before release.
+The repository includes an internal pipeline for generating and auditing Landing Only and Landing + CMS client packages. It does not provide a one-click publisher for every hosting provider. Local package checks have passed, but target-host deployment, hosted cron behavior and production limits have not been certified. A deployment requires a configured PostgreSQL database, environment variables and any integrations enabled for that package. Vercel is a hosting target, not a claim that every account or client configuration has been tested. Validate migrations, build output, storage permissions, public routes and recovery procedures in the chosen target environment before release.
 
 ---
 
@@ -338,7 +350,7 @@ These diagrams explain the implementation at a high level; they are not screensh
 - [x] Email notifications & digest system
 - [x] Anti-spam, Turnstile & rate limiting
 - [x] Public landing page renderer
-- [x] GDPR, legal pages & cookie consent
+- [x] Privacy controls, legal pages & cookie consent
 - [x] Audit logs, backups & export
 - [x] Error tracking & monitoring (Sentry)
 - [x] Performance & accessibility review
@@ -354,12 +366,10 @@ These diagrams explain the implementation at a high level; they are not screensh
 - Beauty & Wellness — Elegant · Playful (planned)
 
 **Commercial & Agency Operations**
-- [x] **Public Portfolio Catalogue:** Approved demos with industry/template/variant filtering and detail pages
-- [ ] **Demo Review:** Final visual, responsive, accessibility and content approval for selected public demos
-- [ ] **Client Provisioning & Standalone Export:** Automated packaging engine to deploy isolated landing page bundles for client handoff
-- [ ] **Smart Briefing & Client Hub:** Centralized workspace replacing spreadsheets with client assets, structured requirements, and AI context prompts
-- [ ] **Client Handover & Delivery Kits:** White-label documentation, client manuals, and automated DNS/domain setup checklists
-- [ ] **Behance & Marketing Showcase:** Final case studies and visual assets after demo review
+- **Implemented locally:** public portfolio catalogue; internal client/project CRM and briefing workspace; audited Landing Only and Landing + CMS package generation; managed maintenance/rebase foundations; operational privacy request tracking.
+- **Acceptance in progress:** final visual approval of selected demos; integrated commercial scenarios and package release sign-off; confirmation that client handover materials match the generated package and CMS controls.
+- **Environment-specific validation not complete:** hosted deployment/cron, provider-backed email delivery, and destination-specific recovery/rollback. These are not represented as production-ready.
+- **Showcase publication:** case-study guides and current, approved screenshots remain separate from implementation status; demo content is fictional and must not be presented as client work or measured results.
 
 ---
 

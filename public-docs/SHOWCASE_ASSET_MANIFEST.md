@@ -2,6 +2,10 @@
 
 This document inventories the visual material currently used by the public GitHub README. It is a publication checklist, not proof that a demo has passed the final review.
 
+Repository description, suggested topics, positioning copy and a non-published
+release-notes draft are prepared in `GITHUB_REPOSITORY_METADATA.md`. That file
+does not change GitHub settings or authorize a release.
+
 ## Diagrams
 
 | File | Purpose | Status |

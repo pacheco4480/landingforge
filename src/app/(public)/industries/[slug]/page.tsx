@@ -11,7 +11,7 @@ export const revalidate = 300;
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const data = await getPortfolioIndustryByKey(slug);
-  if (!data) return { title: "Indústria não encontrada | LandingForge", robots: { index: false, follow: false } };
+  if (!data) notFound();
   return {
     title: `Landing pages para ${data.industry.name} | LandingForge`,
     description: data.industry.description || `Explore demos de landing pages LandingForge para ${data.industry.name}.`,

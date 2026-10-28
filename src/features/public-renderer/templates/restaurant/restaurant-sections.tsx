@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {
+  ArrowUpRight,
   CalendarCheck,
   ChefHat,
   Clock,
@@ -1131,13 +1132,29 @@ export function RestaurantLocationSection({ context, section }: PublicSectionPro
           </div>
         </div>
         {mapQuery ? (
-          <iframe
-            className="min-h-72 w-full rounded-md border border-black/10 bg-[var(--public-surface)]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-            title={`Mapa de ${text(section.content, "title", "restaurante")}`}
-          />
+          <a
+            aria-label={`Abrir direções para ${address} no Google Maps`}
+            className="group flex min-h-72 flex-col justify-between rounded-md border border-black/10 bg-[radial-gradient(circle_at_82%_18%,color-mix(in_srgb,var(--public-primary)_18%,transparent),transparent_34%),var(--public-surface)] p-6 text-[var(--public-text)] shadow-sm transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--public-primary)]"
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
+            rel="noreferrer"
+            target="_blank"
+          >
+            <span className="inline-flex size-12 items-center justify-center rounded-full bg-[var(--public-background)] text-[var(--public-primary)] shadow-sm">
+              <MapPin aria-hidden="true" className="size-5" />
+            </span>
+            <span>
+              <span className="block text-xs font-bold uppercase tracking-[0.16em] text-[var(--public-muted)]">
+                Como chegar
+              </span>
+              <span className="mt-2 block max-w-md text-lg font-semibold leading-6">
+                {address}
+              </span>
+              <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[var(--public-primary)]">
+                Abrir direções no Google Maps
+                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </span>
+            </span>
+          </a>
         ) : (
           <div className="min-h-72 rounded-md border border-dashed border-slate-300 bg-[var(--public-surface)] p-6 text-sm text-[var(--public-muted)]">
             {text(section.content, "mapNote", "A equipa envia indicações de chegada quando confirma a reserva.")}

@@ -25,7 +25,7 @@ export function HeroSection({ section, context }: PublicSectionProps) {
             {text(
               c,
               "subheadline",
-              text(c, "description", context.site.businessType),
+              text(c, "description", context.site.businessType ?? undefined),
             )}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">

@@ -94,7 +94,7 @@ export async function ensureLegalPages(userId?: string) {
   const pages = await Promise.all([
     upsertLegalPage({
       slug: legalSlugs.privacy,
-      title: "Politica de Privacidade",
+      title: "Política de Privacidade",
       type: LegalDocumentType.PRIVACY_POLICY,
       metaDescription:
         "Informacao sobre recolha, utilizacao e protecao de dados pessoais.",

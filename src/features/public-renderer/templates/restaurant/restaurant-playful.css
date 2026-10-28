@@ -964,20 +964,72 @@
   width: 1rem;
 }
 
-.restaurant-playful-location__map,
 .restaurant-playful-location__map-note {
   width: 100%;
   min-height: 380px;
-  border: 0;
-  background: #d8c2aa;
+  border: 2px solid var(--playful-ink);
+  background:
+    radial-gradient(circle at 85% 16%, rgb(255 209 102 / 72%), transparent 25%),
+    radial-gradient(circle at 12% 88%, rgb(98 224 198 / 70%), transparent 28%),
+    #fff3df;
 }
 
 .restaurant-playful-location__map-note {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  color: var(--playful-ink);
+  text-align: left;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.restaurant-playful-location__map-note:hover {
+  box-shadow: 8px 8px 0 rgb(42 23 16 / 14%);
+  transform: translate(-2px, -2px);
+}
+
+.restaurant-playful-location__map-note:focus-visible {
+  outline: 3px solid var(--playful-coral);
+  outline-offset: 4px;
+}
+
+.restaurant-playful-location__map-icon {
   display: grid;
+  width: 3.5rem;
+  aspect-ratio: 1;
   place-items: center;
-  padding: 2rem;
-  color: #4a382c;
-  text-align: center;
+  border: 2px solid var(--playful-ink);
+  border-radius: 50%;
+  background: white;
+  box-shadow: 4px 4px 0 var(--playful-yellow);
+}
+
+.restaurant-playful-location__map-icon svg {
+  width: 1.5rem;
+}
+
+.restaurant-playful-location__map-note > span:last-child {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.restaurant-playful-location__map-note strong {
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  line-height: 1.05;
+}
+
+.restaurant-playful-location__directions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
 }
 
 .restaurant-playful #contact {
@@ -1278,7 +1330,6 @@
   .restaurant-playful-reviews__featured {
     min-height: 300px;
   }
-  .restaurant-playful-location__map,
   .restaurant-playful-location__map-note {
     min-height: 300px;
   }

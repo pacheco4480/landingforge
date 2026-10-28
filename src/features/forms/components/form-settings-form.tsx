@@ -171,7 +171,7 @@ export function FormSettingsForm({
               name="gdprConsentLabel"
               defaultValue={
                 form?.gdprConsentLabel ??
-                "Li e aceito a Politica de Privacidade."
+                "Li e aceito a Política de Privacidade."
               }
               disabled={!canWrite}
               required

@@ -17,6 +17,10 @@ Features
   Content
   Forms
   Leads
+  Clients and Projects
+  Briefings and delivery specifications
+  Client package export runtimes
+  Privacy request workflows
   SEO
   Branding
   Media
@@ -72,6 +76,15 @@ The protected CMS is used to manage:
 - admin/audit views.
 
 The CMS is not intended to be a generic website builder. It is intentionally scoped to landing page delivery and operations.
+
+## Client Delivery Workflows
+
+Internal client/project modules support briefing, review, maintenance and
+handover workflows. The export pipeline can generate audited Landing Only and
+Landing + CMS packages from approved project snapshots. Package generation is
+implemented locally; integrated release acceptance and destination-specific
+deployment validation remain separate gates. The Master CMS is not included as
+a hidden client-facing CMS in Landing Only packages.
 
 ## Data Flow
 

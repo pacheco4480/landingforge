@@ -10,7 +10,7 @@ export const revalidate = 300;
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const item = await getPortfolioItemBySlug(slug);
-  if (!item) return { title: "Template não encontrado | LandingForge", robots: { index: false, follow: false } };
+  if (!item) notFound();
   return {
     title: item.seoSetting?.metaTitle || `${item.title} | LandingForge`,
     description: item.seoSetting?.metaDescription || item.templateVariant?.description || item.template?.description || item.title,

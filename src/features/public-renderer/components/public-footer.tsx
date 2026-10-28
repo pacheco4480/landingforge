@@ -80,7 +80,7 @@ export function PublicFooter({
         </div>
 
         {hasLinks ? (
-          <nav aria-label="Navegacao de rodape" className={classes.navigation}>
+          <nav aria-label="Navegação do rodapé" className={classes.navigation}>
             {links.map((link) => (
               <a
                 className={classes.link}

@@ -1,6 +1,5 @@
 import { SkipLink } from "@/components/ui/skip-link";
 import { CookieConsentBanner } from "@/features/legal/components/cookie-consent-banner";
-import { getPublicLegalSettings } from "@/features/legal/services/legal-settings.service";
 import {
   PublicHeader,
   type PublicHeaderBrand,
@@ -17,29 +16,46 @@ import {
 import { isRecord, text } from "@/features/public-renderer/components/section-utils";
 import type { PublicRendererContext } from "@/features/public-renderer/types";
 
-export async function PublicLayout({
+export type PublicLayoutLegalSettings = {
+  privacyPage: { slug: string; title: string } | null;
+  cookiePage: { slug: string; title: string } | null;
+  termsPage: { slug: string; title: string } | null;
+  analyticsCookiesEnabled: boolean;
+  cookieBannerEnabled: boolean;
+  marketingCookiesEnabled: boolean;
+  consentVersion: string;
+};
+
+export function PublicLayout({
   context,
   children,
+  legalSettings,
+  saveConsentAction,
 }: {
   context: PublicRendererContext;
   children: React.ReactNode;
+  legalSettings: PublicLayoutLegalSettings;
+  saveConsentAction: (formData: FormData) => Promise<void>;
 }) {
-  const legal = await getPublicLegalSettings();
-  const privacyHref = legal.privacyPage
-    ? `/${legal.privacyPage.slug}`
+  const privacyHref = legalSettings.privacyPage
+    ? `/${legalSettings.privacyPage.slug}`
     : "/politica-privacidade";
-  const cookieHref = legal.cookiePage
-    ? `/${legal.cookiePage.slug}`
+  const cookieHref = legalSettings.cookiePage
+    ? `/${legalSettings.cookiePage.slug}`
     : "/politica-cookies";
-  const termsHref = legal.termsPage
-    ? `/${legal.termsPage.slug}`
+  const termsHref = legalSettings.termsPage
+    ? `/${legalSettings.termsPage.slug}`
     : "/termos-condicoes";
   const brand = getPageBrand(context);
   const header = getPageHeader(context, brand);
   const footer = getPageFooter(context, brand, [
-    { href: privacyHref, label: "Politica de Privacidade" },
-    { href: cookieHref, label: "Politica de Cookies" },
-    { href: termsHref, label: "Termos e Condicoes" },
+    ...(context.previewMode
+      ? []
+      : [
+          { href: privacyHref, label: "Política de Privacidade" },
+          { href: cookieHref, label: "Política de Cookies" },
+          { href: termsHref, label: "Termos e Condições" },
+        ]),
   ]);
 
   return (
@@ -69,11 +85,12 @@ export async function PublicLayout({
         variant={footer.variant}
       />
       <CookieConsentBanner
-        analyticsEnabled={legal.analyticsCookiesEnabled}
+        saveConsentAction={saveConsentAction}
+        analyticsEnabled={legalSettings.analyticsCookiesEnabled}
         cookiePolicyHref={cookieHref}
-        enabled={legal.cookieBannerEnabled}
-        marketingEnabled={legal.marketingCookiesEnabled}
-        version={legal.consentVersion}
+        enabled={legalSettings.cookieBannerEnabled && !context.previewMode}
+        marketingEnabled={legalSettings.marketingCookiesEnabled}
+        version={legalSettings.consentVersion}
       />
     </div>
   );
@@ -94,7 +111,11 @@ function getPageBrand(context: PublicRendererContext) {
 
   return {
     businessName,
-    contactEmail: text(contactSection?.content, "email", context.site.contactEmail),
+    contactEmail: text(
+      contactSection?.content,
+      "email",
+      context.page.isDemo ? "" : context.site.contactEmail,
+    ),
     location: getFooterLocation(context, contactSection?.content),
     phone: text(contactSection?.content, "phone", ""),
     logoAltText: text(

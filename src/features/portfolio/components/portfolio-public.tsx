@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Form, FormField } from "@/generated/prisma/client";
 import { PublicForm } from "@/features/public-renderer/components/forms/public-form";
+import { submitPublicFormAction } from "@/features/public-renderer/actions/public-form.actions";
 import { getSecuritySettings } from "@/lib/security/security-settings.service";
 import type { PublicPortfolioCard, PublicPortfolioItem } from "@/features/portfolio/services/portfolio.service";
 
@@ -79,7 +80,7 @@ export async function PortfolioInquiry({ form, contactEmail }: { form: GlobalFor
         {!form && contactEmail ? <a className="mt-5 inline-block underline underline-offset-4" href={`mailto:${contactEmail}`}>{contactEmail}</a> : null}
         {!form && !contactEmail ? <p className="mt-5 text-sm text-neutral-300">O formulário de contacto ainda não está configurado.</p> : null}
       </div>
-      {form ? <div className="rounded-md bg-white p-5 text-neutral-900 sm:p-7"><PublicForm formId={form.id} pageId={null} fields={form.fields} gdprConsentLabel={form.gdprConsentLabel} gdprConsentRequired={form.gdprConsentRequired} gdprConsentVersion={form.gdprConsentVersion} turnstileSiteKey={security?.turnstileEnabled ? security.turnstileSiteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY : null} /></div> : null}
+      {form ? <div className="rounded-md bg-white p-5 text-neutral-900 sm:p-7"><PublicForm submitAction={submitPublicFormAction} formId={form.id} pageId={null} fields={form.fields} gdprConsentLabel={form.gdprConsentLabel} gdprConsentRequired={form.gdprConsentRequired} gdprConsentVersion={form.gdprConsentVersion} turnstileSiteKey={security?.turnstileEnabled ? security.turnstileSiteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY : null} /></div> : null}
     </section>
   );
 }

@@ -15,7 +15,7 @@ import {
 } from "@/features/public-renderer/components/sections/basic-sections";
 import { ContactSection } from "@/features/public-renderer/components/sections/contact-section";
 import { itemText, items, text } from "@/features/public-renderer/components/section-utils";
-import { sectionRegistry } from "@/features/public-renderer/section-registry";
+import { gymSectionRegistry } from "@/features/public-renderer/section-registry/gym";
 import type { PublicSectionProps } from "@/features/public-renderer/types";
 import { GymModernGalleryClient } from "@/features/public-renderer/templates/gym/gym-modern-gallery";
 
@@ -340,7 +340,7 @@ export function GymModernReveal({ children }: { children: ReactNode }) {
 }
 
 export const gymModernSectionRegistry: Record<string, ComponentType<PublicSectionProps>> = {
-  ...sectionRegistry,
+  ...gymSectionRegistry,
   gym_hero: GymModernHero,
   gym_method: GymModernMethod,
   gym_values_rail: GymModernValuesRail,

@@ -14,6 +14,7 @@ import {
 } from "@/features/content/services/page.service";
 import { revalidatePublicPage } from "@/features/public-renderer/services/public-cache.service";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 
 function formValue(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -42,7 +43,20 @@ export async function createPageAction(formData: FormData) {
 export async function updatePageAction(formData: FormData) {
   const user = await requirePermission(permissions.pagesWrite);
   const id = formValue(formData, "id");
-  const existingPage = await getPageForUser(id, user.roles);
+  const existingPage = await getPageForUser(id, user.roles, user);
+  if (existingPage.maintenanceCandidate?.status === "PUBLISHED") {
+    throw new Error("Uma release publicada é imutável. Cria uma nova versão de manutenção.");
+  }
+  if (existingPage.maintenanceCandidate && formValue(formData, "status") !== "DRAFT") {
+    throw new Error("Uma versão candidata de manutenção nunca pode ser publicada diretamente pelo CMS.");
+  }
+  if (
+    existingPage.maintenanceCandidate &&
+    (formValue(formData, "templateId") !== (existingPage.templateId ?? "") ||
+      formValue(formData, "templateVariantId") !== (existingPage.templateVariantId ?? ""))
+  ) {
+    throw new Error("A variante da cópia de manutenção não pode ser alterada neste fluxo.");
+  }
 
   const page = await updatePage(
     {
@@ -56,6 +70,7 @@ export async function updatePageAction(formData: FormData) {
     },
     user.id,
   );
+  await invalidateMaintenanceCandidate(id);
 
   revalidatePath("/pages");
   revalidatePath(`/pages/${id}/edit`);
@@ -66,7 +81,7 @@ export async function updatePageAction(formData: FormData) {
 export async function duplicatePageAction(formData: FormData) {
   const user = await requirePermission(permissions.pagesWrite);
   const id = formValue(formData, "id");
-  await getPageForUser(id, user.roles);
+  await getPageForUser(id, user.roles, user);
   const page = await duplicatePage(id, user.id);
 
   revalidatePath("/pages");
@@ -77,7 +92,8 @@ export async function duplicatePageAction(formData: FormData) {
 export async function archivePageAction(formData: FormData) {
   const user = await requirePermission(permissions.pagesWrite);
   const id = formValue(formData, "id");
-  const page = await getPageForUser(id, user.roles);
+  const page = await getPageForUser(id, user.roles, user);
+  if (page.maintenanceCandidate) throw new Error("Uma versão candidata não pode ser arquivada pelo CMS.");
   await archivePage(id, user.id);
 
   revalidatePath("/pages");
@@ -88,7 +104,8 @@ export async function archivePageAction(formData: FormData) {
 export async function deletePageAction(formData: FormData) {
   const user = await requirePermission(permissions.pagesWrite);
   const id = formValue(formData, "id");
-  const page = await getPageForUser(id, user.roles);
+  const page = await getPageForUser(id, user.roles, user);
+  if (page.maintenanceCandidate) throw new Error("Uma versão candidata não pode ser eliminada pelo CMS.");
   await deletePage(id, user.id);
 
   revalidatePath("/pages");

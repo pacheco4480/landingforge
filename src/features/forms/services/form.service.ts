@@ -14,7 +14,7 @@ export async function getFormsWorkspace(
   const [pages, forms] = await Promise.all([
     getEditablePageOptions(userRoles),
     db.form.findMany({
-      where: { deletedAt: null },
+      where: { deletedAt: null, OR: [{ pageId: null }, { page: { maintenanceCandidate: { is: null } } }] },
       orderBy: { updatedAt: "desc" },
       include: {
         page: { select: { title: true, slug: true } },
@@ -26,7 +26,7 @@ export async function getFormsWorkspace(
   const selectedFormId = formId ?? forms[0]?.id;
   const selectedForm = selectedFormId
     ? await db.form.findUnique({
-        where: { id: selectedFormId },
+        where: { id: selectedFormId, OR: [{ pageId: null }, { page: { maintenanceCandidate: { is: null } } }] },
         include: {
           fields: { orderBy: { sortOrder: "asc" } },
           submissions: { orderBy: { createdAt: "desc" }, take: 5 },
@@ -168,7 +168,7 @@ export async function createFormFromTemplate(
         errorMessage: "We could not send your request. Please try again.",
         recipientEmail,
         gdprConsentRequired: true,
-        gdprConsentLabel: "Li e aceito a Politica de Privacidade.",
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
         gdprConsentVersion: "1.0",
       },
     });

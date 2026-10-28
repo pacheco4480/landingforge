@@ -5,6 +5,8 @@ declare module "next-auth" {
     roles: string[];
     permissions: string[];
     authorizationVersion: number;
+    clientCmsProjectId?: string;
+    clientCmsRole?: "client_admin" | "viewer";
   }
 
   interface Session {
@@ -14,6 +16,11 @@ declare module "next-auth" {
       permissions: string[];
       authorizationVersion: number;
     };
+    clientCms?: {
+      projectId?: string;
+      role?: "client_admin" | "viewer";
+      authorizationVersion?: number;
+    };
   }
 }
 
@@ -22,5 +29,8 @@ declare module "next-auth/jwt" {
     roles?: string[];
     permissions?: string[];
     authorizationVersion?: number;
+    clientCmsProjectId?: string;
+    clientCmsRole?: "client_admin" | "viewer";
+    clientCmsAuthorizationVersion?: number;
   }
 }

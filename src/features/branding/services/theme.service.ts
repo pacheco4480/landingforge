@@ -4,7 +4,10 @@ import { themeSchema } from "@/features/branding/schemas/theme.schema";
 import { db } from "@/lib/db";
 
 export async function listThemes() {
-  return db.theme.findMany({ orderBy: { name: "asc" } });
+  return db.theme.findMany({
+    where: { pages: { none: { maintenanceCandidate: { isNot: null } } } },
+    orderBy: { name: "asc" },
+  });
 }
 
 export async function createTheme(input: unknown, userId: string) {
@@ -26,6 +29,11 @@ export async function createTheme(input: unknown, userId: string) {
 export async function updateTheme(input: unknown, userId: string) {
   const data = validateTheme(input);
   if (!data.id) throw new Error("Theme id is required.");
+  const maintenancePage = await db.page.findFirst({
+    where: { themeId: data.id, maintenanceCandidate: { isNot: null } },
+    select: { id: true },
+  });
+  if (maintenancePage) throw new Error("O tema de uma versão de manutenção só pode ser alterado no âmbito do projeto.");
 
   const theme = await db.theme.update({
     where: { id: data.id },

@@ -6,6 +6,9 @@ import {
   pageUpdateSchema,
 } from "@/features/content/schemas/page.schema";
 import { db } from "@/lib/db";
+import { projectWhereForActor } from "@/features/projects/project-access";
+
+type ContentActor = { id: string; roles: readonly string[]; permissions: readonly string[] };
 
 function nullableId(value?: string) {
   return value && value.length > 0 ? value : null;
@@ -30,7 +33,7 @@ export async function listPagesForUser(userRoles: readonly string[]) {
   const mode = getContentMode(userRoles);
 
   return db.page.findMany({
-    where: { deletedAt: null, ...mode.pageFilter },
+    where: { deletedAt: null, ...mode.pageFilter, maintenanceCandidate: { is: null } },
     orderBy: { updatedAt: "desc" },
     select: {
       id: true,
@@ -49,7 +52,7 @@ export async function listPagesForUser(userRoles: readonly string[]) {
   });
 }
 
-export async function getPageForUser(id: string, userRoles: readonly string[]) {
+export async function getPageForUser(id: string, userRoles: readonly string[], actor?: ContentActor) {
   const mode = getContentMode(userRoles);
 
   const page = await db.page.findFirst({
@@ -62,11 +65,23 @@ export async function getPageForUser(id: string, userRoles: readonly string[]) {
         where: { deletedAt: null },
         orderBy: { sortOrder: "asc" },
       },
+      maintenanceCandidate: { select: { id: true, projectId: true, status: true } },
     },
   });
 
   if (!page) {
     throw new Error("Page not found.");
+  }
+
+  if (page.maintenanceCandidate) {
+    if (!actor?.permissions.includes("projects.write")) {
+      throw new Error("A cópia de manutenção só pode ser acedida por operadores autorizados.");
+    }
+    const project = await db.project.findFirst({
+      where: { id: page.maintenanceCandidate.projectId, deletedAt: null, ...projectWhereForActor(actor) },
+      select: { id: true },
+    });
+    if (!project) throw new Error("Projeto não encontrado ou sem acesso.");
   }
 
   return page;
@@ -76,7 +91,7 @@ export async function getEditablePageOptions(userRoles: readonly string[]) {
   const mode = getContentMode(userRoles);
 
   return db.page.findMany({
-    where: { deletedAt: null, ...mode.pageFilter },
+    where: { deletedAt: null, ...mode.pageFilter, maintenanceCandidate: { is: null } },
     orderBy: [{ isDemo: "desc" }, { title: "asc" }],
     select: {
       id: true,

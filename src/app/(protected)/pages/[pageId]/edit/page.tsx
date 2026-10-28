@@ -21,7 +21,7 @@ export default async function EditPagePage({
   const user = await requirePermission(permissions.pagesRead);
   const { pageId } = await params;
   const [page, templates] = await Promise.all([
-    getPageForUser(pageId, user.roles),
+    getPageForUser(pageId, user.roles, user),
     listTemplatesWithVariants(),
   ]);
   const canWrite = canEditContent(user.permissions);

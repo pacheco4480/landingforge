@@ -17,6 +17,7 @@ describe("forms schemas", () => {
     });
 
     expect(form.key).toBe("contact");
+    expect(form.gdprConsentLabel).toBe("Li e aceito a Política de Privacidade.");
   });
 
   it("rejects invalid field names", () => {

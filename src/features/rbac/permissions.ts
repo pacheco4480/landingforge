@@ -23,6 +23,14 @@ export const permissions = {
   backupsRestore: "backups.restore",
   usersRead: "users.read",
   usersWrite: "users.write",
+  clientsRead: "clients.read",
+  clientsWrite: "clients.write",
+  clientNotesRead: "clients.notes.read",
+  clientNotesWrite: "clients.notes.write",
+  projectsRead: "projects.read",
+  projectsWrite: "projects.write",
+  projectsExport: "projects.export",
+  projectsAssign: "projects.assign",
 } as const;
 
 export type Permission = (typeof permissions)[keyof typeof permissions];

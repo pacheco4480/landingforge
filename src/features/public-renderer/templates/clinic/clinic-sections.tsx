@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {
+  ArrowUpRight,
   CalendarCheck,
   CheckCircle2,
   Clock,
@@ -644,11 +645,13 @@ export function ClinicDoctorsSection({ context, section }: PublicSectionProps) {
                 >
                   {itemText(doctor, "bio", "")}
                 </p>
-                <p
-                  className={`mt-4 text-xs leading-5 font-semibold ${isLuxury ? "text-white/48" : "text-slate-500"}`}
-                >
-                  {itemText(doctor, "credentials", "")}
-                </p>
+                {itemText(doctor, "credentials") ? (
+                  <p
+                    className={`mt-4 text-xs leading-5 font-semibold ${isLuxury ? "text-white/48" : "text-slate-500"}`}
+                  >
+                    {itemText(doctor, "credentials")}
+                  </p>
+                ) : null}
                 {isModern || isLuxury ? (
                   <div
                     className={`mt-5 flex flex-wrap gap-2 text-xs font-bold ${isLuxury ? "text-[#f3dca4]" : "text-slate-500"}`}
@@ -919,13 +922,29 @@ export function ClinicLocationsSection({ section }: PublicSectionProps) {
               key={index}
             >
               {mapQuery ? (
-                <iframe
-                  className="h-64 w-full border-0"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
-                  title={`Mapa de ${itemText(location, "name", "clínica")}`}
-                />
+                <a
+                  aria-label={`Abrir direções para ${address} no Google Maps`}
+                  className="group flex h-64 flex-col justify-between bg-[radial-gradient(circle_at_82%_18%,rgba(13,148,136,0.18),transparent_32%),linear-gradient(135deg,#ecfdf5,#f8fafc)] p-6 text-slate-900 transition hover:shadow-inner focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--public-primary)]"
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <span className="inline-flex size-12 items-center justify-center rounded-full bg-white text-[var(--public-primary)] shadow-sm">
+                    <MapPin aria-hidden="true" className="size-5" />
+                  </span>
+                  <span>
+                    <span className="block text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                      Como chegar
+                    </span>
+                    <span className="mt-2 block max-w-sm text-lg font-bold leading-6">
+                      {address}
+                    </span>
+                    <span className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[var(--public-primary)]">
+                      Abrir direções no Google Maps
+                      <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </span>
+                  </span>
+                </a>
               ) : null}
               <div className="p-6">
                 <h3 className="text-xl font-black text-slate-950">

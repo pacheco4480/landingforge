@@ -1,4 +1,3 @@
-import { getSecuritySettings } from "@/lib/security/security-settings.service";
 import type { PublicSectionProps } from "@/features/public-renderer/types";
 import { PublicForm } from "@/features/public-renderer/components/forms/public-form";
 import {
@@ -15,9 +14,6 @@ export async function ContactSection({
   description,
 }: PublicSectionProps & { title?: string; description?: string }) {
   const form = context.page.forms[0] ?? null;
-  const security = await getSecuritySettings();
-  const turnstileSiteKey =
-    security.turnstileSiteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const variant = resolvePresentation(
     section.sectionType,
     section.settings,
@@ -26,6 +22,16 @@ export async function ContactSection({
   );
   const compact = variant === "compact";
   const editorial = variant === "editorial";
+  const email = text(
+    section.content,
+    "email",
+    context.page.isDemo ? "" : context.site.contactEmail,
+  );
+  const phone = text(
+    section.content,
+    "phone",
+    context.page.isDemo ? "" : (context.site.contactPhone ?? ""),
+  );
 
   return (
     <PublicBand id="contact">
@@ -53,26 +59,24 @@ export async function ContactSection({
               )
             }
           />
-          <dl className="mt-6 grid gap-3 text-sm text-[var(--public-muted)] sm:grid-cols-2">
-            <div>
-              <dt className="font-semibold text-[var(--public-text)]">Email</dt>
-              <dd>
-                {text(section.content, "email", context.site.contactEmail)}
-              </dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-[var(--public-text)]">
-                Telefone
-              </dt>
-              <dd>
-                {text(
-                  section.content,
-                  "phone",
-                  context.site.contactPhone ?? "",
-                )}
-              </dd>
-            </div>
-          </dl>
+          {email || phone ? (
+            <dl className="mt-6 grid gap-3 text-sm text-[var(--public-muted)] sm:grid-cols-2">
+              {email ? (
+                <div>
+                  <dt className="font-semibold text-[var(--public-text)]">Email</dt>
+                  <dd>{email}</dd>
+                </div>
+              ) : null}
+              {phone ? (
+                <div>
+                  <dt className="font-semibold text-[var(--public-text)]">
+                    Telefone
+                  </dt>
+                  <dd>{phone}</dd>
+                </div>
+              ) : null}
+            </dl>
+          ) : null}
         </div>
         <div
           className={
@@ -83,8 +87,9 @@ export async function ContactSection({
                 : "public-card"
           }
         >
-          {form ? (
+          {form && context.integrations?.submitFormAction ? (
             <PublicForm
+              submitAction={context.integrations.submitFormAction}
               formId={form.id}
               pageId={context.page.id}
               fields={form.fields}
@@ -92,13 +97,15 @@ export async function ContactSection({
               gdprConsentRequired={form.gdprConsentRequired}
               gdprConsentVersion={form.gdprConsentVersion}
               turnstileSiteKey={
-                security.turnstileEnabled ? turnstileSiteKey : null
+                context.integrations.turnstileEnabled
+                  ? context.integrations.turnstileSiteKey
+                  : null
               }
               className={compact ? "gap-3" : undefined}
             />
           ) : (
             <p className="text-sm text-[var(--public-muted)]">
-              Formulário ainda não configurado.
+              Formulário temporariamente indisponível.
             </p>
           )}
         </div>

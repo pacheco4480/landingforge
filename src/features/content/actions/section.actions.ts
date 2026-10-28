@@ -14,7 +14,11 @@ import {
   updateSection,
 } from "@/features/content/services/section.service";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { requireAuth } from "@/lib/auth/require-auth";
+import { hasPermission } from "@/features/rbac/rbac.service";
+import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 import { normalizePresentationSettings } from "@/features/public-renderer/section-presentation";
+import { db } from "@/lib/db";
 
 function formValue(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -29,10 +33,19 @@ function parseJsonObject(value: string) {
   return parsed as Record<string, unknown>;
 }
 
+async function assertSectionBelongsToPage(sectionId: string, pageId: string) {
+  const section = await db.pageSection.findFirst({ where: { id: sectionId, pageId, deletedAt: null }, select: { id: true } });
+  if (!section) throw new Error("A secção não pertence a esta página.");
+}
+
 async function requireEditablePage(formData: FormData) {
-  const user = await requirePermission(permissions.cmsWrite);
+  const user = await requireAuth();
   const pageId = formValue(formData, "pageId");
-  const page = await getPageForUser(pageId, user.roles);
+  const candidate = await getMaintenanceCandidateForPage(pageId, user);
+  if (!candidate && !hasPermission(user.permissions, permissions.cmsWrite)) {
+    await requirePermission(permissions.cmsWrite);
+  }
+  const page = await getPageForUser(pageId, user.roles, user);
   return { user, pageId, page };
 }
 
@@ -46,6 +59,7 @@ export async function createSectionAction(formData: FormData) {
     },
     user.id,
   );
+  await invalidateMaintenanceCandidate(pageId);
 
   revalidatePath(`/content/${pageId}`);
   revalidatePath(`/pages/${pageId}/edit`);
@@ -54,6 +68,7 @@ export async function createSectionAction(formData: FormData) {
 
 export async function updateSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
+  await assertSectionBelongsToPage(formValue(formData, "id"), pageId);
   const sectionType = formValue(formData, "sectionType");
   const settings = normalizePresentationSettings(
     parseJsonObject(formValue(formData, "settings") || "{}"),
@@ -73,6 +88,7 @@ export async function updateSectionAction(formData: FormData) {
     },
     user.id,
   );
+  await invalidateMaintenanceCandidate(pageId);
 
   revalidatePath(`/content/${pageId}`);
   revalidatePath(`/pages/${pageId}/edit`);
@@ -81,29 +97,41 @@ export async function updateSectionAction(formData: FormData) {
 
 export async function duplicateSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
-  await duplicateSection(formValue(formData, "id"), user.id);
+  const sectionId = formValue(formData, "id");
+  await assertSectionBelongsToPage(sectionId, pageId);
+  await duplicateSection(sectionId, user.id);
+  await invalidateMaintenanceCandidate(pageId);
   revalidatePath(`/content/${pageId}`);
   revalidatePublicPage(page.slug);
 }
 
 export async function deleteSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
-  await deleteSection(formValue(formData, "id"), user.id);
+  const sectionId = formValue(formData, "id");
+  await assertSectionBelongsToPage(sectionId, pageId);
+  await deleteSection(sectionId, user.id);
+  await invalidateMaintenanceCandidate(pageId);
   revalidatePath(`/content/${pageId}`);
   revalidatePublicPage(page.slug);
 }
 
 export async function toggleSectionVisibilityAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
-  await toggleSectionVisibility(formValue(formData, "id"), user.id);
+  const sectionId = formValue(formData, "id");
+  await assertSectionBelongsToPage(sectionId, pageId);
+  await toggleSectionVisibility(sectionId, user.id);
+  await invalidateMaintenanceCandidate(pageId);
   revalidatePath(`/content/${pageId}`);
   revalidatePublicPage(page.slug);
 }
 
 export async function moveSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
+  const sectionId = formValue(formData, "id");
+  await assertSectionBelongsToPage(sectionId, pageId);
   const direction = formValue(formData, "direction") === "down" ? "down" : "up";
-  await moveSection(formValue(formData, "id"), direction, user.id);
+  await moveSection(sectionId, direction, user.id);
+  await invalidateMaintenanceCandidate(pageId);
   revalidatePath(`/content/${pageId}`);
   revalidatePublicPage(page.slug);
 }

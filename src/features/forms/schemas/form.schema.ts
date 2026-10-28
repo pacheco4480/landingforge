@@ -37,7 +37,7 @@ export const formSchema = z.object({
     .trim()
     .min(1)
     .max(300)
-    .default("Li e aceito a Politica de Privacidade."),
+    .default("Li e aceito a Política de Privacidade."),
   gdprConsentVersion: z.string().trim().min(1).max(40).default("1.0"),
 });
 

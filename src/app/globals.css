@@ -123,3 +123,48 @@ body {
     animation: none;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .briefing-print-document,
+  .briefing-print-document * {
+    visibility: visible !important;
+  }
+
+  .briefing-print-document {
+    position: absolute;
+    inset: 0;
+    display: grid !important;
+    width: 100%;
+    padding: 0;
+    color: #111;
+    background: #fff;
+  }
+
+  .briefing-print-document .print\:hidden {
+    display: none !important;
+  }
+
+  .briefing-print-document section,
+  .briefing-print-document header {
+    break-inside: avoid;
+  }
+
+  .project-specification-print,
+  .project-specification-print * {
+    visibility: visible !important;
+  }
+
+  .project-specification-print {
+    position: absolute;
+    inset: 0;
+    display: block !important;
+    width: 100%;
+    padding: 0;
+    color: #111;
+    background: #fff;
+  }
+}

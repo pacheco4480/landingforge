@@ -27,6 +27,14 @@ const permissions = [
   "backups.read",
   "backups.create",
   "backups.restore",
+  "clients.read",
+  "clients.write",
+  "clients.notes.read",
+  "clients.notes.write",
+  "projects.read",
+  "projects.write",
+  "projects.export",
+  "projects.assign",
 ] as const;
 
 const rolePermissions = {

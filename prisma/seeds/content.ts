@@ -564,8 +564,8 @@ async function seedClinicDemos(prisma: PrismaClient) {
         proofText:
           "O primeiro contacto recolhe apenas o essencial. A equipa confirma disponibilidade e explica o próximo passo sem pedir informação clínica detalhada.",
         heroImage:
-          "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
-        heroImageAlt: "Clínica moderna luminosa com profissional de saúde a acompanhar paciente",
+          "https://images.unsplash.com/photo-1758691462878-6edc3d3da1be?auto=format&fit=crop&w=1600&q=82",
+        heroImageAlt: "Médica a explicar informação clínica a um paciente",
         stats: [
           { label: "Marcação", value: "Pedido simples" },
           { label: "Cuidados", value: "Acompanhamento" },
@@ -582,7 +582,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
           personality: "Calma, moderna, próxima e transparente.",
           photographyStyle: "Clínica luminosa, retratos naturais, detalhes de cuidado humano.",
           tagline: "Saúde simples, humana e bem acompanhada.",
-          typography: "Sans-serif limpa, headings fortes, microcopy muito legivel.",
+          typography: "Sans-serif limpa, títulos fortes e microcopy muito legível.",
           voice: "Clara, tranquilizadora, sem jargão médico.",
         },
       },
@@ -617,7 +617,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         eyebrow: "Aurea Privé — medicina privada e longevidade",
         headline: "Cuidado privado para quem valoriza tempo, discrição e critério clínico",
         subheadline:
-          "Uma experiência de saúde reservada em Lisboa, conduzida por especialistas sénior, com consultas prolongadas, comunicação discreta e planos claros antes de qualquer tratamento.",
+          "Uma experiência de saúde reservada em Lisboa, com consultas prolongadas, comunicação discreta e planos claros antes de qualquer tratamento.",
         ctaPrimary: "Solicitar consulta privada",
         ctaSecondary: "Ver experiência privada",
         proofLabel: "Privacidade desde o primeiro pedido",
@@ -638,12 +638,12 @@ async function seedClinicDemos(prisma: PrismaClient) {
             "Champagne/charcoal identity system",
             "Editorial clinic photography board",
           ],
-          corePromise: "Tempo protegido, escuta atenta e acompanhamento com total discrição.",
+          corePromise: "Tempo protegido, escuta atenta e acompanhamento reservado.",
           personality: "Reservada, editorial, calma, sofisticada.",
           photographyStyle: "Interiores privados, luz controlada, retratos sénior e detalhes tácteis.",
-          tagline: "Private care, quietly handled.",
+          tagline: "Cuidado privado, com discrição.",
           typography: "Headings editoriais amplos, body sans-serif refinado.",
-          voice: "Discreta, precisa, premium, sem pressao comercial.",
+          voice: "Discreta, precisa, premium e sem pressão comercial.",
         },
       },
     },
@@ -656,7 +656,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         "Conversa inicial para perceber objetivo, sintomas gerais e melhor percurso de acompanhamento.",
       duration: "45-60 min",
       name: "Avaliação orientada",
-      priceLabel: "Confirmado pela equipa",
+      priceLabel: "Mediante contacto",
     },
     {
       category: "Planos de cuidado",
@@ -680,14 +680,14 @@ async function seedClinicDemos(prisma: PrismaClient) {
         "Pedido simples para quem quer falar com a equipa antes de marcar e perceber o acompanhamento indicado.",
       duration: "Mediante contacto",
       name: "Pedido de orientação",
-      priceLabel: "Sem custo inicial",
+      priceLabel: "Mediante contacto",
     },
   ] as const;
 
   const doctors = [
     {
       bio: "Coordena consultas de avaliação, comunicação com pacientes e definição de planos seguros.",
-      credentials: "Ordem profissional ativa, formação contínua e experiência em contexto privado.",
+      credentials: "",
       availability: "Consultas presenciais e acompanhamento",
       image:
         "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=700&q=80",
@@ -699,7 +699,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
     },
     {
       bio: "Acompanha pacientes que precisam de um plano claro, conversa tranquila e contacto humano depois da consulta.",
-      credentials: "Especialização clínica, atendimento humanizado e coordenação de percursos de cuidado.",
+      credentials: "",
       availability: "Triagem e consulta programada",
       image:
         "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=700&q=80",
@@ -714,7 +714,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
 
   const credentials = [
     {
-      description: "Equipa identificada, qualificações verificadas e comunicação clara em cada etapa.",
+      description: "Áreas de cuidado, equipa e próximos passos apresentados com clareza.",
       title: "Equipa identificada",
     },
     {
@@ -771,7 +771,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
               priceLabel: "Avaliação prévia",
             },
             {
-              category: "Estetica médica",
+              category: "Estética médica",
               description:
                 "Tratamentos discretos e progressivos, apresentados com limites, alternativas e expectativas realistas.",
               duration: "Consulta + plano",
@@ -794,8 +794,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
             {
               availability: "Consultas privadas e plano anual",
               bio: "Coordena percursos de medicina privada, prevenção e acompanhamento para pacientes que exigem tempo protegido e comunicação discreta.",
-              credentials:
-                "Especialista sénior, experiência em medicina privada e acompanhamento personalizado.",
+              credentials: "",
               image:
                 "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=700&q=80",
               imageAlt: "Médica sénior de clínica privada",
@@ -807,14 +806,13 @@ async function seedClinicDemos(prisma: PrismaClient) {
             {
               availability: "Longevidade, estética médica e acompanhamento",
               bio: "Desenha planos discretos para bem-estar, tratamentos progressivos e decisões clínicas com expectativas realistas.",
-              credentials:
-                "Formação avançada em longevidade, estética médica e comunicação clínica privada.",
+              credentials: "",
               image:
                 "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=700&q=80",
               imageAlt: "Especialista de clínica premium em consulta",
               languages: "PT / EN",
               name: "Dr. Henrique Salgado",
-              role: "Especialista Sénior",
+              role: "Medicina privada",
               specialty: "Longevidade e estética médica",
             },
           ]
@@ -839,8 +837,8 @@ async function seedClinicDemos(prisma: PrismaClient) {
             },
             {
               description:
-                "Especialistas sénior, acompanhamento documentado e coordenação clara antes de cada etapa.",
-              title: "Equipa sénior",
+                "Informação sobre a equipa e as áreas de acompanhamento apresentada de forma clara.",
+              title: "Equipa e acompanhamento",
             },
           ]
         : credentials;
@@ -954,7 +952,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
               "Private Experience",
               {
                 title: "Uma experiência privada antes, durante e depois da consulta",
-                text: "A Aurea Privé foi desenhada para pacientes que valorizam entrada discreta, tempo protegido, informação clara e continuidade sem exposição desnecessária.",
+                text: "A Aurea Privé foi pensada para pacientes que valorizam um atendimento reservado, tempo protegido, informação clara e acompanhamento contínuo.",
                 items: [
                   {
                     title: "Entrada discreta",
@@ -1002,12 +1000,15 @@ async function seedClinicDemos(prisma: PrismaClient) {
         "clinic_credentials",
         "Clinic Credentials",
         {
-          title: "Porque os pacientes confiam na equipa",
+          title:
+            config.variantKey === "modern"
+              ? "Clareza antes da consulta"
+              : "Privacidade e acompanhamento com critério",
           text:
             config.variantKey === "luxury"
               ? "A confiança nasce da privacidade, do tempo protegido e de uma comunicação sem pressão."
               : config.variantKey === "modern"
-                ? "Equipa identificada, privacidade clara e processo simples para quem procura marcar com tranquilidade."
+                ? "Informação clara sobre o primeiro contacto, a privacidade e os próximos passos."
                 : "Credenciais, privacidade e informação clara para reduzir ansiedade.",
           items: credentialItems,
         },
@@ -1021,11 +1022,11 @@ async function seedClinicDemos(prisma: PrismaClient) {
             config.variantKey === "modern"
               ? "Profissionais que explicam antes de avançar"
               : config.variantKey === "luxury"
-                ? "Especialistas sénior para acompanhamento reservado"
+                ? "Profissionais de saúde para acompanhamento reservado"
               : "Equipa preparada para explicar e acompanhar",
           text:
             config.variantKey === "luxury"
-              ? "Perfis apresentados com critério clínico, discrição e experiência real."
+              ? "Perfis apresentados com discrição e informação sobre as áreas de acompanhamento."
               : config.variantKey === "modern"
                 ? "Uma equipa pequena, identificada e preparada para orientar o paciente sem pressa nem linguagem complicada."
                 : "Médicos, terapeutas e coordenadores apresentados com funções claras.",
@@ -1113,7 +1114,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
                   : "Paciente em acompanhamento",
               quote:
                 config.variantKey === "modern"
-                  ? "A marcação foi simples, sem chamadas desnecessárias, e recebi uma resposta clara no mesmo dia."
+                  ? "A marcação foi simples, sem chamadas desnecessárias, e recebi indicação clara sobre os próximos passos."
                   : config.variantKey === "luxury"
                     ? "O plano foi apresentado sem pressa, com limites claros e opções realistas."
                   : "Senti acompanhamento desde o primeiro contacto, sempre com privacidade.",
@@ -1162,7 +1163,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
               title:
                 config.variantKey === "luxury"
                   ? "Entrada reservada"
-                  : config.variantKey === "modern" ? "Rececao orientada" : "Rececao calma",
+                  : config.variantKey === "modern" ? "Receção orientada" : "Receção calma",
               image:
                 config.variantKey === "luxury"
                   ? "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80"
@@ -1273,7 +1274,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
                 config.variantKey === "luxury"
                   ? "Consultas privadas por marcação, segunda a sábado"
                   : config.variantKey === "modern"
-                    ? "Segunda a sexta, 08:00-20:00; sabado, 09:00-13:00"
+                    ? "Segunda a sexta, 08:00–20:00; sábado, 09:00–13:00"
                     : "Segunda a sexta, 08:30-19:00",
             },
           ],
@@ -1287,7 +1288,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
           ctaPrimary: "Enviar pedido",
           headline:
             config.variantKey === "luxury"
-              ? "Solicite uma consulta privada com total discrição"
+              ? "Solicite uma consulta privada com discrição"
               : "Peça contacto para marcar consulta",
           text:
             config.variantKey === "modern"
@@ -1299,7 +1300,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
             ? {
                 privacyText:
                   "Aurea Privé não solicita histórico clínico detalhado neste primeiro pedido. O contacto serve apenas para coordenar atendimento reservado.",
-                privacyTitle: "Consulta privada, dados minimos",
+                privacyTitle: "Consulta privada, dados mínimos",
               }
             : config.variantKey === "modern"
             ? {
@@ -1318,7 +1319,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
           title: "Perguntas frequentes",
           items: [
             {
-              question: "Posso marcar sem explicar detalhes clinicos?",
+              question: "Posso marcar sem explicar detalhes clínicos?",
               answer:
                 "Sim. O pedido inicial deve conter apenas contacto, serviço pretendido e disponibilidade geral.",
             },
@@ -1328,7 +1329,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
                 "Sim. A clínica confirma disponibilidade e próximos passos pelo canal indicado.",
             },
             {
-              question: "Os dados sao tratados com privacidade?",
+              question: "Os dados são tratados com privacidade?",
               answer:
                 "Sim. Cada pedido inclui consentimento claro, informação de privacidade e contacto seguro da equipa.",
             },
@@ -1340,8 +1341,6 @@ async function seedClinicDemos(prisma: PrismaClient) {
         "contact",
         "Contact",
         {
-          email: "hello@example.com",
-          phone: "+351 210 000 030",
           text:
             config.variantKey === "luxury"
               ? "Envie um pedido discreto e a equipa privada confirma disponibilidade pelo canal indicado."
@@ -1382,6 +1381,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         recipientEmail: "hello@example.com",
         status: FormStatus.PUBLISHED,
         type: FormType.APPOINTMENT,
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
       },
       create: {
         errorMessage: "Não foi possível enviar o pedido. Tente novamente.",
@@ -1390,6 +1390,7 @@ async function seedClinicDemos(prisma: PrismaClient) {
         pageId: page.id,
         recipientEmail: "hello@example.com",
         status: FormStatus.PUBLISHED,
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
         successMessage: "Pedido recebido. A equipa entrara em contacto em breve.",
         type: FormType.APPOINTMENT,
       },
@@ -1478,7 +1479,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         headline: "Casas escolhidas com critério por quem conhece cada bairro",
         subheadline:
           "A Aura Living combina avaliação honesta, leitura real do mercado local e acompanhamento próximo para famílias, proprietários e compradores exigentes.",
-        ctaPrimary: "Pedir avaliação gratuita",
+        ctaPrimary: "Pedir avaliação",
         ctaSecondary: "Ver casas selecionadas",
         stats: [
           { label: "Conhecimento", value: "De bairro" },
@@ -1497,19 +1498,19 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           photographyStyle: "Ruas de bairro, casas luminosas, consultores em contexto real.",
           tagline: "Casas com critério de bairro.",
           typography: "Sans-serif calorosa com hierarquia editorial simples.",
-          voice: "Direta, humana, transparente e sem pressao.",
+          voice: "Direta, humana, transparente e sem pressão.",
         },
         properties: [
           {
             tag: "Seleção Aura",
             title: "Apartamento T3 com terraço e luz de fim de tarde",
             location: "Avenida Central, Lisboa",
-            price: "345.000 EUR",
+            price: "345 000 €",
             status: "Novo no Mercado",
             type: "Apartamento T3",
             beds: "3",
             baths: "2",
-            area: "142 m2",
+            area: "142 m²",
             image:
               "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
             imageAlt: "Sala de estar ampla com luz natural e acabamentos modernos",
@@ -1523,12 +1524,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "T3 com varanda perto de escolas",
           location: "Centro histórico renovado",
-          price: "285.000 EUR",
+          price: "285 000 €",
           status: "Novo",
           type: "Apartamento familiar",
           beds: "3",
           baths: "2",
-          area: "128 m2",
+          area: "128 m²",
           image:
             "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80",
           imageAlt: "Apartamento familiar luminoso com sala aberta",
@@ -1536,12 +1537,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Moradia familiar com jardim sul",
           location: "Bairro residencial tranquilo",
-          price: "420.000 EUR",
+          price: "420 000 €",
           status: "Exclusivo",
           type: "Moradia",
           beds: "4",
           baths: "3",
-          area: "220 m2",
+          area: "220 m²",
           image:
             "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=80",
           imageAlt: "Moradia familiar com jardim e fachada moderna",
@@ -1549,15 +1550,15 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Loja com montra em rua de passagem",
           location: "Rua principal do bairro",
-          price: "1.250 EUR/mês",
+          price: "1 250 €/mês",
           status: "Arrendamento",
           type: "Comercial local",
           beds: "-",
           baths: "1",
-          area: "78 m2",
+          area: "78 m²",
           image:
             "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
-          imageAlt: "Espaco comercial luminoso preparado para atendimento",
+          imageAlt: "Espaço comercial luminoso preparado para atendimento",
         },
       ],
       highlights: [
@@ -1574,7 +1575,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Avaliação honesta",
           description:
-            "Estimamos valor com comparáveis reais, timing de mercado e posicionamento para evitar promessas vazias.",
+            "Estimamos valor com imóveis comparáveis, leitura do mercado e posicionamento adequado, sem promessas vazias.",
         },
         {
           title: "Fecho acompanhado",
@@ -1586,18 +1587,14 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           name: "Marta Silva",
           role: "Consultora local",
-          phone: "+351 210 000 001",
-          email: "marta@example.com",
           image:
             "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
-          imageAlt: "Consultora imobiliaria Marta Silva",
-          bio: "Especialista em casas familiares, zonas escolares e comunicacao clara com proprietarios.",
+          imageAlt: "Consultora imobiliária Marta Silva",
+          bio: "Acompanha famílias e proprietários, com conhecimento das zonas residenciais e comunicação clara.",
         },
         {
           name: "Rui Martins",
           role: "Avaliação e angariação",
-          phone: "+351 210 000 002",
-          email: "rui@example.com",
           image:
             "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
           imageAlt: "Consultor imobiliario Rui Martins",
@@ -1609,7 +1606,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           name: "Centro histórico",
           profile: "Para quem quer comércio, cultura, serviços e mobilidade a poucos minutos.",
           trend: "Alta procura",
-          averagePrice: "2.420 EUR/m2",
+          averagePrice: "2 420 €/m²",
           averageTime: "29 dias",
           image:
             "https://images.unsplash.com/photo-1513735492246-483525079686?auto=format&fit=crop&w=900&q=80",
@@ -1619,7 +1616,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           name: "Zona escolar",
           profile: "Forte procura de famílias por escolas, parques, segurança e acessos diários.",
           trend: "Familiar",
-          averagePrice: "2.180 EUR/m2",
+          averagePrice: "2 180 €/m²",
           averageTime: "34 dias",
           image:
             "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=900&q=80",
@@ -1628,8 +1625,8 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           name: "Bairro jardim",
           profile: "Moradias, ruas calmas, espaços verdes e bom potencial de valorização.",
-          trend: "Estavel",
-          averagePrice: "2.650 EUR/m2",
+          trend: "Estável",
+          averagePrice: "2 650 €/m²",
           averageTime: "41 dias",
           image:
             "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=900&q=80",
@@ -1639,7 +1636,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           name: "Eixo comercial",
           profile: "Boa visibilidade para lojas, serviços de proximidade e pequenos negócios.",
           trend: "Comercial",
-          averagePrice: "18 EUR/m2",
+          averagePrice: "18 €/m²",
           averageTime: "37 dias",
           image:
             "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80",
@@ -1681,7 +1678,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           { label: "Contacto privado", href: "#contact" },
         ],
         eyebrow: "Vela Estates — consultoria imobiliária premium",
-        headline: "Casas premium apresentadas como ativos de desejo",
+        headline: "Casas singulares, escolhidas com critério e contexto",
         subheadline:
           "A Vela Estates combina casas cuidadosamente selecionadas, análise de mercado e acompanhamento discreto para compradores, vendedores e investidores exigentes.",
         ctaPrimary: "Agendar reunião privada",
@@ -1698,11 +1695,11 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
             "Market intelligence cards",
             "Editorial property showcase",
           ],
-          corePromise: "Transformar casas premium em ativos desejáveis, bem posicionados e bem negociados.",
+          corePromise: "Apresentar casas premium com contexto, critério e uma estratégia de venda cuidada.",
           personality: "Editorial, analítica, sofisticada, precisa.",
           photographyStyle: "Arquitetura premium, detalhes de materiais, interiores com luz dramática.",
           tagline: "Casas com critério. Decisões mais claras.",
-          typography: "Editorial premium com sans-serif refinada e numeros fortes.",
+          typography: "Editorial premium com sans-serif refinada e números fortes.",
           voice: "Consultiva, segura, seletiva e orientada por dados.",
         },
         properties: [
@@ -1710,18 +1707,18 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
             tag: "Dossier privado",
             title: "Penthouse com terraço panorâmico",
             location: "Avenida da Liberdade, Lisboa",
-            price: "895.000 EUR",
+            price: "895 000 €",
             status: "Seleção Vela",
             type: "Penthouse",
             beds: "4",
             baths: "3",
-            area: "245 m2",
+            area: "245 m²",
             description:
               "Vista aberta, sala social fluida, suites silenciosas e um terraço desenhado para receber ao fim do dia.",
             ctaLabel: "Solicitar dossier",
             image:
               "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-            imageAlt: "Penthouse premium com arquitetura contemporanea e terraco panoramico",
+            imageAlt: "Penthouse premium com arquitetura contemporânea e terraço panorâmico",
           },
         ],
       },
@@ -1729,12 +1726,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Penthouse com terraço panorâmico",
           location: "Avenida da Liberdade, Lisboa",
-          price: "895.000 EUR",
+          price: "895 000 €",
           status: "Seleção Vela",
           type: "Penthouse",
           beds: "4",
           baths: "3",
-          area: "245 m2",
+          area: "245 m²",
           image:
             "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
           imageAlt: "Penthouse premium com arquitetura contemporânea e terraço panorâmico",
@@ -1742,12 +1739,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Apartamento junto ao rio com luz poente",
           location: "Parque das Nações, Lisboa",
-          price: "735.000 EUR",
+          price: "735 000 €",
           status: "Disponível",
           type: "Apartamento",
           beds: "3",
           baths: "3",
-          area: "188 m2",
+          area: "188 m²",
           image:
             "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
           imageAlt: "Apartamento contemporâneo junto ao rio com interiores luminosos",
@@ -1755,12 +1752,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Moradia contemporânea em condomínio reservado",
           location: "Cascais, Quinta da Marinha",
-          price: "1.150.000 EUR",
+          price: "1 150 000 €",
           status: "Exclusivo",
           type: "Moradia",
           beds: "5",
           baths: "4",
-          area: "360 m2",
+          area: "360 m²",
           image:
             "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80",
           imageAlt: "Moradia contemporânea com piscina e jardim em condomínio reservado",
@@ -1770,12 +1767,12 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Curadoria editorial",
           description:
-            "Seleção e apresentação de imóveis por arquitetura, liquidez, luz, contexto e potencial de valorização.",
+            "Seleção e apresentação de imóveis pela arquitetura, luz, localização e contexto de mercado.",
         },
         {
           title: "Leitura de interesse",
           description:
-            "Perguntas certas para perceber interesse, timing e capacidade antes de avançar para uma visita.",
+            "Perguntas certas para compreender o interesse, o momento e a capacidade antes de avançar para uma visita.",
         },
         {
           title: "Narrativa de valor",
@@ -1792,8 +1789,6 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           name: "Inês Valente",
           role: "Diretora de seleção imobiliária",
-          phone: "+351 210 000 011",
-          email: "ines@vela-estates.example",
           bio: "Especialista em posicionamento de casas premium, storytelling imobiliário e experiência de compra para clientes exigentes.",
           image:
             "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
@@ -1802,9 +1797,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           name: "Marco Seixas",
           role: "Consultor de investimento e mercado",
-          phone: "+351 210 000 012",
-          email: "marco@vela-estates.example",
-          bio: "Analisa liquidez, comparáveis, yield potencial e timing de mercado para compradores e proprietários premium.",
+          bio: "Analisa imóveis comparáveis, potencial de rentabilidade e contexto de mercado para compradores e proprietários.",
           image:
             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
           imageAlt: "Consultor imobiliário Marco Seixas",
@@ -2089,7 +2082,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
               : "Imóveis em destaque",
           text:
             config.variantKey === "premium"
-              ? "Uma seleção rigorosa de casas com liquidez, arquitetura e narrativa comercial fortes."
+              ? "Uma seleção rigorosa de casas pela arquitetura, localização e qualidade da apresentação."
               : "Casas escolhidas pela localização, estado de conservação e potencial para famílias que querem decidir com segurança.",
           items: config.properties,
         },
@@ -2271,7 +2264,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
             {
               question: "Posso pedir avaliação antes de decidir vender?",
               answer:
-                "Sim. A avaliação inicial ajuda a perceber preço, timing e procura.",
+                "Sim. Uma avaliação pode ajudar a compreender o valor do imóvel e o contexto da procura.",
             },
             {
               question: "As visitas são agendadas pela equipa?",
@@ -2279,9 +2272,9 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
                 "Sim. Deixe o contacto e a equipa confirma disponibilidade.",
             },
             {
-              question: "Trabalham com imóveis off-market?",
+              question: "Trabalham com oportunidades fora do mercado aberto?",
               answer:
-                "Sim. A equipa trabalha também oportunidades privadas e partilha detalhes apenas com clientes alinhados.",
+                "Quando existem oportunidades reservadas, a equipa partilha informação com pessoas cujo perfil e interesse sejam adequados.",
             },
           ],
         },
@@ -2293,8 +2286,6 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           title: "Fale com um consultor",
           text: "Envie o seu pedido e receba uma resposta com próximos passos.",
-          email: "hello@example.com",
-          phone: "+351 210 000 000",
         },
       ],
     ] as const;
@@ -2367,6 +2358,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         type: FormType.QUOTE,
         status: FormStatus.PUBLISHED,
         recipientEmail: "hello@example.com",
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
       },
       create: {
         pageId: page.id,
@@ -2377,6 +2369,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         successMessage: "Pedido recebido. Entraremos em contacto em breve.",
         errorMessage: "Não foi possível enviar. Tente novamente.",
         recipientEmail: "hello@example.com",
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
       },
     });
 
@@ -2386,7 +2379,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
       ["phone", "Telefone", FormFieldType.PHONE, true],
       ["interest", "Objetivo", FormFieldType.SELECT, true],
       ["location", "Localização pretendida", FormFieldType.TEXT, false],
-      ["budget", "Orcamento ou valor estimado", FormFieldType.TEXT, false],
+      ["budget", "Orçamento ou valor estimado", FormFieldType.TEXT, false],
       ["message", "Mensagem", FormFieldType.TEXTAREA, false],
     ] as const;
 
@@ -2400,7 +2393,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           sortOrder,
           options:
             name === "interest"
-              ? ["Comprar", "Vender", "Avaliar imovel", "Investir"]
+              ? ["Comprar", "Vender", "Avaliar imóvel", "Investir"]
               : undefined,
         },
         create: {
@@ -2412,7 +2405,7 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
           sortOrder,
           options:
             name === "interest"
-              ? ["Comprar", "Vender", "Avaliar imovel", "Investir"]
+              ? ["Comprar", "Vender", "Avaliar imóvel", "Investir"]
               : undefined,
         },
       });
@@ -2503,8 +2496,8 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
           type: "restaurant_menu_highlights",
           content: {
             layout: "fine_dining",
-            text: "Uma sequência curta de pratos sazonais, técnica precisa e sabores pensados para guardar surpresa até à mesa.",
-            title: "Sete momentos, uma narrativa.",
+            text: "Uma amostra de três momentos de uma degustação sazonal em sete tempos.",
+            title: "Três momentos, uma narrativa.",
             items: [
               {
                 category: "I. Frio",
@@ -2566,13 +2559,13 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
                 title: "32 lugares, zero ruído visual",
               },
               {
-                description:
-                  "Reserva guiada com notas alimentares para preparar a noite antes da chegada.",
                 image:
                   "https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Equipa de cozinha a preparar serviço antes da chegada dos clientes",
                 label: "Reserva",
-                title: "Alergias tratadas antes da mesa",
+                title: "Alergias e restrições comunicadas com antecedência",
+                description:
+                  "Indique alergias ou restrições alimentares no pedido para a equipa se preparar antes da sua chegada.",
               },
             ],
           },
@@ -2584,7 +2577,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
           content: {
             layout: "fine_dining",
             text: "Da chegada ao último copo, cada momento é preparado para deixar a noite respirar.",
-            title: "Uma noite em quatro tempos",
+            title: "Da chegada ao último copo",
             items: [
               {
                 description:
@@ -2728,7 +2721,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
           content: {
             address: "Rua da Escola Politécnica 88, Lisboa",
             hours: "Quarta a sábado, 19:30-23:00",
-            reservationNote: "Mesas limitadas. Confirmação enviada por email.",
+            reservationNote: "A equipa confirma a disponibilidade após receber o pedido.",
             text: "Localização, horários e expectativas de reserva sempre visíveis.",
             title: "No coração de Lisboa",
             mapQuery: "Rua da Escola Politécnica 88 Lisboa Portugal",
@@ -2791,15 +2784,15 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
             eyebrow: "Boca Pop",
             headline: "Comida para partilhar. Noites para repetir.",
             heroImage:
-              "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=82",
+              "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=1400&q=82",
             heroImageAlt:
-              "Mesa de restaurante vibrante com amigos a partilhar pratos coloridos",
+              "Grupo de amigos reunido à mesa numa noite animada",
             secondaryImage:
               "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=82",
             secondaryImageAlt:
               "Prato colorido com massa e ingredientes vibrantes",
             highlights: [
-              { label: "Grupos", value: "2-14 pax" },
+              { label: "Grupos", value: "2–14 pessoas" },
               { label: "Cocktails", value: "De autor" },
               { label: "Energia", value: "Todos os dias" },
             ],
@@ -2807,17 +2800,17 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
             proofText:
               "Pratos partilhados, grupos e aniversários aparecem logo no primeiro contacto.",
             stickers: [
-              { label: "spicy tables" },
-              { label: "birthday ready" },
-              { label: "share first" },
-              { label: "neon nights" },
+              { label: "mesas picantes" },
+              { label: "aniversário à vista" },
+              { label: "partilhar primeiro" },
+              { label: "noites de néon" },
             ],
             ticker: [
-              { label: "book the table" },
-              { label: "bring the group" },
-              { label: "hot plates" },
-              { label: "late cocktails" },
-              { label: "story ready" },
+              { label: "reserva a mesa" },
+              { label: "traz o grupo" },
+              { label: "pratos a chegar" },
+              { label: "cocktails até tarde" },
+              { label: "noite para contar" },
             ],
             subheadline:
               "Junta o grupo, escolhe pratos para partilhar e reserva uma mesa cheia de cor, cocktails e boa energia.",
@@ -2837,21 +2830,21 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
                 description:
                   "Tacos crocantes, pickles vivos e três molhos da casa para começar sem pedir opinião a toda a mesa.",
                 price: "Desde 9",
-                title: "Taco Chaos",
+                title: "Tacos em festa",
               },
               {
                 category: "Principal",
                 description:
                   "Frango glaceado, lima, ervas frescas e arroz tostado. Chega grande, desaparece depressa.",
                 price: "18",
-                title: "Fire Bird Bowl",
+                title: "Taça de frango picante",
               },
               {
                 category: "Cocktail",
                 description:
-                  "Manga, chili, citrinos e sal. Fotogénico, picante e feito para o primeiro brinde.",
+                  "Manga, malagueta, citrinos e uma pitada de sal. Colorido, picante e feito para o primeiro brinde.",
                 price: "11",
-                title: "Hot Mango Spritz",
+                title: "Spritz de manga picante",
               },
             ],
           },
@@ -2998,7 +2991,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
                 description:
                   "Mesas para amigos, aniversários e convívios depois do trabalho, com pedido simples e resposta clara.",
                 image:
-                  "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=900&q=82",
+                  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=82",
                 imageAlt: "Mesa de grupo em ambiente animado",
                 label: "Grupos",
               },
@@ -3025,7 +3018,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
               { label: "Eventos", value: "Aniversários e jantares de equipa" },
             ],
             eyebrow: "Grupos e eventos",
-            text: "Reservas individuais, aniversários e mesas de grupo tratados pela mesma equipa, com resposta clara.",
+            text: "Indica o dia, o horário e o tamanho do grupo. A equipa confirma a disponibilidade e ajuda a preparar a visita.",
             title: "Junta a mesa e escolhe a próxima noite.",
           },
         },
@@ -3168,6 +3161,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
         successMessage:
           "Pedido recebido. A equipa confirmará a disponibilidade em breve.",
         type: FormType.BOOKING,
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
       },
       create: {
         description: "Pedido de reserva recebido atraves da pagina publica do restaurante.",
@@ -3181,6 +3175,7 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
         successMessage:
           "Pedido recebido. A equipa confirmará a disponibilidade em breve.",
         type: FormType.BOOKING,
+        gdprConsentLabel: "Li e aceito a Política de Privacidade.",
       },
     });
 
@@ -3237,11 +3232,34 @@ async function seedGymModernDemo(prisma: PrismaClient) {
     ["plans", "gym_plans", "Planos", { title: "Escolhe o nível de acompanhamento", text: "Sem fórmulas escondidas. Falamos contigo para encontrar o formato certo.", items: [{ title: "Base", description: "Para começares com acompanhamento e consistência.", label: "Plano de entrada" }, { title: "Performance", description: "Para treinares com um plano e acompanhamento próximo.", label: "Plano estruturado" }, { title: "Acompanhamento individual", description: "Para objetivos específicos e atenção individual.", label: "Sob consulta" }] }],
     ["coaches", "gym_coaches", "Treinadores", { title: "A experiência certa muda o treino", text: "Treinadores que explicam, corrigem e acompanham sem transformar cada sessão numa prova de ego.", items: [{ name: "Marta Costa", title: "Força e mobilidade", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=82", imageAlt: "Marta Costa, treinadora de força e mobilidade" }, { name: "João Reis", title: "Performance", image: "https://images.unsplash.com/photo-1567013127542-490d757e51fc?auto=format&fit=crop&w=700&q=82", imageAlt: "João Reis, treinador de performance" }, { name: "Inês Silva", title: "Treino individual", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=700&q=82", imageAlt: "Inês Silva, treinadora de treino individual" }] }],
     ["trial", "gym_trial", "Primeiro passo", { title: "Vem experimentar uma sessão com método.", text: "Conta-nos o teu objetivo. A equipa explica-te como pode ser um plano mais claro, humano e sustentável.", cta: "Marcar avaliação" }],
-    ["contact", "gym_contact", "Contacto", { title: "Começa com uma conversa", text: "Partilha o teu objetivo e a equipa do Norte Studio responde com o próximo passo.", email: "hello@example.com", phone: "+351 210 000 000" }],
+    ["contact", "gym_contact", "Contacto", { title: "Começa com uma conversa", text: "Partilha o teu objetivo e a equipa do Norte Studio indica-te o próximo passo." }],
   ] as const;
   for (const [sortOrder, [sectionKey, sectionType, name, content]] of sections.entries()) await prisma.pageSection.upsert({ where: { pageId_sectionKey: { pageId: page.id, sectionKey } }, update: { sectionType, name, sortOrder, isVisible: true, content }, create: { pageId: page.id, sectionKey, sectionType, name, sortOrder, isVisible: true, content, settings: { variant: "modern" } } });
   await hideGenericDemoSections(prisma, page.id, sections.map(([sectionKey]) => sectionKey));
-  const form = await prisma.form.upsert({ where: { pageId_key: { pageId: page.id, key: "gym-evaluation" } }, update: { name: "Pedido de avaliação", type: FormType.CONTACT, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. O Norte Studio responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." }, create: { pageId: page.id, key: "gym-evaluation", name: "Pedido de avaliação", description: "Pedido de avaliação inicial.", type: FormType.CONTACT, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. O Norte Studio responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." } });
+  const form = await prisma.form.upsert({
+    where: { pageId_key: { pageId: page.id, key: "gym-evaluation" } },
+    update: {
+      name: "Pedido de avaliação",
+      type: FormType.CONTACT,
+      status: FormStatus.PUBLISHED,
+      recipientEmail: "hello@example.com",
+      successMessage: "Pedido recebido. O Norte Studio responde em breve.",
+      errorMessage: "Não foi possível enviar o pedido. Tente novamente.",
+      gdprConsentLabel: "Li e aceito a Política de Privacidade.",
+    },
+    create: {
+      pageId: page.id,
+      key: "gym-evaluation",
+      name: "Pedido de avaliação",
+      description: "Pedido de avaliação inicial.",
+      type: FormType.CONTACT,
+      status: FormStatus.PUBLISHED,
+      recipientEmail: "hello@example.com",
+      successMessage: "Pedido recebido. O Norte Studio responde em breve.",
+      errorMessage: "Não foi possível enviar o pedido. Tente novamente.",
+      gdprConsentLabel: "Li e aceito a Política de Privacidade.",
+    },
+  });
   const fields = [["name", "Nome", FormFieldType.TEXT, true], ["email", "Email", FormFieldType.EMAIL, true], ["phone", "Telefone", FormFieldType.PHONE, false], ["goal", "Objetivo", FormFieldType.TEXT, true], ["message", "Conta-nos o teu ponto de partida", FormFieldType.TEXTAREA, true]] as const;
   for (const [sortOrder, [name, label, type, isRequired]] of fields.entries()) await prisma.formField.upsert({ where: { formId_name: { formId: form.id, name } }, update: { label, type, isRequired, sortOrder }, create: { formId: form.id, name, label, type, isRequired, sortOrder } });
 }
@@ -3268,16 +3286,16 @@ async function seedBakeryPlayfulDemo(prisma: PrismaClient) {
     ["celebration", "bakery_celebration", "O teu momento", { title: "Que sabor tem a tua celebração?", text: "Escolhe a energia. A Boca Doce trata do resto, com cor, cuidado e uma receita feita para a tua ocasião.", items: [{ title: "Uma festa colorida", description: "Camadas alegres, cobertura leve e detalhes para pôr toda a mesa a sorrir.", icon: "palette" }, { title: "Um momento só teu", description: "Uma criação desenhada à medida da ocasião, das cores e das pessoas que queres surpreender.", icon: "cake" }, { title: "Para levar e partilhar", description: "Doces frescos, fáceis de escolher e prontos para aparecer nas fotografias certas.", icon: "party" }] }],
     ["gallery", "bakery_gallery", "Galeria", { title: "Visto na mesa", text: "Cor, cobertura e detalhes que pedem uma fotografia.", items: [{ title: "Bolos de festa", label: "celebrar", image: "https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=1200&q=82", imageAlt: "Bolo de celebração colorido" }, { title: "Detalhes doces", label: "feito à mão", image: "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=82", imageAlt: "Donuts coloridos" }, { title: "Mesa Boca Doce", label: "partilhar", image: "https://images.unsplash.com/photo-1707528904105-4a97ac86feb5?auto=format&fit=crop&w=900&q=82", imageAlt: "Mesa com pastelaria e bolos variados" }] }],
     ["testimonials", "bakery_testimonials", "Testemunhos", { title: "Quem provou, voltou", text: "Pequenas mensagens de quem trouxe a Boca Doce para a sua mesa.", items: [{ name: "Inês Carvalho", quote: "O bolo chegou lindo e ainda mais delicioso do que imaginava." }, { name: "Rita Matos", quote: "A equipa percebeu a ideia, acrescentou magia e entregou tudo no dia certo." }, { name: "João Sousa", quote: "Os miúdos escolheram as cores. Os adultos repetiram a fatia." }] }],
-    ["seasonal-offers", "bakery_seasonal_offers", "Edições sazonais", { title: "Sabores da estação", text: "Receitas sazonais preparadas na pastelaria. Confirma a disponibilidade do dia antes de encomendar.", items: [{ title: "Citrus pop", description: "Bolo de limão, creme leve e merengue tostado.", label: "Sazonal", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo fresco com frutos" }] }],
+    ["seasonal-offers", "bakery_seasonal_offers", "Edições sazonais", { title: "Sabores da estação", text: "Receitas sazonais preparadas na pastelaria. Confirma a disponibilidade do dia antes de encomendar.", items: [{ title: "Citrinos pop", description: "Bolo de limão, creme leve e merengue tostado.", label: "Sazonal", image: "https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=900&q=82", imageAlt: "Bolo fresco com frutos" }] }],
     ["hours", "bakery_opening_hours", "Opening Hours", { title: "Passa por cá", text: "A vitrine muda com a semana. A vontade pode aparecer a qualquer hora.", hours: "Terça a sábado · 09:00–18:30", address: "Rua da Alegria, Lisboa" }],
     ["faq", "bakery_faq", "FAQ", { title: "Perguntas com cobertura", items: [{ question: "Com quanto tempo devo pedir um bolo personalizado?", answer: "Para bolos personalizados, recomendamos falar connosco com pelo menos cinco dias de antecedência." }, { question: "Posso escolher cores e sabores?", answer: "Sim. Partilhe a ocasião e as preferências no pedido; a equipa confirma as combinações disponíveis." }, { question: "Onde levantamos a encomenda?", answer: "A encomenda é levantada na loja, em Lisboa, no horário combinado." }] }],
-    ["contact", "bakery_contact", "Contact", { title: "Vamos fazer acontecer?", text: "Conta-nos a ocasião e a ideia. Respondemos com os próximos passos.", email: "hello@example.com", phone: "+351 210 000 000" }],
+    ["contact", "bakery_contact", "Contact", { title: "Vamos fazer acontecer?", text: "Conta-nos a ocasião e a ideia. Respondemos com os próximos passos." }],
   ] as const;
   for (const [sortOrder, [sectionKey, sectionType, name, content]] of sections.entries()) {
     await prisma.pageSection.upsert({ where: { pageId_sectionKey: { pageId: page.id, sectionKey } }, update: { sectionType, name, sortOrder, isVisible: true, content }, create: { pageId: page.id, sectionKey, sectionType, name, sortOrder, isVisible: true, content, settings: { variant: "playful" } } });
   }
   await hideGenericDemoSections(prisma, page.id, sections.map(([sectionKey]) => sectionKey));
-  const form = await prisma.form.upsert({ where: { pageId_key: { pageId: page.id, key: "bakery-custom-order" } }, update: { name: "Bakery Custom Order Form", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." }, create: { pageId: page.id, key: "bakery-custom-order", name: "Bakery Custom Order Form", description: "Pedido de bolo personalizado.", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." } });
+  const form = await prisma.form.upsert({ where: { pageId_key: { pageId: page.id, key: "bakery-custom-order" } }, update: { name: "Bakery Custom Order Form", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", gdprConsentLabel: "Li e aceito a Política de Privacidade.", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." }, create: { pageId: page.id, key: "bakery-custom-order", name: "Bakery Custom Order Form", description: "Pedido de bolo personalizado.", type: FormType.QUOTE, status: FormStatus.PUBLISHED, recipientEmail: "hello@example.com", gdprConsentLabel: "Li e aceito a Política de Privacidade.", successMessage: "Pedido recebido. A Boca Doce responde em breve.", errorMessage: "Não foi possível enviar o pedido. Tente novamente." } });
   const fields = [["name", "Nome", FormFieldType.TEXT, true], ["email", "Email", FormFieldType.EMAIL, true], ["phone", "Telefone", FormFieldType.PHONE, false], ["occasion", "Ocasião", FormFieldType.TEXT, true], ["date", "Data pretendida", FormFieldType.DATE, false], ["message", "Conta-nos a tua ideia", FormFieldType.TEXTAREA, true]] as const;
   for (const [sortOrder, [name, label, type, isRequired]] of fields.entries()) await prisma.formField.upsert({ where: { formId_name: { formId: form.id, name } }, update: { label, type, isRequired, sortOrder }, create: { formId: form.id, name, label, type, isRequired, sortOrder } });
 }
@@ -3487,7 +3505,7 @@ async function seedLegalFoundation(prisma: PrismaClient) {
   const legalPages = [
     {
       slug: "politica-privacidade",
-      title: "Politica de Privacidade",
+      title: "Política de Privacidade",
       type: LegalDocumentType.PRIVACY_POLICY,
       description:
         "Informação sobre recolha, utilização e proteção de dados pessoais.",

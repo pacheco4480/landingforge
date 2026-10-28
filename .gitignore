@@ -57,6 +57,9 @@ docs/
 # Internal application workspace
 .landingforge/
 
+# Generated internal sales drafts
+/output/pdf/
+
 # Office documents (internal only)
 *.docx
 

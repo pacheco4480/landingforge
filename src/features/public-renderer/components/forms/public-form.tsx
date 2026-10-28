@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import type { FormField } from "@/generated/prisma/client";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -15,9 +14,16 @@ import {
   Select,
   Textarea,
 } from "@/components/ui/form";
-import { submitPublicFormAction } from "@/features/public-renderer/actions/public-form.actions";
+import type { PublicFormField } from "@/features/public-renderer/types";
+
+type PublicFormAction = (formData: FormData) => Promise<{
+  ok: boolean;
+  fieldErrors: Record<string, string>;
+  formError: string | null;
+}>;
 
 export function PublicForm({
+  submitAction,
   formId,
   pageId,
   fields,
@@ -27,9 +33,10 @@ export function PublicForm({
   turnstileSiteKey,
   className,
 }: {
+  submitAction: PublicFormAction;
   formId: string;
   pageId?: string | null;
-  fields: FormField[];
+  fields: PublicFormField[];
   gdprConsentLabel: string;
   gdprConsentRequired: boolean;
   gdprConsentVersion: string;
@@ -88,7 +95,7 @@ export function PublicForm({
         }
 
         startTransition(async () => {
-          const result = await submitPublicFormAction(formData);
+          const result = await submitAction(formData);
 
           if (result.ok) {
             form.reset();
@@ -157,7 +164,7 @@ export function PublicForm({
           <div
             className="cf-turnstile"
             data-sitekey={turnstileSiteKey}
-            aria-label="Verificacao anti-spam"
+            aria-label="Verificação anti-spam"
           />
           {fieldErrors.turnstile ? (
             <p className="text-sm font-medium text-red-600" role="alert">
@@ -198,7 +205,7 @@ function validateVisibleFields({
   gdprConsentRequired,
   turnstileSiteKey,
 }: {
-  fields: FormField[];
+  fields: PublicFormField[];
   formData: FormData;
   gdprConsentRequired: boolean;
   turnstileSiteKey?: string | null;
@@ -221,13 +228,13 @@ function validateVisibleFields({
   }
 
   if (turnstileSiteKey && !formData.get("cf-turnstile-response")) {
-    errors.turnstile = "Conclui a verificacao anti-spam.";
+    errors.turnstile = "Conclui a verificação anti-spam.";
   }
 
   return errors;
 }
 
-function PublicField({ error, field }: { error?: string; field: FormField }) {
+function PublicField({ error, field }: { error?: string; field: PublicFormField }) {
   const id = `public-field-${field.id}`;
   const helpId = field.helpText ? `${id}-help` : undefined;
   const errorId = error ? `${id}-error` : undefined;
@@ -272,7 +279,7 @@ function PublicField({ error, field }: { error?: string; field: FormField }) {
 }
 
 function renderField(
-  field: FormField,
+  field: PublicFormField,
   common: {
     id: string;
     name: string;
@@ -352,7 +359,7 @@ function readFormValues(form: HTMLFormElement) {
   return values;
 }
 
-function shouldShowField(field: FormField, values: Record<string, string>) {
+function shouldShowField(field: PublicFormField, values: Record<string, string>) {
   if (!field.isVisible) return false;
   const rules = conditionalRules(field.conditionalLogic);
   if (rules.length === 0) return true;

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export function SkipLink({
   href = "#main-content",
-  children = "Saltar para o conteudo principal",
+  children = "Saltar para o conteúdo principal",
   className,
 }: {
   href?: string;

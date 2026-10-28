@@ -31,6 +31,17 @@ describe("getAuthorizedNavigation", () => {
     expect(items.some((item) => item.label === "Admin")).toBe(false);
   });
 
+  it("keeps internal Client and Project workspaces hidden without dedicated permissions", () => {
+    const items = getAuthorizedNavigation([
+      permissions.dashboardRead,
+      permissions.pagesRead,
+      permissions.leadsRead,
+    ]);
+
+    expect(items.some((item) => item.label === "Clients")).toBe(false);
+    expect(items.some((item) => item.label === "Projects")).toBe(false);
+  });
+
   it("does not show global admin with audit-only permissions", () => {
     const items = getAuthorizedNavigation([
       permissions.dashboardRead,

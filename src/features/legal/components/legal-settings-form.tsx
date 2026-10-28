@@ -97,7 +97,7 @@ export function LegalSettingsForm({
           </Grid>
           <Grid className="md:grid-cols-3">
             <PageSelect
-              label="Politica de Privacidade"
+              label="Política de Privacidade"
               name="privacyPageId"
               pages={legalPages}
               value={settings.privacyPageId}

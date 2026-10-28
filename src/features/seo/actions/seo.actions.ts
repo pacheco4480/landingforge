@@ -11,6 +11,7 @@ import { revalidatePublicPage } from "@/features/public-renderer/services/public
 import { permissions } from "@/features/rbac/permissions";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 
 function value(formData: FormData, key: string) {
   const raw = formData.get(key);
@@ -19,6 +20,8 @@ function value(formData: FormData, key: string) {
 
 export async function updateSeoSettingAction(formData: FormData) {
   const user = await requirePermission(permissions.seoWrite);
+  const pageId = value(formData, "pageId");
+  await getMaintenanceCandidateForPage(pageId, user);
   await updateSeoSetting(
     {
       pageId: value(formData, "pageId"),
@@ -38,14 +41,18 @@ export async function updateSeoSettingAction(formData: FormData) {
   );
   revalidatePath("/seo");
   revalidatePath("/sitemap.xml");
-  await revalidateSeoPage(value(formData, "pageId"));
+  await invalidateMaintenanceCandidate(pageId);
+  await revalidateSeoPage(pageId);
 }
 
 export async function generateStructuredDataAction(formData: FormData) {
   const user = await requirePermission(permissions.seoWrite);
-  await generateStructuredDataForPage(value(formData, "pageId"), user.id);
+  const pageId = value(formData, "pageId");
+  await getMaintenanceCandidateForPage(pageId, user);
+  await generateStructuredDataForPage(pageId, user.id);
   revalidatePath("/seo");
-  await revalidateSeoPage(value(formData, "pageId"));
+  await invalidateMaintenanceCandidate(pageId);
+  await revalidateSeoPage(pageId);
 }
 
 export async function updateLocalSeoAction(formData: FormData) {

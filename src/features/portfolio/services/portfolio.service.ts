@@ -1,4 +1,5 @@
 import { DemoStatus, PageStatus, Prisma } from "@/generated/prisma/client";
+import { cache } from "react";
 import { portfolioFilterSchema, portfolioVisibilitySchema } from "@/features/portfolio/schemas/portfolio.schema";
 import { publicPortfolioWhere } from "@/features/portfolio/policies/public-portfolio.policy";
 import { db } from "@/lib/db";
@@ -56,11 +57,11 @@ export async function getPortfolioFilters(input: unknown) {
   return { items, industries, templates, variants, filters };
 }
 
-export async function getPortfolioItemBySlug(slug: string) {
-  return db.page.findFirst({ where: { ...publicPortfolioWhere, slug }, select: portfolioSelect });
-}
+export const getPortfolioItemBySlug = cache(async (slug: string) =>
+  db.page.findFirst({ where: { ...publicPortfolioWhere, slug }, select: portfolioSelect }),
+);
 
-export async function getPortfolioIndustryByKey(key: string) {
+export const getPortfolioIndustryByKey = cache(async (key: string) => {
   const industry = await db.industry.findFirst({
     where: { key, isActive: true, templates: { some: { pages: { some: publicPortfolioWhere } } } },
     select: { key: true, name: true, description: true },
@@ -73,7 +74,7 @@ export async function getPortfolioIndustryByKey(key: string) {
     take: 80,
   });
   return { industry, items };
-}
+});
 
 export async function getPortfolioInquiryForm() {
   return db.form.findFirst({

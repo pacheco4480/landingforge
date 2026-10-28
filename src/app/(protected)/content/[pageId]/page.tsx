@@ -20,7 +20,7 @@ export default async function ContentEditorPage({
 }) {
   const user = await requirePermission(permissions.cmsRead);
   const { pageId } = await params;
-  const page = await getPageForUser(pageId, user.roles);
+  const page = await getPageForUser(pageId, user.roles, user);
   const canWrite = canEditContent(user.permissions);
   const [templates, themes] = await Promise.all([
     listTemplatesWithVariants(),

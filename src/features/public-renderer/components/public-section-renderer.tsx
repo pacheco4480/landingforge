@@ -18,10 +18,8 @@ import {
   GymModernReveal,
 } from "@/features/public-renderer/templates/gym/gym-modern";
 import "@/features/public-renderer/templates/gym/gym-modern.css";
-import type {
-  PublicRendererContext,
-  PublicSectionProps,
-} from "@/features/public-renderer/types";
+import type { PublicRendererContext } from "@/features/public-renderer/types";
+import { PublicSectionList } from "@/features/public-renderer/components/public-section-list";
 
 export function PublicSectionRenderer({
   context,
@@ -29,23 +27,13 @@ export function PublicSectionRenderer({
   context: PublicRendererContext;
 }) {
   const variant = context.page.templateVariant?.key;
-  const sections = (
-    <>
-      {context.page.sections.map((section) => {
-        const sectionMap =
-          context.page.template?.key === "bakery" && variant === "playful"
-            ? bakeryPlayfulSectionRegistry
-            : context.page.template?.key === "gym" && variant === "modern"
-              ? gymModernSectionRegistry
-              : sectionRegistry;
-        const Section = sectionMap[section.sectionType] as
-          | ((props: PublicSectionProps) => React.ReactNode)
-          | undefined;
-        if (!Section) return null;
-        return <Section key={section.id} section={section} context={context} />;
-      })}
-    </>
-  );
+  const sectionMap =
+    context.page.template?.key === "bakery" && variant === "playful"
+      ? bakeryPlayfulSectionRegistry
+      : context.page.template?.key === "gym" && variant === "modern"
+        ? gymModernSectionRegistry
+        : sectionRegistry;
+  const sections = <PublicSectionList context={context} registry={sectionMap} />;
   if (context.page.template?.key === "bakery" && variant === "playful") {
     return <BakeryPlayfulReveal>{sections}</BakeryPlayfulReveal>;
   }

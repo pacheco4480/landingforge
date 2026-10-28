@@ -4,12 +4,15 @@ export type CmsNavigationIcon =
   | "analytics"
   | "bell"
   | "content"
+  | "clients"
   | "dashboard"
   | "forms"
   | "media"
   | "pages"
+  | "projects"
   | "palette"
   | "search"
+  | "privacy"
   | "settings"
   | "users";
 
@@ -65,6 +68,20 @@ export const cmsNavigationItems = [
     description: "Captured leads and pipeline entry point.",
   },
   {
+    label: "Clients",
+    href: "/clients",
+    permission: permissions.clientsRead,
+    icon: "clients",
+    description: "Internal client records and commercial relationship status.",
+  },
+  {
+    label: "Projects",
+    href: "/projects",
+    permission: permissions.projectsRead,
+    icon: "projects",
+    description: "Project delivery scope, ownership and maintenance settings.",
+  },
+  {
     label: "SEO",
     href: "/seo",
     permission: permissions.seoRead,
@@ -98,6 +115,13 @@ export const cmsNavigationItems = [
     permission: permissions.adminAccess,
     icon: "users",
     description: "Audit logs, backups and exports.",
+  },
+  {
+    label: "Privacidade",
+    href: "/privacy",
+    permission: permissions.adminAccess,
+    icon: "privacy",
+    description: "Pedidos de titulares e revisão de retenção de dados.",
   },
   {
     label: "Portfolio",

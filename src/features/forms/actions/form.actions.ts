@@ -14,6 +14,7 @@ import { revalidatePublicPage } from "@/features/public-renderer/services/public
 import { permissions } from "@/features/rbac/permissions";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 
 function value(formData: FormData, key: string) {
   const raw = formData.get(key);
@@ -22,6 +23,12 @@ function value(formData: FormData, key: string) {
 
 export async function saveFormAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const pageId = value(formData, "pageId") || null;
+  const existing = value(formData, "id")
+    ? await db.form.findUnique({ where: { id: value(formData, "id") }, select: { pageId: true } })
+    : null;
+  if (existing?.pageId) await getMaintenanceCandidateForPage(existing.pageId, user);
+  if (pageId) await getMaintenanceCandidateForPage(pageId, user);
   const form = await saveForm(
     {
       id: value(formData, "id") || undefined,
@@ -43,38 +50,52 @@ export async function saveFormAction(formData: FormData) {
     user.id,
   );
   revalidatePath("/forms");
+  if (existing?.pageId) await invalidateMaintenanceCandidate(existing.pageId);
+  if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   await revalidateFormPage(form.pageId);
 }
 
 export async function duplicateFormAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const existing = await db.form.findUniqueOrThrow({ where: { id: value(formData, "id") }, select: { pageId: true } });
+  if (existing.pageId) await getMaintenanceCandidateForPage(existing.pageId, user);
   const form = await duplicateForm(value(formData, "id"), user.id);
+  if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   revalidatePath("/forms");
   await revalidateFormPage(form.pageId);
 }
 
 export async function archiveFormAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const existing = await db.form.findUniqueOrThrow({ where: { id: value(formData, "id") }, select: { pageId: true } });
+  if (existing.pageId) await getMaintenanceCandidateForPage(existing.pageId, user);
   const form = await archiveForm(value(formData, "id"), user.id);
+  if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   revalidatePath("/forms");
   await revalidateFormPage(form.pageId);
 }
 
 export async function deleteFormAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const existing = await db.form.findUniqueOrThrow({ where: { id: value(formData, "id") }, select: { pageId: true } });
+  if (existing.pageId) await getMaintenanceCandidateForPage(existing.pageId, user);
   const form = await deleteForm(value(formData, "id"), user.id);
+  if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   revalidatePath("/forms");
   await revalidateFormPage(form.pageId);
 }
 
 export async function createFormFromTemplateAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const pageId = value(formData, "pageId") || null;
+  if (pageId) await getMaintenanceCandidateForPage(pageId, user);
   const form = await createFormFromTemplate(
     value(formData, "templateKey") as FormTemplateKey,
     value(formData, "pageId") || null,
     value(formData, "recipientEmail"),
     user.id,
   );
+  if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   revalidatePath("/forms");
   await revalidateFormPage(form.pageId);
 }

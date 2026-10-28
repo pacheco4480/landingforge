@@ -11,6 +11,7 @@ import {
 import { revalidatePublicPage } from "@/features/public-renderer/services/public-cache.service";
 import { permissions } from "@/features/rbac/permissions";
 import { requirePermission } from "@/lib/auth/require-permission";
+import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 
 function value(formData: FormData, key: string) {
   const raw = formData.get(key);
@@ -57,11 +58,13 @@ export async function duplicateThemeAction(formData: FormData) {
 export async function applyThemeAction(formData: FormData) {
   const user = await requirePermission(permissions.settingsWrite);
   const pageId = value(formData, "pageId");
+  await getMaintenanceCandidateForPage(pageId, user);
   await applyThemeToPage(
     value(formData, "themeId"),
     pageId,
     user.id,
   );
   revalidatePath("/branding");
+  await invalidateMaintenanceCandidate(pageId);
   revalidatePublicPage();
 }
