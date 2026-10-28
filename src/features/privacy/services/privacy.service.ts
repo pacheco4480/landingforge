@@ -2,6 +2,7 @@ import {
   ClientStatus,
   PrivacyRequestStatus,
   PrivacyRequestType,
+  ProspectStatus,
   ProjectStatus,
 } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
@@ -71,6 +72,19 @@ export async function getPrivacyWorkspace() {
         select: { id: true, businessName: true, status: true, lastMeaningfulContactAt: true },
       })
     : [];
+  const prospectRecords = prospectPolicy?.enabled
+    ? await db.prospect.findMany({
+        where: {
+          deletedAt: null,
+          convertedClientId: null,
+          status: { not: ProspectStatus.CONVERTED },
+          lastMeaningfulContactAt: { not: null, lte: retentionCutoffDate(prospectPolicy.retentionDays) },
+        },
+        orderBy: { lastMeaningfulContactAt: "asc" },
+        take: 100,
+        select: { id: true, businessName: true, status: true, lastMeaningfulContactAt: true },
+      })
+    : [];
   const projectsForReview = projectPolicy?.enabled
     ? await db.project.findMany({
         where: {
@@ -89,7 +103,7 @@ export async function getPrivacyWorkspace() {
     requests: requests.map((request) => ({ ...request, nextStatuses: privacyStatusTransitions[request.status] })),
     clients,
     projects,
-    retentionCandidates: { prospects, projects: projectsForReview },
+    retentionCandidates: { prospects, prospectRecords, projects: projectsForReview },
   };
 }
 

@@ -35,6 +35,8 @@ const permissions = [
   "projects.write",
   "projects.export",
   "projects.assign",
+  "prospects.read",
+  "prospects.write",
 ] as const;
 
 const rolePermissions = {

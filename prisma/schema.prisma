@@ -111,6 +111,7 @@ enum SecurityEventType {
   HONEYPOT_TRIGGERED @map("honeypot_triggered")
   UPLOAD_BLOCKED     @map("upload_blocked")
   AUTH_BLOCKED       @map("auth_blocked")
+  API_REQUEST        @map("api_request")
 }
 
 enum SystemLogLevel {
@@ -198,6 +199,36 @@ enum ClientStatus {
   ARCHIVED      @map("archived")
 
   @@map("client_status")
+}
+
+enum ProspectStatus {
+  NEW                 @map("new")
+  NEEDS_REVIEW         @map("needs_review")
+  READY_TO_CONTACT     @map("ready_to_contact")
+  CONTACTED            @map("contacted")
+  MANUAL_FOLLOW_UP     @map("manual_follow_up")
+  INTERESTED           @map("interested")
+  NOT_INTERESTED       @map("not_interested")
+  DO_NOT_CONTACT       @map("do_not_contact")
+  CONVERTED            @map("converted")
+  ARCHIVED             @map("archived")
+
+  @@map("prospect_status")
+}
+
+enum ProspectSourceType {
+  MANUAL    @map("manual")
+  CSV       @map("csv")
+  ASSISTED  @map("assisted")
+
+  @@map("prospect_source_type")
+}
+
+enum ProspectSuppressionType {
+  EMAIL   @map("email")
+  DOMAIN  @map("domain")
+
+  @@map("prospect_suppression_type")
 }
 
 enum ProjectStatus {
@@ -451,6 +482,11 @@ model User {
   updatedPrivacyPolicies      PrivacyRetentionPolicy[]
   createdPrivacyRequests      PrivacyRequest[]            @relation("PrivacyRequestCreator")
   verifiedPrivacyRequests     PrivacyRequest[]            @relation("PrivacyRequestVerifier")
+  createdProspects             Prospect[]                  @relation("ProspectCreator")
+  assignedProspects            Prospect[]                  @relation("ProspectAssignee")
+  createdProspectSuppressions  ProspectSuppression[]       @relation("ProspectSuppressionCreator")
+  createdProspectTemplates     ProspectEmailTemplate[]     @relation("ProspectTemplateCreator")
+  authoredProspectOutreach     ProspectOutreachDraft[]     @relation("ProspectOutreachAuthor")
 
   @@index([status])
   @@map("users")
@@ -944,11 +980,121 @@ model Client {
   projects      Project[]
   knowledge     ClientKnowledgeEntry[]
   privacyRequests PrivacyRequest[]
+  prospects       Prospect[]
 
   @@index([status, updatedAt])
   @@index([businessName])
   @@index([email])
   @@map("clients")
+}
+
+model Prospect {
+  id                    String             @id @default(uuid()) @db.Uuid
+  businessName          String             @map("business_name") @db.VarChar(160)
+  contactName           String?            @map("contact_name") @db.VarChar(120)
+  email                 String?            @db.VarChar(254)
+  normalizedEmail       String?            @unique @map("normalized_email") @db.VarChar(254)
+  phone                 String?            @db.VarChar(50)
+  industry              String?            @db.VarChar(80)
+  locality              String?            @db.VarChar(120)
+  website               String?            @db.VarChar(500)
+  normalizedDomain      String?            @unique @map("normalized_domain") @db.VarChar(253)
+  publicProfileUrl      String?            @map("public_profile_url") @db.VarChar(500)
+  sourceType            ProspectSourceType @default(MANUAL) @map("source_type")
+  sourceUrl             String?            @map("source_url") @db.VarChar(1000)
+  collectedAt           DateTime            @default(now()) @map("collected_at")
+  verifiedAt            DateTime?           @map("verified_at")
+  businessSignals       String[]            @default([]) @map("business_signals")
+  factualNotes          String?             @map("factual_notes") @db.VarChar(3000)
+  qualificationReason   String?             @map("qualification_reason") @db.VarChar(1000)
+  nextFollowUpAt        DateTime?           @map("next_follow_up_at") @db.Date
+  status                ProspectStatus      @default(NEW)
+  createdById           String              @map("created_by_id") @db.Uuid
+  assignedToId          String?             @map("assigned_to_id") @db.Uuid
+  convertedClientId     String?             @unique @map("converted_client_id") @db.Uuid
+  lastMeaningfulContactAt DateTime?         @map("last_meaningful_contact_at") @db.Date
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
+  deletedAt             DateTime?           @map("deleted_at")
+  creator               User                @relation("ProspectCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  assignee              User?               @relation("ProspectAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  convertedClient       Client?             @relation(fields: [convertedClientId], references: [id], onDelete: SetNull)
+  outreachDrafts        ProspectOutreachDraft[]
+
+  @@index([status, updatedAt])
+  @@index([industry, locality])
+  @@index([sourceType, collectedAt])
+  @@index([assignedToId, status])
+  @@map("prospects")
+}
+
+model ProspectSuppression {
+  id          String                 @id @default(uuid()) @db.Uuid
+  type        ProspectSuppressionType
+  value       String                 @db.VarChar(254)
+  normalizedValue String              @unique @map("normalized_value") @db.VarChar(254)
+  reason      String                 @db.VarChar(300)
+  createdById String                 @map("created_by_id") @db.Uuid
+  createdAt   DateTime               @default(now()) @map("created_at")
+  creator     User                   @relation("ProspectSuppressionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([type, createdAt])
+  @@map("prospect_suppressions")
+}
+
+model ProspectEmailTemplate {
+  id          String                         @id @default(uuid()) @db.Uuid
+  name        String                         @db.VarChar(120)
+  industry    String?                        @db.VarChar(80)
+  purpose     String                         @db.VarChar(300)
+  locale      String                         @default("pt-PT") @db.VarChar(10)
+  isActive    Boolean                        @default(true) @map("is_active")
+  createdById String                         @map("created_by_id") @db.Uuid
+  createdAt   DateTime                       @default(now()) @map("created_at")
+  updatedAt   DateTime                       @updatedAt @map("updated_at")
+  creator     User                           @relation("ProspectTemplateCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  versions    ProspectEmailTemplateVersion[]
+  drafts      ProspectOutreachDraft[]
+
+  @@index([isActive, industry])
+  @@map("prospect_email_templates")
+}
+
+model ProspectEmailTemplateVersion {
+  id          String                @id @default(uuid()) @db.Uuid
+  templateId  String                @map("template_id") @db.Uuid
+  version     Int
+  subject     String                @db.VarChar(300)
+  body        String                @db.VarChar(12000)
+  createdAt   DateTime              @default(now()) @map("created_at")
+  template    ProspectEmailTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  drafts      ProspectOutreachDraft[]
+
+  @@unique([templateId, version])
+  @@index([templateId, createdAt])
+  @@map("prospect_email_template_versions")
+}
+
+model ProspectOutreachDraft {
+  id                  String                       @id @default(uuid()) @db.Uuid
+  prospectId          String                       @map("prospect_id") @db.Uuid
+  templateId          String?                      @map("template_id") @db.Uuid
+  templateVersionId   String?                      @map("template_version_id") @db.Uuid
+  authorId            String                       @map("author_id") @db.Uuid
+  recipient           String?                      @db.VarChar(254)
+  subjectSnapshot     String                       @map("subject_snapshot") @db.VarChar(300)
+  bodySnapshot        String                       @map("body_snapshot") @db.VarChar(12000)
+  manualExportedAt    DateTime?                    @map("manual_exported_at")
+  createdAt           DateTime                     @default(now()) @map("created_at")
+  updatedAt           DateTime                     @updatedAt @map("updated_at")
+  prospect            Prospect                     @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+  template            ProspectEmailTemplate?       @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  templateVersion     ProspectEmailTemplateVersion? @relation(fields: [templateVersionId], references: [id], onDelete: SetNull)
+  author              User                         @relation("ProspectOutreachAuthor", fields: [authorId], references: [id], onDelete: Restrict)
+
+  @@index([prospectId, updatedAt])
+  @@index([authorId, createdAt])
+  @@map("prospect_outreach_drafts")
 }
 
 model Project {

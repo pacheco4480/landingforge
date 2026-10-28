@@ -10,6 +10,7 @@ export type CmsNavigationIcon =
   | "media"
   | "pages"
   | "projects"
+  | "prospects"
   | "palette"
   | "search"
   | "privacy"
@@ -80,6 +81,13 @@ export const cmsNavigationItems = [
     permission: permissions.projectsRead,
     icon: "projects",
     description: "Project delivery scope, ownership and maintenance settings.",
+  },
+  {
+    label: "Prospects",
+    href: "/prospects",
+    permission: permissions.prospectsRead,
+    icon: "prospects",
+    description: "Prospecção B2B manual e preparação de contactos individuais.",
   },
   {
     label: "SEO",

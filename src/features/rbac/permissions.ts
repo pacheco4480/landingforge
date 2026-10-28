@@ -31,6 +31,8 @@ export const permissions = {
   projectsWrite: "projects.write",
   projectsExport: "projects.export",
   projectsAssign: "projects.assign",
+  prospectsRead: "prospects.read",
+  prospectsWrite: "prospects.write",
 } as const;
 
 export type Permission = (typeof permissions)[keyof typeof permissions];

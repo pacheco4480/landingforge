@@ -89,9 +89,10 @@ export function PrivacyWorkspace({ data }: { data: Workspace }) {
         </div>
         <Card>
           <h3 className="font-semibold">Contactos de prospeção</h3>
-          {data.retentionCandidates.prospects.length ? (
+          {data.retentionCandidates.prospects.length || data.retentionCandidates.prospectRecords.length ? (
             <ul className="divide-border mt-3 divide-y">
               {data.retentionCandidates.prospects.map((item) => <li className="flex flex-wrap justify-between gap-2 py-3 text-sm" key={item.id}><Link className="underline-offset-4 hover:underline" href={`/clients/${item.id}`}>{item.businessName}</Link><span className="text-muted-foreground">Último contacto: {dateLabel(item.lastMeaningfulContactAt)} · {item.status}</span></li>)}
+              {data.retentionCandidates.prospectRecords.map((item) => <li className="flex flex-wrap justify-between gap-2 py-3 text-sm" key={`prospect-${item.id}`}><Link className="underline-offset-4 hover:underline" href={`/prospects/${item.id}`}>{item.businessName}</Link><span className="text-muted-foreground">Último contacto: {dateLabel(item.lastMeaningfulContactAt)} · {item.status} · Prospect</span></li>)}
             </ul>
           ) : <p className="text-muted-foreground mt-2 text-sm">Sem contactos que cumpram os critérios registados.</p>}
         </Card>
