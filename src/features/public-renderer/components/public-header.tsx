@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { PublicBrand } from "@/features/public-renderer/components/public-brand";
 import { cn } from "@/lib/utils";
@@ -53,6 +53,7 @@ export function PublicHeader({
   variant: PublicHeaderVariant;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const variantClasses = headerVariantClasses[variant];
   const profileClasses = profile ? headerProfileClasses[profile] : undefined;
   const classes = {
@@ -101,6 +102,7 @@ export function PublicHeader({
           aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
           className={classes.menuButton}
           onClick={() => setIsOpen((current) => !current)}
+          ref={menuButtonRef}
           type="button"
         >
           {isOpen ? (
@@ -116,6 +118,11 @@ export function PublicHeader({
           aria-label="Navegacao principal mobile"
           className={classes.mobileNav}
           id={mobileMenuId}
+          onKeyDown={(event) => {
+            if (event.key !== "Escape") return;
+            setIsOpen(false);
+            menuButtonRef.current?.focus();
+          }}
         >
           {links.map((link) => (
             <a

@@ -131,7 +131,7 @@
 .restaurant-playful-button {
   padding: 0.85rem 1.2rem;
   background: var(--playful-orange);
-  color: white;
+  color: var(--playful-ink);
 }
 
 .restaurant-playful-text-link {
@@ -373,7 +373,7 @@
 
 .restaurant-playful-menu__index {
   padding-top: 0.1rem;
-  color: var(--playful-orange);
+  color: var(--playful-ink);
   font-size: 0.9rem;
   font-weight: 950;
 }
@@ -436,7 +436,7 @@
 .restaurant-playful-dishes .restaurant-playful-kicker,
 .restaurant-playful-dishes__feature-copy > span,
 .restaurant-playful-dishes__others article > div > span {
-  color: #66270f;
+  color: var(--playful-ink);
 }
 
 .restaurant-playful-dishes__heading {
@@ -486,7 +486,7 @@
   transition: transform 180ms ease;
 }
 
-.restaurant-playful-image:hover img {
+.restaurant-playful-image:hover img[data-public-motion="hover-zoom"] {
   transform: scale(1.025);
 }
 
@@ -783,7 +783,7 @@
   transition: transform 220ms ease;
 }
 
-.restaurant-playful-gallery__item:hover img {
+.restaurant-playful-gallery__item:hover img[data-public-motion="hover-zoom"] {
   transform: scale(1.025);
 }
 
