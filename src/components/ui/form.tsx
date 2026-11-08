@@ -18,7 +18,12 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean;
 };
 
-export function Input({ className, error, ...props }: InputProps) {
+export function Input({
+  className,
+  error,
+  "aria-invalid": ariaInvalid,
+  ...props
+}: InputProps) {
   return (
     <input
       className={cn(
@@ -26,8 +31,8 @@ export function Input({ className, error, ...props }: InputProps) {
         error && "border-error focus:border-error",
         className,
       )}
-      aria-invalid={error || props["aria-invalid"]}
       {...props}
+      aria-invalid={error || ariaInvalid}
     />
   );
 }
@@ -37,7 +42,12 @@ export type TextareaProps =
     error?: boolean;
   };
 
-export function Textarea({ className, error, ...props }: TextareaProps) {
+export function Textarea({
+  className,
+  error,
+  "aria-invalid": ariaInvalid,
+  ...props
+}: TextareaProps) {
   return (
     <textarea
       className={cn(
@@ -45,8 +55,8 @@ export function Textarea({ className, error, ...props }: TextareaProps) {
         error && "border-error focus:border-error",
         className,
       )}
-      aria-invalid={error || props["aria-invalid"]}
       {...props}
+      aria-invalid={error || ariaInvalid}
     />
   );
 }

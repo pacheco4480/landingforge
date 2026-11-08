@@ -294,7 +294,8 @@ function ToastItem({
       <Icon
         className={cn(
           "mt-0.5 size-4 shrink-0",
-          toast.tone === "loading" && "animate-spin",
+          toast.tone === "loading" &&
+            "animate-spin motion-reduce:animate-none",
         )}
         aria-hidden="true"
       />

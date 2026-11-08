@@ -119,7 +119,7 @@ export function LoadingSpinner({
   return (
     <span className="inline-flex items-center gap-2">
       <Loader2
-        className={cn("size-4 animate-spin", className)}
+        className={cn("size-4 animate-spin motion-reduce:animate-none", className)}
         aria-hidden="true"
       />
       <span className="sr-only">{label}</span>
@@ -133,7 +133,10 @@ export function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("bg-muted animate-pulse rounded-md", className)}
+      className={cn(
+        "bg-muted animate-pulse rounded-md motion-reduce:animate-none",
+        className,
+      )}
       aria-hidden="true"
       {...props}
     />

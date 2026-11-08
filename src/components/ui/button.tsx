@@ -47,6 +47,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant,
       size,
       isLoading = false,
+      "aria-busy": ariaBusy,
       disabled,
       children,
       ...props
@@ -59,9 +60,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         ref={ref}
         {...props}
+        aria-busy={isLoading || ariaBusy}
       >
         {isLoading ? (
-          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+          <Loader2
+            className="size-4 animate-spin motion-reduce:animate-none"
+            aria-hidden="true"
+          />
         ) : null}
         {children}
       </button>
