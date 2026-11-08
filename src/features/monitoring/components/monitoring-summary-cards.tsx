@@ -13,7 +13,7 @@ export function MonitoringSummaryCards({
   };
 }) {
   return (
-    <Grid className="md:grid-cols-5">
+    <Grid className="min-w-0 sm:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(5,minmax(0,1fr))]">
       <StatCard label="Erros totais" value={String(summary.totalErrors)} />
       <StatCard
         label="Críticos"

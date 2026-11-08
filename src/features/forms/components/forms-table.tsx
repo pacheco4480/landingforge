@@ -45,6 +45,7 @@ export function FormsTable({
         </CardDescription>
       </CardHeader>
       <DataTable
+        caption="Formulários configurados"
         columns={["Name", "Page", "Status", "Fields", "Submissions", "Actions"]}
         rows={forms.map((form) => [
           <a
@@ -116,6 +117,8 @@ export function FormsTable({
             )}
           </div>,
         ])}
+        scrollHint="Use as setas do teclado ou deslize horizontalmente para consultar todas as colunas."
+        scrollRegionLabel="Tabela de formulários, deslocável horizontalmente"
       />
     </Card>
   );

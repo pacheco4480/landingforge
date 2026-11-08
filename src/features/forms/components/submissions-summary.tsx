@@ -21,6 +21,7 @@ export function SubmissionsSummary({
         </CardDescription>
       </CardHeader>
       <DataTable
+        caption="Submissões recentes"
         columns={["Date", "Status", "Data"]}
         rows={submissions.map((submission) => [
           submission.createdAt.toLocaleString("pt-PT"),
@@ -29,6 +30,8 @@ export function SubmissionsSummary({
             {JSON.stringify(submission.data).slice(0, 120)}
           </code>,
         ])}
+        scrollHint="Use as setas do teclado ou deslize horizontalmente para consultar todas as colunas."
+        scrollRegionLabel="Tabela de submissões recentes, deslocável horizontalmente"
       />
     </Card>
   );

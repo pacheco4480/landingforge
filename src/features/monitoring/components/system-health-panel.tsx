@@ -27,8 +27,8 @@ export function SystemHealthPanel({
   }>;
 }) {
   return (
-    <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-      <Card>
+    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+      <Card className="min-w-0">
         <CardHeader>
           <CardTitle>System Health</CardTitle>
           <CardDescription>
@@ -62,7 +62,7 @@ export function SystemHealthPanel({
           </p>
         </div>
       </Card>
-      <Card>
+      <Card className="min-w-0">
         <CardHeader>
           <CardTitle>Erros Frequentes</CardTitle>
           <CardDescription>
@@ -80,6 +80,8 @@ export function SystemHealthPanel({
               {error.message}
             </span>,
           ])}
+          scrollHint="Use as setas do teclado ou deslize horizontalmente para consultar todas as colunas."
+          scrollRegionLabel="Tabela de erros frequentes, deslocável horizontalmente"
         />
       </Card>
     </div>

@@ -13,7 +13,7 @@ export function AuditSummaryCards({
   totalFiltered: number;
 }) {
   return (
-    <Grid className="md:grid-cols-4">
+    <Grid className="min-w-0 sm:grid-cols-[repeat(2,minmax(0,1fr))] xl:grid-cols-[repeat(4,minmax(0,1fr))]">
       <StatCard label="Logs totais" value={String(summary.total)} />
       <StatCard label="Ultimas 24h" value={String(summary.last24h)} />
       <StatCard label="Resultados filtrados" value={String(totalFiltered)} />

@@ -42,6 +42,8 @@ export function ErrorLogTable({ logs }: { logs: ErrorLogRow[] }) {
             log.action ?? "-",
             log.user ? `${log.user.name} (${log.user.email})` : "Sistema",
           ])}
+          scrollHint="Use as setas do teclado ou deslize horizontalmente para consultar todas as colunas."
+          scrollRegionLabel="Tabela de erros operacionais, deslocável horizontalmente"
         />
       )}
     </Card>

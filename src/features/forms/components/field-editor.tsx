@@ -55,8 +55,8 @@ export function FieldForm({
     >
       <input name="formId" type="hidden" value={formId} />
       {field ? <input name="id" type="hidden" value={field.id} /> : null}
-      <Grid className="md:grid-cols-3">
-        <Field>
+      <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
+        <Field className="min-w-0">
           <Label htmlFor={`label-${field?.id ?? "new"}`}>Label</Label>
           <Input
             id={`label-${field?.id ?? "new"}`}
@@ -72,7 +72,7 @@ export function FieldForm({
             Texto visivel para o visitante, por exemplo <code>Email</code>.
           </p>
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`name-${field?.id ?? "new"}`}>Name</Label>
           <Input
             id={`name-${field?.id ?? "new"}`}
@@ -88,7 +88,7 @@ export function FieldForm({
             Chave interna sem espacos, por exemplo email, phone ou message.
           </p>
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`type-${field?.id ?? "new"}`}>Type</Label>
           <Select
             id={`type-${field?.id ?? "new"}`}
@@ -110,8 +110,8 @@ export function FieldForm({
           </p>
         </Field>
       </Grid>
-      <Grid className="md:grid-cols-3">
-        <Field>
+      <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-placeholder`}>Placeholder</Label>
           <Input
             id={`field-${fieldId}-placeholder`}
@@ -119,7 +119,7 @@ export function FieldForm({
             defaultValue={field?.placeholder ?? ""}
           />
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-help-text`}>Help text</Label>
           <Input
             id={`field-${fieldId}-help-text`}
@@ -127,7 +127,7 @@ export function FieldForm({
             defaultValue={field?.helpText ?? ""}
           />
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-default-value`}>
             Default value
           </Label>
@@ -138,8 +138,8 @@ export function FieldForm({
           />
         </Field>
       </Grid>
-      <Grid className="md:grid-cols-3">
-        <Field>
+      <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-options`}>Options JSON</Label>
           <Textarea
             className="font-mono text-xs"
@@ -153,10 +153,12 @@ export function FieldForm({
             id={`field-${fieldId}-options-help`}
           >
             Para select/radio:{" "}
-            <code>{`[{"label":"Consulta","value":"consulta"}]`}</code>
+            <code className="break-all">
+              {`[{"label":"Consulta","value":"consulta"}]`}
+            </code>
           </p>
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-validation`}>Validation JSON</Label>
           <Textarea
             className="font-mono text-xs"
@@ -172,7 +174,7 @@ export function FieldForm({
             Exemplo: <code>{`{"minLength":3,"maxLength":120}`}</code>
           </p>
         </Field>
-        <Field>
+        <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-conditional-logic`}>
             Conditional Logic JSON
           </Label>
@@ -188,7 +190,9 @@ export function FieldForm({
             id={`field-${fieldId}-conditional-logic-help`}
           >
             Exemplo:{" "}
-            <code>{`[{"field":"service","operator":"equals","value":"orcamento","action":"show"}]`}</code>
+              <code className="break-all">
+                {`[{"field":"service","operator":"equals","value":"orcamento","action":"show"}]`}
+              </code>
           </p>
         </Field>
       </Grid>

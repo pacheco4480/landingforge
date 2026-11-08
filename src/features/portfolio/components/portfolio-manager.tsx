@@ -14,13 +14,13 @@ type Workspace = Awaited<ReturnType<typeof getPortfolioManagement>>;
 
 export function PortfolioManager({ workspace }: { workspace: Workspace }) {
   return (
-    <div className="grid gap-8">
+    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8">
       <CmsPageHeader
         eyebrow="Área comercial"
         title="Portfolio"
         description="Publica demos aprovadas e gere as capturas associadas. Para aparecer publicamente, cada demo tem de estar publicada, usar uma variante ativa e ter imagem social pública configurada."
       />
-      <div className="flex flex-wrap gap-3">
+      <div className="flex min-w-0 flex-wrap gap-3">
         <Link className="inline-flex min-h-10 items-center rounded-md border px-4 text-sm font-medium hover:bg-muted" href="/portfolio" target="_blank">Abrir portfolio público</Link>
         <Link className="inline-flex min-h-10 items-center rounded-md border px-4 text-sm font-medium hover:bg-muted" href="/content">Gerir estado e conteúdo das demos</Link>
         <Link className="inline-flex min-h-10 items-center rounded-md border px-4 text-sm font-medium hover:bg-muted" href="/forms">Configurar formulário de contacto</Link>
@@ -29,15 +29,15 @@ export function PortfolioManager({ workspace }: { workspace: Workspace }) {
       {workspace.items.length === 0 ? (
         <p className="rounded-md border p-6 text-sm">Ainda não existem demos internas.</p>
       ) : workspace.items.map((item) => (
-        <section className="grid gap-5 rounded-md border p-5" key={item.id}>
-          <header className="flex flex-wrap items-start justify-between gap-4">
-            <div>
+        <section className="grid min-w-0 gap-5 rounded-md border p-5" key={item.id}>
+          <header className="flex min-w-0 flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0">
               <p className="text-muted-foreground text-xs">{item.template?.industry.name ?? "Sem indústria"} · {item.template?.name ?? "Sem template"} · {item.templateVariant?.name ?? "Sem variante"}</p>
-              <h2 className="mt-1 text-xl font-semibold">{item.title}</h2>
-              <p className="text-muted-foreground mt-1 text-sm">/{item.slug} · {item.status} / {item.demoStatus}</p>
+              <h2 className="mt-1 break-words text-xl font-semibold">{item.title}</h2>
+              <p className="text-muted-foreground mt-1 break-words text-sm">/{item.slug} · {item.status} / {item.demoStatus}</p>
               <p className="text-muted-foreground mt-1 text-sm">Imagem social: {item.seoSetting?.ogImageMedia?.publicUrl && !item.seoSetting.ogImageMedia.deletedAt ? "configurada" : "em falta"}</p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex min-w-0 flex-wrap gap-2">
               <Link className="inline-flex min-h-10 items-center rounded-md border px-4 text-sm font-medium hover:bg-muted" href={`/seo?pageId=${item.id}`}>Configurar imagem social</Link>
               <Link className="inline-flex min-h-10 items-center rounded-md border px-4 text-sm font-medium hover:bg-muted" href={`/content/demos/preview/${item.id}`} target="_blank">Pré-visualizar</Link>
             </div>
@@ -68,7 +68,7 @@ export function PortfolioManager({ workspace }: { workspace: Workspace }) {
                       <p className="text-muted-foreground truncate text-xs">{shot.altText} · {shot.isPublic ? "Pública" : "Interna"}</p>
                       {shot.privateStoragePath ? <a className="mt-1 inline-block text-sm underline" href={`/api/portfolio/screenshots/${shot.id}`} rel="noreferrer" target="_blank">Abrir captura interna</a> : null}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <ActionFeedbackForm action={updatePortfolioScreenshotVisibilityAction} successMessage="Visibilidade da captura atualizada.">
                         <input name="id" type="hidden" value={shot.id} />
                         {!shot.isPublic ? <input name="isPublic" type="hidden" value="true" /> : null}
@@ -102,32 +102,32 @@ function ScreenshotForm({ itemId, slug, assets, kind }: {
 }) {
   const internal = kind === "internal";
   return (
-    <ActionFeedbackForm action={createPortfolioScreenshotAction} className="grid gap-3 rounded-md bg-muted/40 p-4" loadingMessage="A guardar captura..." successMessage="Captura registada.">
+    <ActionFeedbackForm action={createPortfolioScreenshotAction} className="grid min-w-0 gap-3 rounded-md bg-muted/40 p-4" loadingMessage="A guardar captura..." successMessage="Captura registada.">
       <input name="pageId" type="hidden" value={itemId} />
       <input name="slug" type="hidden" value={slug} />
       <h4 className="font-medium">{internal ? "Registar captura interna" : "Registar captura pública"}</h4>
       {internal ? <>
         <label className="grid gap-1 text-sm">Imagem
-          <input accept="image/jpeg,image/png,image/webp" className="rounded-md border bg-background p-2" name="file" required type="file" />
+          <input accept="image/jpeg,image/png,image/webp" className="block w-full min-w-0 max-w-full rounded-md border bg-background p-2" name="file" required type="file" />
         </label>
         <label className="grid gap-1 text-sm">Categoria
-          <select className="h-10 rounded-md border bg-background px-3" name="category"><option value="cms">CMS</option><option value="dashboard">Dashboard</option></select>
+          <select className="h-10 w-full min-w-0 max-w-full rounded-md border bg-background px-3" name="category"><option value="cms">CMS</option><option value="dashboard">Dashboard</option></select>
         </label>
         <label className="grid gap-1 text-sm">Viewport
-          <select className="h-10 rounded-md border bg-background px-3" name="viewport"><option value="desktop">Desktop</option><option value="tablet">Tablet</option><option value="mobile">Mobile</option><option value="cms">CMS</option></select>
+          <select className="h-10 w-full min-w-0 max-w-full rounded-md border bg-background px-3" name="viewport"><option value="desktop">Desktop</option><option value="tablet">Tablet</option><option value="mobile">Mobile</option><option value="cms">CMS</option></select>
         </label>
       </> : <>
         <label className="grid gap-1 text-sm">Imagem da Media Library
-          <select className="h-10 rounded-md border bg-background px-3" name="mediaAssetId" required defaultValue="">
+          <select className="h-10 w-full min-w-0 max-w-full rounded-md border bg-background px-3" name="mediaAssetId" required defaultValue="">
             <option disabled value="">Selecionar imagem</option>
             {assets.map((asset) => <option key={asset.id} value={asset.id}>{asset.filename}</option>)}
           </select>
         </label>
         <label className="grid gap-1 text-sm">Categoria
-          <select className="h-10 rounded-md border bg-background px-3" name="category"><option value="hero">Hero</option><option value="section">Secção</option><option value="form">Formulário</option></select>
+          <select className="h-10 w-full min-w-0 max-w-full rounded-md border bg-background px-3" name="category"><option value="hero">Hero</option><option value="section">Secção</option><option value="form">Formulário</option></select>
         </label>
         <label className="grid gap-1 text-sm">Viewport
-          <select className="h-10 rounded-md border bg-background px-3" name="viewport"><option value="desktop">Desktop</option><option value="tablet">Tablet</option><option value="mobile">Mobile</option></select>
+          <select className="h-10 w-full min-w-0 max-w-full rounded-md border bg-background px-3" name="viewport"><option value="desktop">Desktop</option><option value="tablet">Tablet</option><option value="mobile">Mobile</option></select>
         </label>
       </>}
       <input name="sourceRoute" type="hidden" value={`/${slug}`} />

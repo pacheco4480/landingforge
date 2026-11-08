@@ -6,18 +6,45 @@ import { cn } from "@/lib/utils";
 export function Table({
   className,
   caption,
+  scrollHint,
+  scrollRegionLabel,
   "aria-label": ariaLabel,
+  children,
   ...props
-}: React.TableHTMLAttributes<HTMLTableElement> & { caption?: string }) {
+}: React.TableHTMLAttributes<HTMLTableElement> & {
+  caption?: string;
+  scrollHint?: string;
+  scrollRegionLabel?: string;
+}) {
+  const scrollHintId = React.useId();
+
   return (
-    <div className="w-full overflow-x-auto">
+    <div
+      aria-describedby={scrollHint ? scrollHintId : undefined}
+      aria-label={scrollRegionLabel}
+      className={cn(
+        "w-full overflow-x-auto",
+        scrollRegionLabel &&
+          "min-w-0 focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+      )}
+      role={scrollRegionLabel ? "region" : undefined}
+      tabIndex={scrollRegionLabel ? 0 : undefined}
+    >
+      {scrollHint ? (
+        <p
+          className="text-muted-foreground mb-2 text-xs"
+          id={scrollHintId}
+        >
+          {scrollHint}
+        </p>
+      ) : null}
       <table
         aria-label={ariaLabel ?? (caption ? undefined : "Data table")}
         className={cn("w-full min-w-max text-left text-sm", className)}
         {...props}
       >
         {caption ? <caption className="sr-only">{caption}</caption> : null}
-        {props.children}
+        {children}
       </table>
     </div>
   );
@@ -27,13 +54,21 @@ export function DataTable({
   caption,
   columns,
   rows,
+  scrollHint,
+  scrollRegionLabel,
 }: {
   caption?: string;
   columns: string[];
   rows: Array<Array<React.ReactNode>>;
+  scrollHint?: string;
+  scrollRegionLabel?: string;
 }) {
   return (
-    <Table caption={caption}>
+    <Table
+      caption={caption}
+      scrollHint={scrollHint}
+      scrollRegionLabel={scrollRegionLabel}
+    >
       <thead className="border-border text-muted-foreground border-b text-xs uppercase">
         <tr>
           {columns.map((column) => (

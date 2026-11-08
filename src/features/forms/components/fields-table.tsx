@@ -35,6 +35,7 @@ export function FieldsTable({
         </CardDescription>
       </CardHeader>
       <DataTable
+        caption="Campos do formulário"
         columns={["Label", "Name", "Type", "Required", "Visible", "Actions"]}
         rows={fields.map((field) => [
           field.label,
@@ -86,6 +87,8 @@ export function FieldsTable({
             )}
           </div>,
         ])}
+        scrollHint="Use as setas do teclado ou deslize horizontalmente para consultar todas as colunas."
+        scrollRegionLabel="Tabela de campos, deslocável horizontalmente"
       />
       {canWrite && formId ? (
         <div className="mt-6 grid gap-6 border-t pt-6">

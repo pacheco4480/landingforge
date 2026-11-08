@@ -66,6 +66,8 @@ docs/
 # Backups / temporary files
 artifacts/
 backups/
+!/src/features/backups/
+!/src/features/backups/**
 tmp/
 temp/
 *.bak
