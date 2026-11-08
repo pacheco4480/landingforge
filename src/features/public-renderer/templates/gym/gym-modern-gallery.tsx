@@ -63,6 +63,7 @@ export function GymModernGalleryClient({
                   <Image
                     alt={itemText(entry, "imageAlt", title)}
                     className="gym-modern-gallery__image"
+                    data-public-motion="hover-zoom"
                     fill
                     sizes="(min-width: 1200px) 54vw, 86vw"
                     src={image}

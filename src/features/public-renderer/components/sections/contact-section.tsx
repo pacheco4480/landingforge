@@ -96,6 +96,7 @@ export async function ContactSection({
               gdprConsentLabel={form.gdprConsentLabel}
               gdprConsentRequired={form.gdprConsentRequired}
               gdprConsentVersion={form.gdprConsentVersion}
+              previewMode={context.previewMode}
               turnstileSiteKey={
                 context.integrations.turnstileEnabled
                   ? context.integrations.turnstileSiteKey

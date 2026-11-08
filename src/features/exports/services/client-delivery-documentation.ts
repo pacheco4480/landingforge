@@ -70,12 +70,12 @@ export function buildClientDeliveryDocumentation(
         "",
         `- **Chave de secção:** \`${code(section.sectionKey)}\``,
         `- **Chaves editáveis:** ${fields.length ? fields.map((field) => `\`${code(field)}\``).join(", ") : "nenhuma declarada"}`,
-        "- **Formato:** conteúdo JSON; os valores podem ser texto, número, booleano, lista, objeto ou nulo, sujeitos aos limites abaixo.",
+        "- **Edição:** listas de FAQ, testemunhos/avaliações e menu usam controlos estruturados quando declarados pela versão fixada; os restantes campos editáveis seguem as chaves do manifesto e podem exigir edição JSON.",
       ].join("\n");
     })
     .join("\n\n") || "Não existem secções visíveis com capacidades CMS neste snapshot.";
   const editing = cmsIncluded
-    ? "Esta entrega inclui um CMS dedicado a este projeto. O editor trabalha com JSON por secção, não com controlos visuais campo a campo. Só são aceites as chaves listadas em GUIA-CMS.md."
+    ? "Esta entrega inclui um CMS dedicado a este projeto. FAQ, testemunhos/avaliações e itens de menu suportados têm controlos para adicionar, editar, remover e ordenar; os outros campos seguem as chaves listadas em GUIA-CMS.md. A interface não permite alterar a estrutura do template."
     : "Esta entrega não inclui CMS, autenticação nem uma conta de edição. Não existe um CMS oculto no pacote. Alterações ao conteúdo ou à estrutura exigem intervenção técnica e nova publicação, segundo o serviço acordado.";
   const leadHandling = cmsIncluded
     ? "Os pedidos submetidos são consultáveis na área Contactos do CMS. Este runtime não envia notificações automáticas de lead por email."
@@ -106,21 +106,22 @@ export function buildClientDeliveryDocumentation(
 
 ## Conteúdo e campos editáveis
 
-O CMS permite editar o JSON de cada secção apresentada abaixo. A lista vem do manifesto imutável do snapshot e é validada pelo runtime. Não adicione chaves, remova secções ou altere a estrutura do JSON.
+O CMS apresenta controlos próprios para listas de FAQ, testemunhos/avaliações e itens de menu quando a versão do template os declara. Nesses controlos pode adicionar, editar, remover e ordenar itens. Os restantes campos aparecem apenas quando autorizados pelo manifesto imutável do snapshot; alguns podem usar o formato JSON. Não adicione chaves, remova secções nem altere a estrutura do template.
 
 ${cmsSections}
 
 ## Limites validados pelo editor
 
 - Texto: máximo de 5 000 caracteres por valor.
-- Listas: máximo de 100 elementos; objetos: máximo de 100 propriedades.
+- FAQ: até 30 itens; testemunhos genéricos: até 30; avaliações de restaurante: até 30; itens de menu: até 30. Os limites aplicam-se ao CMS Master e ao CMS entregue, e os renderers mostram todos os itens aceites.
+- Outros campos JSON: máximo técnico de 100 elementos por lista e 100 propriedades por objeto.
 - Profundidade máxima da estrutura: 6 níveis.
 - As chaves editáveis são as listadas acima; \`settings\`, SEO, branding e estrutura de secções não são apresentados como editáveis neste CMS.
 - Estes são limites técnicos máximos, não uma recomendação de conteúdo nem garantia de boa apresentação com 100 itens. Validar o preview em mobile e desktop; conteúdos extensos podem exigir apoio técnico.
 
 ## Formulários, contactos e media
 
-Os formulários e campos são fixados no pacote. O CMS permite ativar/desativar cada formulário, mas não editar os seus campos. Os pedidos aparecem em **Contactos** e o estado pode ser atualizado; não há notificações automáticas por email.
+Os formulários e campos são fixados no pacote. O CMS permite ativar/desativar cada formulário, mas não editar os seus campos. Os pedidos aparecem em **Contactos** e o estado pode ser atualizado; utilizadores com permissão adequada podem exportar todos os contactos e dados do formulário para CSV. A eliminação exige confirmação explícita e remove o registo do contacto e a submissão associada da base operacional; fica um evento de auditoria sem nome, email, telefone, mensagem ou payload. A eliminação da base operacional não remove automaticamente cópias de segurança, que seguem a política do alojamento. Não há notificações automáticas por email nem prazo de retenção automático definido por esta aplicação.
 
 A Biblioteca de media permite carregar imagens autorizadas. O upload não atualiza automaticamente a página: introduza a URL na chave JSON correspondente e confirme o resultado. Não elimine imagens ainda usadas no conteúdo.
 
@@ -224,11 +225,15 @@ Não. Só as chaves declaradas no guia CMS podem ser alteradas. Os limites técn
 
 ## Como altero imagens ou textos?
 
-${cmsIncluded ? "Use as chaves indicadas em GUIA-CMS.md. O editor exige JSON válido; valide o preview antes de publicar. O upload de media não associa automaticamente a imagem ao conteúdo." : "Envie o pedido pelo canal definido no handover. A alteração é feita na fonte técnica e requer nova publicação."}
+${cmsIncluded ? "Use os campos estruturados disponíveis ou as chaves indicadas em GUIA-CMS.md. Guarde as alterações e valide a pré-visualização em desktop e mobile. O upload de media não associa automaticamente a imagem ao conteúdo." : "Envie o pedido pelo canal definido no handover. A alteração é feita na fonte técnica e requer nova publicação."}
 
 ## Como são tratados os pedidos do formulário?
 
 ${leadHandling}
+
+## Posso exportar ou eliminar os dados de um contacto?
+
+No CMS, um Client Admin pode descarregar um CSV com todos os contactos e os dados completos das respetivas submissões desta instalação. O CSV neutraliza valores que podem ser interpretados como fórmulas por folhas de cálculo. A eliminação é individual, exige confirmação e remove o contacto e a submissão associada da base de dados operacional; mantém apenas um evento técnico de auditoria sem dados pessoais. As cópias de segurança não são apagadas por esta ação e seguem a política do alojamento. A aplicação não executa apagamento automático nem define prazos legais de retenção. Esta funcionalidade não constitui, por si só, garantia de conformidade legal; confirme procedimentos e obrigações aplicáveis com o responsável competente.
 
 ## O site já está publicado e o domínio configurado?
 

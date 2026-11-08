@@ -30,6 +30,21 @@ describe("client package security audit", () => {
     });
   });
 
+  it("allows only the generated favicon route and SVG icon in the frontend category", () => {
+    const report = auditClientPackage({
+      mode: "LANDING_ONLY",
+      entries: [
+        ...landingOnlyFiles,
+        { path: "app/favicon.ico/route.ts", category: "frontend", content: "export function GET() {}" },
+        { path: "app/icon.svg", category: "frontend", content: "<svg />" },
+      ],
+      isolatedBuildPassed: true,
+    });
+
+    expect(report.ready).toBe(true);
+    expect(report.findings).toEqual([]);
+  });
+
   it("fails closed for unknown modes, categories and malformed manifests without throwing", () => {
     const invalidMode = auditClientPackage({
       mode: "SOMETHING_ELSE",

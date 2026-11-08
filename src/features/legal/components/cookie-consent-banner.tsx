@@ -45,7 +45,6 @@ export function CookieConsentBanner({
   const [isCustomizing, setIsCustomizing] = React.useState(false);
   const [analytics, setAnalytics] = React.useState(false);
   const [marketing, setMarketing] = React.useState(false);
-  const rejectButtonRef = React.useRef<HTMLButtonElement>(null);
   const isVisible = enabled && !hasCurrentConsent && !isDismissed;
 
   const saveConsent = React.useCallback(
@@ -70,7 +69,6 @@ export function CookieConsentBanner({
 
   React.useEffect(() => {
     if (!enabled || !isVisible) return;
-    rejectButtonRef.current?.focus();
 
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -87,27 +85,36 @@ export function CookieConsentBanner({
   return (
     <section
       aria-labelledby="cookie-consent-title"
-      aria-modal="true"
-      className="fixed inset-x-3 bottom-3 z-50 rounded-md border border-black/10 bg-white p-4 text-slate-900 shadow-2xl sm:left-auto sm:right-4 sm:max-w-md"
+      className="fixed inset-x-2 bottom-0 z-50 max-h-[calc(100dvh-1rem)] overflow-y-auto rounded-md border border-black/10 bg-white p-1 text-slate-900 shadow-2xl sm:inset-x-auto sm:bottom-4 sm:right-4 sm:max-h-[calc(100vh-2rem)] sm:w-[min(28rem,calc(100vw-2rem))] sm:p-4"
       role="dialog"
     >
-      <div className="grid gap-3">
+      <div className="grid gap-0.5 sm:gap-3">
         <div>
-          <h2 className="text-base font-semibold" id="cookie-consent-title">
+          <h2 className="sr-only sm:not-sr-only sm:text-base sm:font-semibold" id="cookie-consent-title">
             Cookies e privacidade
           </h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Usamos cookies necessarios e, com o teu consentimento, cookies de
-            analytics e marketing. Podes alterar a decisao a qualquer momento.
+          <p className="text-xs leading-[14px] text-slate-600 sm:mt-1 sm:text-sm sm:leading-normal">
+            <span className="sm:hidden">
+              Necessários ativos; opcionais só com consentimento.{" "}
+            </span>
+            <span className="hidden sm:inline">
+              Cookies necessários sempre ativos. Analytics e marketing só com
+              consentimento.{" "}
+            </span>
+            <a
+              aria-label="Política de Cookies"
+              className="font-semibold text-slate-900 underline"
+              href={cookiePolicyHref}
+            >
+              <span className="sm:hidden">Política</span>
+              <span className="hidden sm:inline">Política de Cookies</span>
+            </a>
           </p>
-          <a className="mt-2 inline-flex text-sm font-semibold underline" href={cookiePolicyHref}>
-            Ver Politica de Cookies
-          </a>
         </div>
         {isCustomizing ? (
-          <div className="grid gap-2 rounded-md bg-slate-50 p-3 text-sm">
+          <div className="grid gap-1 rounded-md bg-slate-50 p-2 text-sm sm:gap-2 sm:p-3">
             <label className="flex min-h-11 items-center justify-between gap-3">
-              <span>Necessarios</span>
+              <span>Necessários</span>
               <Checkbox checked disabled readOnly />
             </label>
             <label className="flex min-h-11 items-center justify-between gap-3">
@@ -128,11 +135,12 @@ export function CookieConsentBanner({
             </label>
           </div>
         ) : null}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-3 gap-1 sm:gap-2">
           <Button
-            ref={rejectButtonRef}
             type="button"
             variant="outline"
+            size="sm"
+            className="min-h-11 min-w-0 whitespace-normal px-1 leading-tight sm:px-3 sm:text-sm"
             onClick={() => saveConsent({ analytics: false, marketing: false })}
           >
             Recusar
@@ -140,12 +148,16 @@ export function CookieConsentBanner({
           <Button
             type="button"
             variant="outline"
+            size="sm"
+            className="min-h-11 min-w-0 whitespace-normal px-1 leading-tight sm:px-3 sm:text-sm"
             onClick={() => setIsCustomizing((current) => !current)}
           >
             Personalizar
           </Button>
           <Button
             type="button"
+            size="sm"
+            className="min-h-11 min-w-0 whitespace-normal px-1 leading-tight sm:px-3 sm:text-sm"
             onClick={() =>
               isCustomizing
                 ? saveConsent({ analytics, marketing })

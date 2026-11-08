@@ -17,6 +17,7 @@ import {
   items,
   text,
 } from "@/features/public-renderer/components/section-utils";
+import { isPrimaryHeroSection } from "@/features/public-renderer/hero-heading";
 import {
   realEstateToneClasses,
   realEstateVariant,
@@ -33,6 +34,7 @@ export function RealEstateHeroSection({
   const properties = recordArray(section.content, "properties");
   const stats = recordArray(section.content, "stats");
   const featured = properties[0];
+  const Heading = isPrimaryHeroSection(section, context) ? "h1" : "h2";
 
   if (variant === "local_agency" || variant === "premium") {
     return <EstateEditorialHero section={section} context={context} />;
@@ -51,9 +53,9 @@ export function RealEstateHeroSection({
           >
             {text(section.content, "eyebrow", variantLabel(variant))}
           </p>
-          <h1 className="mt-5 max-w-4xl text-4xl leading-tight font-bold sm:text-6xl">
+          <Heading className="mt-5 max-w-4xl text-4xl leading-tight font-bold sm:text-6xl">
             {text(section.content, "headline", context.page.title)}
-          </h1>
+          </Heading>
           <p className={`mt-5 max-w-2xl text-lg leading-8 ${tone.muted}`}>
             {text(
               section.content,

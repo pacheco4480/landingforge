@@ -3,6 +3,8 @@ import "server-only";
 import { z } from "zod";
 
 import type { ClientRuntimePayload } from "../contracts";
+import { getActorInstallation } from "./authorization";
+import type { AuthorizedClientCmsContext } from "./contracts";
 import { getClientCmsPool } from "./database";
 
 const safeColor = z.string().regex(/^#(?:[0-9a-fA-F]{3}){1,2}$/);
@@ -19,9 +21,8 @@ const publicThemeSchema = z.object({
   borderRadius: z.string().min(1).max(40),
 }).strict();
 
-export async function getPublishedClientCmsPayload(): Promise<ClientRuntimePayload | null> {
-  const projectId = process.env.CLIENT_CMS_PROJECT_ID;
-  if (!projectId) throw new Error("CLIENT_CMS_PROJECT_ID não está configurado.");
+async function getClientCmsPayload(projectId: string, publication: "published" | "any"): Promise<ClientRuntimePayload | null> {
+  const statusFilter = publication === "published" ? "AND p.status = 'published'" : "";
   const result = await getClientCmsPool().query(
     `SELECT i.template_key, i.variant_key, i.template_version,
             p.id, p.title, p.slug, p.theme, p.seo,
@@ -30,7 +31,7 @@ export async function getPublishedClientCmsPayload(): Promise<ClientRuntimePaylo
               'sortOrder', s.sort_order, 'content', s.content, 'settings', s.settings
             ) ORDER BY s.sort_order) FILTER (WHERE s.id IS NOT NULL AND s.is_visible), '[]'::jsonb) AS sections
        FROM lf_cms_installations i
-       JOIN lf_cms_pages p ON p.project_id = i.project_id AND p.status = 'published'
+       JOIN lf_cms_pages p ON p.project_id = i.project_id ${statusFilter}
        LEFT JOIN lf_cms_sections s ON s.project_id = p.project_id AND s.page_id = p.id
       WHERE i.project_id = $1
       GROUP BY i.project_id, p.id
@@ -41,7 +42,7 @@ export async function getPublishedClientCmsPayload(): Promise<ClientRuntimePaylo
   if (!row) return null;
   const expectedVersion = process.env.CLIENT_CMS_TEMPLATE_VERSION;
   if (expectedVersion && expectedVersion !== row.template_version) {
-    throw new Error("A página publicada não corresponde à versão do runtime instalado.");
+    throw new Error("A página não corresponde à versão do runtime instalado.");
   }
   const storedTheme = row.theme as Record<string, unknown>;
   const theme = publicThemeSchema.parse({
@@ -96,4 +97,14 @@ export async function getPublishedClientCmsPayload(): Promise<ClientRuntimePaylo
       seo: row.seo,
     },
   } as ClientRuntimePayload;
+}
+
+export async function getPublishedClientCmsPayload(): Promise<ClientRuntimePayload | null> {
+  const projectId = process.env.CLIENT_CMS_PROJECT_ID;
+  if (!projectId) throw new Error("CLIENT_CMS_PROJECT_ID não está configurado.");
+  return getClientCmsPayload(projectId, "published");
+}
+
+export async function getClientCmsPreviewPayload(actor: AuthorizedClientCmsContext): Promise<ClientRuntimePayload | null> {
+  return getClientCmsPayload(z.string().uuid().parse(getActorInstallation(actor).projectId), "any");
 }

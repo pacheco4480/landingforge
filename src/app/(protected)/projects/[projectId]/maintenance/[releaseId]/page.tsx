@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Alert, Badge } from "@/components/ui/feedback";
 import { CmsPageHeader } from "@/features/cms/components/cms-page-header";
-import { ContentPreview } from "@/features/content/components/content-preview";
+import { ResponsiveContentPreview } from "@/features/content/components/responsive-content-preview";
 import { CreateSectionForm } from "@/features/content/components/section-form";
 import { SectionList } from "@/features/content/components/section-list";
 import { MaintenanceCodeEditor } from "@/features/projects/components/maintenance-code-editor";
@@ -44,7 +44,7 @@ export default async function ProjectMaintenanceReleasePage({ params }: { params
       <MaintenanceCodeEditor projectId={projectId} releaseId={releaseId} editable={editable && codeEditor.editable} files={codeEditor.files} />
       <section aria-labelledby="candidate-preview-heading" className="grid gap-3">
         <h2 id="candidate-preview-heading" className="text-lg font-semibold">Revisão do conteúdo guardado</h2>
-        <ContentPreview sections={page.sections} />
+        <ResponsiveContentPreview pageId={page.id} />
       </section>
       <div>
         <Link href={`/projects/${projectId}`}><Button variant="outline">Histórico e validação</Button></Link>

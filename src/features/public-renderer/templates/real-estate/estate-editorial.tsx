@@ -6,6 +6,7 @@ import {
   items,
   text,
 } from "@/features/public-renderer/components/section-utils";
+import { isPrimaryHeroSection } from "@/features/public-renderer/hero-heading";
 import { recordArray, realEstateVariant } from "./real-estate-utils";
 import { EstateRail } from "./estate-motion";
 import styles from "./estate-editorial.module.css";
@@ -16,6 +17,7 @@ export function EstateEditorialHero({ section, context }: PublicSectionProps) {
   const property = recordArray(c, "properties")[0] ?? {};
   const image = text(c, "heroImage", itemText(property, "image"));
   const stats = recordArray(c, "stats");
+  const Heading = isPrimaryHeroSection(section, context) ? "h1" : "h2";
   return (
     <>
       <section
@@ -42,7 +44,7 @@ export function EstateEditorialHero({ section, context }: PublicSectionProps) {
           <p className={styles.eyebrow}>
             {text(c, "eyebrow", context.page.title)}
           </p>
-          <h1>{text(c, "headline", context.page.title)}</h1>
+          <Heading>{text(c, "headline", context.page.title)}</Heading>
           <p className={styles.intro}>{text(c, "subheadline")}</p>
           <div className={styles.actions}>
             <a
@@ -109,6 +111,7 @@ export function EstateEditorialProperties({
                 ? "(min-width: 900px) 60vw, 85vw"
                 : "(min-width: 900px) 50vw, 100vw"
             }
+            data-public-motion="hover-zoom"
             unoptimized
           />
         )}

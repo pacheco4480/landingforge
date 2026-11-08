@@ -1,4 +1,4 @@
-export const CLIENT_CMS_TENANT_ISOLATION_VERSION = "1";
+export const CLIENT_CMS_TENANT_ISOLATION_VERSION = "2";
 
 export function verifyClientCmsTenantIsolation() {
   const verifiedVersion = process.env.CLIENT_CMS_TENANT_ISOLATION_VERIFIED_VERSION?.trim();

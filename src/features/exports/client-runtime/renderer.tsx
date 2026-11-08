@@ -17,6 +17,7 @@ export function ClientRuntimeRenderer({
   legalSettings,
   saveConsentAction,
   submitFormAction,
+  previewMode = false,
   turnstileEnabled = false,
   turnstileSiteKey = null,
 }: {
@@ -26,10 +27,12 @@ export function ClientRuntimeRenderer({
   legalSettings: PublicLayoutLegalSettings;
   saveConsentAction: (formData: FormData) => Promise<void>;
   submitFormAction?: ClientRuntimeFormAction;
+  previewMode?: boolean;
   turnstileEnabled?: boolean;
   turnstileSiteKey?: string | null;
 }) {
   const context: PublicRendererContext = {
+    previewMode,
     page: {
       id: payload.page.slug,
       title: payload.page.title,

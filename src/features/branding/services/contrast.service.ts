@@ -25,6 +25,15 @@ export function meetsWcagAa(foreground: string, background: string) {
   return getContrastRatio(foreground, background) >= 4.5;
 }
 
+export function getAccessibleTextColor(background: string) {
+  const dark = "#000000";
+  const light = "#ffffff";
+
+  return getContrastRatio(dark, background) >= getContrastRatio(light, background)
+    ? dark
+    : light;
+}
+
 function getRelativeLuminance(hex: string) {
   const normalized = normalizeHex(hex);
   const channels = [0, 2, 4].map(

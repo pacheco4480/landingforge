@@ -1,11 +1,12 @@
 import { ClientPackageExportStatus, ProjectDeliveryMode, Prisma } from "@/generated/prisma/client";
-import { auditClientPackage } from "@/features/exports/services/client-package-audit";
+import { auditClientPackage, type ClientPackageAudit } from "@/features/exports/services/client-package-audit";
 import { buildClientRuntimeComposition } from "@/features/exports/services/client-runtime-composition";
 import { assembleAuditedLandingOnlyPackage, type BuiltClientPackage } from "@/features/exports/services/client-package-assembler";
 import { assembleAuditedClientCmsPackage } from "@/features/exports/services/client-cms-project-assembler";
 import { verifyClientCmsTenantIsolation } from "@/features/exports/services/client-cms-isolation-verification";
 import { buildProjectSourceSnapshot, validateProjectSourceSnapshot } from "@/features/exports/services/project-source-snapshot";
 import { purgeExpiredClientPackageExports } from "@/features/exports/services/client-package-export-retention";
+import { isProjectExportStatusEligible } from "@/features/exports/services/project-export-status-policy";
 import { projectWhereForActor } from "@/features/projects/project-access";
 import { db } from "@/lib/db";
 
@@ -19,15 +20,51 @@ function expiryDate() {
   return expiresAt;
 }
 
-function failedBuildAudit(mode: ProjectDeliveryMode, tenantIsolationPassed = false, isolatedBuildPassed = false) {
-  return auditClientPackage({ mode, entries: [], isolatedBuildPassed, tenantIsolationPassed });
+function failedPackageAudit(failureCode: string, diagnostic?: string): ClientPackageAudit {
+  return {
+    format: "landingforge-client-package-audit",
+    formatVersion: 1,
+    policyVersion: 1,
+    ready: false,
+    fileCount: 0,
+    totalBytes: 0,
+    findings: [{
+      code: "GENERATION_FAILED",
+      message: diagnostic
+        ? `A geração foi interrompida antes da auditoria final (${failureCode}). ${diagnostic}`
+        : `A geração do pacote foi interrompida antes da auditoria final (${failureCode}).`,
+    }],
+  };
 }
 
 function safeFailureCode(error: unknown) {
-  if (error instanceof Error && error.message.includes("versão do template")) return "TEMPLATE_VERSION_DRIFT";
-  if (error instanceof Error && error.message.includes("HTTPS público")) return "ASSET_REJECTED";
-  if (error instanceof Error && error.message.includes("build")) return "ISOLATED_BUILD_FAILED";
+  if (!(error instanceof Error)) return "PACKAGE_GENERATION_FAILED";
+  const message = error.message.toLowerCase();
+  const systemCode = (error as NodeJS.ErrnoException).code;
+  if (message.includes("versão do template")) return "TEMPLATE_VERSION_DRIFT";
+  if (message.includes("https público")) return "ASSET_REJECTED";
+  if (systemCode === "ERR_INVALID_IP_ADDRESS") return "ASSET_DNS_PINNING_FAILED";
+  if (systemCode === "EEXIST") return "PACKAGE_FILE_COLLISION";
+  if (systemCode === "ENOENT") return "PACKAGE_SOURCE_MISSING";
+  if (systemCode === "EPERM") return "PACKAGE_FILESYSTEM_PERMISSION";
+  if (message.includes("tempo limite ao obter um asset remoto")) return "ASSET_DOWNLOAD_TIMEOUT";
+  if (message.includes("asset remoto") || message.includes("asset de imagem")) return "ASSET_DOWNLOAD_FAILED";
+  if (/npm(?:\.cmd)? install/i.test(message)) return "DEPENDENCY_INSTALL_FAILED";
+  if (message.includes("build")) return "ISOLATED_BUILD_FAILED";
   return "PACKAGE_GENERATION_FAILED";
+}
+
+function safeFailureDiagnostic(error: unknown) {
+  if (!(error instanceof Error)) return "Exceção não padronizada.";
+  const systemCode = (error as NodeJS.ErrnoException).code;
+  const message = error.message
+    .replace(/https?:\/\/\S+/gi, "[URL] ")
+    .replace(/[A-Za-z]:\\[^\s)'\"]+/g, "[caminho local]")
+    .replace(/\b(?:sb_secret_|re_)[A-Za-z0-9_-]+\b/gi, "[credencial removida]")
+    .replace(/(?:DATABASE_URL|DIRECT_URL|AUTH_SECRET|CRON_SECRET|RESEND_API_KEY|TURNSTILE_SECRET_KEY|SUPABASE_SECRET_KEY)(\s*[:=]\s*)[^\s]+/gi, "$1[credencial removida]")
+    .replace(/\s+/g, " ")
+    .slice(0, 240);
+  return `${error.name}${systemCode ? `/${systemCode}` : ""}: ${message || "sem mensagem"}`;
 }
 
 async function recordFailure(input: {
@@ -39,7 +76,7 @@ async function recordFailure(input: {
   status?: ClientPackageExportStatus;
   audit?: ReturnType<typeof auditClientPackage>;
 }) {
-  const audit = input.audit ?? failedBuildAudit(input.mode);
+  const audit = input.audit ?? failedPackageAudit(input.code);
   return db.clientPackageExport.create({
     data: {
       projectId: input.projectId,
@@ -97,6 +134,7 @@ async function createProjectExport(projectId: string, actor: ProjectActor, mode:
     select: {
       id: true,
       name: true,
+      status: true,
       deliveryMode: true,
       siteManagementOwner: true,
       hostingOwner: true,
@@ -133,6 +171,10 @@ async function createProjectExport(projectId: string, actor: ProjectActor, mode:
   if (project.deliveryMode !== mode) {
     const record = await recordFailure({ projectId, actor, templateVersion: project.templateVersion ?? "indefinida", code: "DELIVERY_MODE_NOT_SUPPORTED", mode, status: ClientPackageExportStatus.BLOCKED });
     return { ok: false, recordId: record.id, code: "DELIVERY_MODE_NOT_SUPPORTED", audit: record.auditReport };
+  }
+  if (!isProjectExportStatusEligible(project.status)) {
+    const record = await recordFailure({ projectId, actor, templateVersion: project.templateVersion ?? "indefinida", code: "PROJECT_STATUS_NOT_EXPORTABLE", mode, status: ClientPackageExportStatus.BLOCKED });
+    return { ok: false, recordId: record.id, code: "PROJECT_STATUS_NOT_EXPORTABLE", audit: record.auditReport };
   }
 
   const version = project.sourceVersions[0];
@@ -174,7 +216,7 @@ async function createProjectExport(projectId: string, actor: ProjectActor, mode:
       const verification = verifyClientCmsTenantIsolation();
       tenantIsolationPassed = verification.passed;
       if (!tenantIsolationPassed) {
-        const audit = failedBuildAudit(mode, false, false);
+        const audit = failedPackageAudit("TENANT_ISOLATION_NOT_VERIFIED");
         const record = await recordFailure({
           projectId,
           actor,
@@ -212,7 +254,14 @@ async function createProjectExport(projectId: string, actor: ProjectActor, mode:
     return { ok: true, recordId: record.id, package: builtPackage };
   } catch (error) {
     const code = safeFailureCode(error);
-    const record = await recordFailure({ projectId, actor, templateVersion: project.templateVersion ?? version.templateVersion, code, mode });
+    const record = await recordFailure({
+      projectId,
+      actor,
+      templateVersion: project.templateVersion ?? version.templateVersion,
+      code,
+      mode,
+      audit: failedPackageAudit(code, safeFailureDiagnostic(error)),
+    });
     return { ok: false, recordId: record.id, code, audit: record.auditReport };
   }
 }

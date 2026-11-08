@@ -64,6 +64,23 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/briefing/:token",
+        has: [{ type: "query", key: "view", value: "canvas" }],
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+        ],
+      },
+      {
+        source: "/content-preview/:pageId",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+        ],
+      },
     ];
   },
 };

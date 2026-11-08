@@ -5,6 +5,28 @@ export type TemplateDefinition = {
   supportedSections: string[];
 };
 
+const legacyRealEstateHeroSectionTypes: Record<string, string> = {
+  hero: "real_estate_hero",
+  "featured-properties": "featured_properties",
+  services: "property_highlights",
+  "local-expertise": "local_area_expertise",
+  valuation: "property_valuation",
+  team: "real_estate_agents",
+  process: "real_estate_process",
+  "luxury-advisory": "luxury_advisory",
+};
+
+export function resolvePublicSectionType(
+  templateKey: string | null | undefined,
+  sectionKey: string,
+  sectionType: string,
+) {
+  if (templateKey === "real_estate" && sectionType === "hero") {
+    return legacyRealEstateHeroSectionTypes[sectionKey] ?? sectionType;
+  }
+  return sectionType;
+}
+
 const defaultSupportedSections = [
   "hero",
   "features",
@@ -123,4 +145,13 @@ export function resolveTemplate(context: PublicRendererContext) {
 export function getTemplateDefinition(templateKey: string | null) {
   if (!templateKey) return null;
   return templates[templateKey] ?? null;
+}
+
+export function isSectionTypeSupported(
+  templateKey: string | null,
+  sectionType: string,
+) {
+  const supportedSections =
+    getTemplateDefinition(templateKey)?.supportedSections ?? defaultSupportedSections;
+  return supportedSections.includes(sectionType);
 }

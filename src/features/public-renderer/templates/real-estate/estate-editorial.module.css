@@ -78,7 +78,7 @@
   text-transform: uppercase;
   line-height: 1.6;
 }
-.hero h1 {
+.hero :is(h1, h2) {
   max-width: 920px;
   margin: 22px 0;
   font-size: 64px;
@@ -87,7 +87,7 @@
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
-.premiumHero h1 {
+.premiumHero :is(h1, h2) {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 76px;
   font-weight: 400;
@@ -240,7 +240,7 @@
   object-fit: cover;
   transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.propertyImage:hover img {
+.propertyImage:hover img[data-public-motion="hover-zoom"] {
   transform: scale(1.035);
 }
 .propertyNumber {

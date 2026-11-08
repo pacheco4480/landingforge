@@ -226,6 +226,7 @@ export function PlayfulSignatureDishes({ section }: PublicSectionProps) {
                   itemText(featured, "title", "Prato de assinatura"),
                 )}
                 className="object-cover"
+                data-public-motion="hover-zoom"
                 fill
                 sizes="(min-width: 1024px) 54vw, 100vw"
                 src={itemText(featured, "image")}
@@ -262,7 +263,8 @@ export function PlayfulSignatureDishes({ section }: PublicSectionProps) {
                       "imageAlt",
                       itemText(item, "title", "Prato da casa"),
                     )}
-                    className="object-cover transition-transform duration-300 group-hover:scale-[1.025]"
+                    className="object-cover transition-transform duration-300"
+                    data-public-motion="hover-zoom"
                     fill
                     sizes="(min-width: 1024px) 31vw, 90vw"
                     src={itemText(item, "image")}
@@ -437,6 +439,7 @@ export function PlayfulGallery({ section }: PublicSectionProps) {
                   itemText(item, "label", "Momento no Boca Pop"),
                 )}
                 className="object-cover"
+                data-public-motion="hover-zoom"
                 fill
                 sizes="(min-width: 1024px) 35vw, (min-width: 640px) 48vw, 100vw"
                 src={itemText(item, "image")}
@@ -553,7 +556,6 @@ export function PlayfulLocation({
         </div>
         {mapQuery ? (
           <a
-            aria-label={`Abrir direções para ${address} no Google Maps`}
             className="restaurant-playful-location__map-note"
             href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`}
             rel="noreferrer"

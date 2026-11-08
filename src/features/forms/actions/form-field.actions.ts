@@ -12,26 +12,18 @@ import { permissions } from "@/features/rbac/permissions";
 import { db } from "@/lib/db";
 import { requirePermission } from "@/lib/auth/require-permission";
 import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
+import { parseFormFieldFormData } from "@/features/forms/validation/form-field-form-data";
 
 function value(formData: FormData, key: string) {
   const raw = formData.get(key);
   return typeof raw === "string" ? raw : "";
 }
 
-function jsonArray(formData: FormData, key: string) {
-  const raw = value(formData, key);
-  if (!raw) return [];
-  return JSON.parse(raw) as unknown;
-}
-
-function jsonObject(formData: FormData, key: string) {
-  const raw = value(formData, key);
-  if (!raw) return {};
-  return JSON.parse(raw) as unknown;
-}
-
 export async function saveFormFieldAction(formData: FormData) {
   const user = await requirePermission(permissions.formsWrite);
+  const parsed = parseFormFieldFormData(formData);
+  if (!parsed.success) return parsed;
+
   const formId = value(formData, "formId");
   const form = await db.form.findUniqueOrThrow({ where: { id: formId }, select: { pageId: true } });
   const existingField = value(formData, "id")
@@ -39,27 +31,11 @@ export async function saveFormFieldAction(formData: FormData) {
     : null;
   if (existingField?.form.pageId) await getMaintenanceCandidateForPage(existingField.form.pageId, user);
   if (form.pageId) await getMaintenanceCandidateForPage(form.pageId, user);
-  const field = await saveFormField(
-    {
-      id: value(formData, "id") || undefined,
-      formId: value(formData, "formId"),
-      label: value(formData, "label"),
-      name: value(formData, "name"),
-      type: value(formData, "type"),
-      placeholder: value(formData, "placeholder"),
-      helpText: value(formData, "helpText"),
-      defaultValue: value(formData, "defaultValue"),
-      options: jsonArray(formData, "options"),
-      validation: jsonObject(formData, "validation"),
-      conditionalLogic: jsonArray(formData, "conditionalLogic"),
-      isRequired: formData.get("isRequired") === "on",
-      isVisible: formData.get("isVisible") === "on",
-    },
-    user.id,
-  );
+  const field = await saveFormField(parsed.data, user.id);
   if (form.pageId) await invalidateMaintenanceCandidate(form.pageId);
   revalidatePath("/forms");
   await revalidateFieldFormPage(field.formId);
+  return { success: true } as const;
 }
 
 export async function deleteFormFieldAction(formData: FormData) {

@@ -8,6 +8,7 @@ import {
   sectionUpdateSchema,
 } from "@/features/content/schemas/section.schema";
 import { db } from "@/lib/db";
+import { validateRepeatableSectionContent } from "@/features/content/repeatable-section-validation";
 
 async function getNextSortOrder(pageId: string) {
   const aggregate = await db.pageSection.aggregate({
@@ -51,6 +52,7 @@ export async function createSection(input: unknown, userId: string) {
 
 export async function updateSection(input: unknown, userId: string) {
   const data = sectionUpdateSchema.parse(input);
+  validateRepeatableSectionContent(data.sectionType, data.content);
   const existingSection = await db.pageSection.findUniqueOrThrow({
     where: { id: data.id },
   });

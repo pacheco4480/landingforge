@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { requestPackageSaveTarget, writePackageToSaveTarget } from "@/features/exports/client-package-download";
 
 type ExportHistoryItem = {
   id: string;
@@ -45,10 +46,28 @@ export function ClientPackageExportPanel({ projectId, mode, canExport, history }
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  async function generate() {
+  async function generate(chooseSaveLocation = false) {
     setPending(true);
     setMessage(null);
     try {
+      const pickerWindow = window as Window & {
+        showSaveFilePicker?: (options: {
+          suggestedName: string;
+          types: Array<{ description: string; accept: Record<string, string[]> }>;
+          excludeAcceptAllOption: boolean;
+        }) => Promise<FileSystemFileHandle>;
+      };
+      const suggestedName = "landingforge-client.zip";
+      const saveTarget = await requestPackageSaveTarget(
+        suggestedName,
+        pickerWindow.showSaveFilePicker?.bind(window),
+        chooseSaveLocation,
+      );
+      if (saveTarget.kind === "cancelled") {
+        setMessage("Seleção do local cancelada. Não foi iniciada qualquer exportação.");
+        return;
+      }
+
       const response = await fetch(`/api/projects/${projectId}/exports`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,17 +76,27 @@ export function ClientPackageExportPanel({ projectId, mode, canExport, history }
       if (!response.ok) {
         const result = await response.json().catch(() => null) as { error?: string; audit?: unknown } | null;
         const findings = reportFindings(result?.audit);
-        setMessage(findings.length ? findings.map((finding) => finding.message).join(" ") : result?.error ?? "A exportação não foi concluída.");
+        const errorMessage = result?.error === "PROJECT_STATUS_NOT_EXPORTABLE"
+          ? "O projeto tem de estar aprovado ou entregue antes da exportação."
+          : result?.error;
+        setMessage(findings.length ? findings.map((finding) => finding.message).join(" ") : errorMessage ?? "A exportação não foi concluída.");
         return;
       }
       const archive = await response.blob();
-      const url = URL.createObjectURL(archive);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = response.headers.get("Content-Disposition")?.match(/filename="([^"]+)"/)?.[1] ?? "landingforge-client.zip";
-      anchor.click();
-      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setMessage("Pacote validado e download iniciado. O ZIP não fica guardado no LandingForge.");
+      const filename = response.headers.get("Content-Disposition")?.match(/filename="([^"]+)"/)?.[1] ?? suggestedName;
+
+      if (saveTarget.kind === "selected") {
+        try {
+          await writePackageToSaveTarget(saveTarget.handle, archive);
+          setMessage(`Pacote validado e guardado como ${filename} no local escolhido. O ZIP não fica guardado no LandingForge.`);
+        } catch {
+          startBrowserDownload(archive, filename);
+          setMessage("Não foi possível guardar no local escolhido. O download normal foi iniciado; verifica as transferências do browser.");
+        }
+      } else {
+        startBrowserDownload(archive, filename);
+        setMessage("Pacote validado e download iniciado pelo browser. A localização depende das definições de transferências. O ZIP não fica guardado no LandingForge.");
+      }
       router.refresh();
     } catch {
       setMessage("Não foi possível concluir a exportação. Verifica a ligação e tenta novamente.");
@@ -76,19 +105,34 @@ export function ClientPackageExportPanel({ projectId, mode, canExport, history }
     }
   }
 
+  function startBrowserDownload(archive: Blob, filename: string) {
+    const url = URL.createObjectURL(archive);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   return (
     <section className="border-border grid gap-4 rounded-md border p-5" aria-labelledby="package-export-title">
       <div>
         <h2 id="package-export-title" className="font-semibold">Pacote de entrega · {mode === "LANDING_WITH_CMS" ? "Landing + CMS" : "Landing Only"}</h2>
         <p className="text-muted-foreground mt-1 text-sm">Gera uma aplicação independente {mode === "LANDING_WITH_CMS" ? "com CMS, autenticação e base de dados do cliente" : "sem CMS nem autenticação"}, compila-a e aplica a auditoria antes do download. O ZIP não fica guardado no LandingForge.</p>
+        <p className="text-muted-foreground mt-2 text-sm">O download normal segue as definições de transferências do browser. Em browsers compatíveis, também podes escolher o destino antes da geração.</p>
       </div>
       <label className="flex items-start gap-2 text-sm">
         <input type="checkbox" checked={legalAcknowledged} onChange={(event) => setLegalAcknowledged(event.target.checked)} className="mt-1" />
         <span>Compreendo que os avisos legais incluídos são modelos por preencher e têm de ser revistos e substituídos antes da publicação.</span>
       </label>
-      <button type="button" disabled={!canExport || !legalAcknowledged || pending} onClick={generate} className="bg-primary text-primary-foreground disabled:opacity-50 w-fit rounded-md px-4 py-2 text-sm font-medium">
-        {pending ? "A compilar e auditar…" : "Gerar e descarregar ZIP"}
+      <div className="flex flex-wrap gap-2">
+      <button type="button" disabled={!canExport || !legalAcknowledged || pending} onClick={() => generate()} className="bg-primary text-primary-foreground disabled:opacity-50 w-fit rounded-md px-4 py-2 text-sm font-medium">
+        {pending ? "A preparar e auditar…" : "Gerar e descarregar ZIP"}
       </button>
+      <button type="button" disabled={!canExport || !legalAcknowledged || pending} onClick={() => generate(true)} className="border-border disabled:opacity-50 w-fit rounded-md border px-4 py-2 text-sm font-medium">
+        Escolher destino e gerar
+      </button>
+      </div>
       {!canExport ? <p className="text-muted-foreground text-sm">O projeto tem de estar aprovado ou entregue antes da exportação.</p> : null}
       <p aria-live="polite" role={message && /não foi|não consegue|bloquead|falhou|excede|inválid/i.test(message) ? "alert" : "status"} className="text-muted-foreground text-sm">{message}</p>
       {history.length ? (

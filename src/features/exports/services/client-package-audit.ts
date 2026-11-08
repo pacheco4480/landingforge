@@ -38,6 +38,7 @@ export type ClientPackageFinding = {
     | "TOO_MANY_FILES"
     | "CONTENT_NOT_INSPECTED"
     | "MISSING_CATEGORY"
+    | "GENERATION_FAILED"
     | "BUILD_NOT_VERIFIED"
     | "TENANT_ISOLATION_NOT_VERIFIED";
   path?: string;
@@ -106,6 +107,8 @@ const deniedPathPatterns = [
 const allowedDestinationPaths: Record<ClientPackageCategory, readonly (string | RegExp)[]> = {
   frontend: [
     /^app\/(?:page|layout)\.[cm]?[jt]sx?$/i,
+    /^app\/favicon\.ico\/route\.[cm]?[jt]s$/i,
+    /^app\/icon\.svg$/i,
     /^app\/actions\.[cm]?[jt]s$/i,
     /^app\/(?:politica-privacidade|politica-cookies|termos-condicoes)\/page\.[cm]?[jt]sx?$/i,
     /^app\/cms(?:\/|$)/i,

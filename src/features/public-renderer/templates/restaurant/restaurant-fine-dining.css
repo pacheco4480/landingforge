@@ -358,10 +358,20 @@
 }
 @media (max-width: 767px) {
   .restaurant-fine-hero__content {
-    padding: 130px 20px 52px;
+    padding: 112px 20px 34px;
   }
   .restaurant-fine-hero h1 {
-    font-size: 3.4rem;
+    margin-top: 16px;
+    font-size: 3rem;
+  }
+  .restaurant-fine-hero__lead {
+    margin-top: 18px;
+  }
+  .restaurant-fine-actions {
+    margin-top: 24px;
+  }
+  .restaurant-fine-hero__note {
+    margin-top: 28px;
   }
   .restaurant-fine-menu article {
     grid-template-columns: 38px 1fr;

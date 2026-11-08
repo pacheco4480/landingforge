@@ -200,6 +200,28 @@ export default function LegalNotice() {
 `;
 }
 
+function clientFaviconSvg(composition: ClientRuntimeComposition) {
+  const primary = composition.payload.page.theme.primaryColor;
+  const accent = composition.payload.page.theme.accentColor;
+  const brand = composition.payload.page.sections
+    .map((section) => section.content)
+    .find((content) => content && typeof content === "object" && !Array.isArray(content) &&
+      ("brandName" in content || "logoText" in content));
+  const brandRecord = brand && typeof brand === "object" && !Array.isArray(brand) ? brand : {};
+  const brandName = "brandName" in brandRecord && typeof brandRecord.brandName === "string"
+    ? brandRecord.brandName
+    : "logoText" in brandRecord && typeof brandRecord.logoText === "string"
+      ? brandRecord.logoText
+      : composition.payload.page.title;
+  const initial = [...brandName.trim()][0] ?? "L";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${primary}"/><circle cx="48" cy="16" r="7" fill="${accent}"/><text x="32" y="45" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" font-weight="700" fill="#fff">${initial.replace(/[&<>"']/g, "")}</text></svg>`;
+  return svg;
+}
+
+function clientFaviconRouteSource(composition: ClientRuntimeComposition) {
+  return `export function GET() { return new Response(${JSON.stringify(clientFaviconSvg(composition))}, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=31536000, immutable" } }); }\n`;
+}
+
 function clientRuntimePath(sourcePath: string) {
   if (!sourcePath.startsWith("src/")) throw new Error("A fonte do runtime cliente tem de estar dentro de src/.");
   return `src/client-runtime/${sourcePath.slice(4)}`;
@@ -277,6 +299,8 @@ export function assembleClientRuntimeProject(
       .replace(/\.tsx$/, "")}`;
     const files: Record<string, string> = {
       "app/page.tsx": clientRuntimeSource(appPageSource().replace("ENTRYPOINT", entrypoint)),
+      "app/favicon.ico/route.ts": clientFaviconRouteSource(composition),
+      "app/icon.svg": `${clientFaviconSvg(composition)}\n`,
       "app/layout.tsx": `import type { Metadata } from "next";\nimport "./globals.css";\nexport const metadata: Metadata = { metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://example.invalid") };\nexport default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="pt-PT"><body>{children}</body></html>; }\n`,
       "app/globals.css": `@import "tailwindcss";\n@source "../src/**/*.{ts,tsx}";\n`,
       "app/actions.ts": clientRuntimeSource(actionsSource()),
@@ -316,7 +340,7 @@ export function assembleClientRuntimeProject(
         template: composition.template,
         payloadFile: "src/client-runtime-payload.json",
         sourceFiles: packagedSourceFiles,
-        generatedFiles: ["app/page.tsx", "app/layout.tsx", "app/actions.ts", "src/client-runtime/site.ts"],
+        generatedFiles: ["app/page.tsx", "app/layout.tsx", "app/actions.ts", "app/favicon.ico/route.ts", "app/icon.svg", "src/client-runtime/site.ts"],
         credentialsCopied: false,
         maintenanceRelease: composition.maintenanceRelease ?? null,
         buildVerified: false,

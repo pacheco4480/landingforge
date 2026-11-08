@@ -1,11 +1,14 @@
 import type { PublicRendererContext } from "@/features/public-renderer/types";
+import { getAccessibleTextColor } from "@/features/branding/services/contrast.service";
 
 export function ThemeStyle({ context }: { context: PublicRendererContext }) {
   const theme = context.page.theme;
   const site = context.site;
+  const primaryColor = theme?.primaryColor ?? site.primaryColor;
   const css = `
     :root {
-      --public-primary: ${theme?.primaryColor ?? site.primaryColor};
+      --public-primary: ${primaryColor};
+      --public-on-primary: ${getAccessibleTextColor(primaryColor)};
       --public-secondary: ${theme?.secondaryColor ?? site.secondaryColor};
       --public-accent: ${theme?.accentColor ?? site.accentColor};
       --public-background: ${theme?.backgroundColor ?? "#ffffff"};

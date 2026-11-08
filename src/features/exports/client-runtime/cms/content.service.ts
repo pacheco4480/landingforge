@@ -5,6 +5,38 @@ import { getActorInstallation } from "./authorization";
 import { getClientCmsPool, withClientCmsTransaction } from "./database";
 import type { Pool, PoolClient } from "pg";
 
+const repeatableLimits: Record<string, { max: number; fields: Array<{ key: string; length: number; required: boolean }> }> = {
+  faq: { max: 30, fields: [{ key: "question", length: 180, required: true }, { key: "answer", length: 1200, required: true }] },
+  testimonials: { max: 30, fields: [{ key: "name", length: 100, required: true }, { key: "quote", length: 700, required: true }, { key: "context", length: 120, required: false }] },
+  restaurant_reviews: { max: 30, fields: [{ key: "name", length: 100, required: true }, { key: "quote", length: 700, required: true }, { key: "context", length: 120, required: false }] },
+  restaurant_menu_highlights: { max: 30, fields: [{ key: "category", length: 80, required: true }, { key: "title", length: 120, required: true }, { key: "description", length: 500, required: true }, { key: "price", length: 40, required: false }] },
+};
+
+function validateRepeatableItems(sectionType: string, value: unknown) {
+  const profile = sectionType === "restaurant_reviews"
+    ? repeatableLimits.restaurant_reviews
+    : sectionType === "restaurant_menu_highlights"
+      ? repeatableLimits.restaurant_menu_highlights
+      : sectionType === "faq" || sectionType.endsWith("_faq")
+        ? repeatableLimits.faq
+        : sectionType === "testimonials" || sectionType.endsWith("_testimonials")
+          ? repeatableLimits.testimonials
+          : null;
+  if (!profile || !Array.isArray(value)) return;
+  if (value.length > profile.max) throw new Error(`Esta secção suporta até ${profile.max} itens.`);
+  for (const [index, item] of value.entries()) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) throw new Error(`O item ${index + 1} tem um formato inválido.`);
+    const record = item as Record<string, unknown>;
+    for (const field of profile.fields) {
+      const raw = record[field.key];
+      if (raw !== undefined && typeof raw !== "string") throw new Error(`O campo ${field.key} do item ${index + 1} tem um formato inválido.`);
+      const text = typeof raw === "string" ? raw.trim() : "";
+      if (field.required && !text) throw new Error(`Preenche ${field.key} no item ${index + 1}.`);
+      if (typeof raw === "string" && raw.length > field.length) throw new Error(`${field.key} no item ${index + 1} excede ${field.length} caracteres.`);
+    }
+  }
+}
+
 export async function getClientCmsPage(actor: AuthorizedClientCmsContext, pool: Pool = getClientCmsPool()) {
   const projectId = getActorInstallation(actor).projectId;
   const result = await pool.query(
@@ -13,7 +45,7 @@ export async function getClientCmsPage(actor: AuthorizedClientCmsContext, pool: 
               'id', s.id, 'sectionKey', s.section_key, 'sectionType', s.section_type,
               'name', s.name, 'sortOrder', s.sort_order, 'isVisible', s.is_visible,
               'content', s.content, 'settings', s.settings
-            ) ORDER BY s.sort_order) FILTER (WHERE s.id IS NOT NULL), '[]'::jsonb) AS sections
+            ) ORDER BY s.sort_order) FILTER (WHERE s.id IS NOT NULL AND s.is_visible), '[]'::jsonb) AS sections
        FROM lf_cms_pages p
        LEFT JOIN lf_cms_sections s ON s.project_id = p.project_id AND s.page_id = p.id
       WHERE p.project_id = $1
@@ -21,14 +53,22 @@ export async function getClientCmsPage(actor: AuthorizedClientCmsContext, pool: 
       ORDER BY p.updated_at DESC LIMIT 1`,
     [projectId],
   );
-  return result.rows[0] ?? null;
+  const page = result.rows[0];
+  if (!page) return null;
+  const visibleSectionKeys = new Set(
+    (page.sections as Array<{ sectionKey: string }>).map((section) => section.sectionKey),
+  );
+  return {
+    ...page,
+    capabilities: actor.installation.capabilities.filter((capability) => visibleSectionKeys.has(capability.sectionKey)),
+  };
 }
 
 export async function getClientCmsDashboard(actor: AuthorizedClientCmsContext, pool: Pool = getClientCmsPool()) {
   const projectId = getActorInstallation(actor).projectId;
   const result = await pool.query(
     `SELECT (SELECT count(*)::int FROM lf_cms_pages WHERE project_id = $1) AS pages,
-            (SELECT count(*)::int FROM lf_cms_sections WHERE project_id = $1) AS sections,
+            (SELECT count(*)::int FROM lf_cms_sections WHERE project_id = $1 AND is_visible = true) AS sections,
             (SELECT count(*)::int FROM lf_cms_forms WHERE project_id = $1) AS forms,
             (SELECT count(*)::int FROM lf_cms_leads WHERE project_id = $1 AND status = 'new') AS new_leads`,
     [projectId],
@@ -54,7 +94,7 @@ export async function updateClientCmsSection(
     const sectionResult = await client.query(
       `SELECT id, page_id, section_key, section_type, content
          FROM lf_cms_sections
-        WHERE project_id = $1 AND page_id = $2 AND id = $3
+        WHERE project_id = $1 AND page_id = $2 AND id = $3 AND is_visible = true
         FOR UPDATE`,
       [projectId, input.pageId, input.sectionId],
     );
@@ -67,6 +107,7 @@ export async function updateClientCmsSection(
     if (!capability) throw new Error("A secção não pertence às capacidades da versão fixada.");
     const unsupportedFields = Object.keys(patch).filter((key) => !capability.editableFields.includes(key));
     if (unsupportedFields.length) throw new Error("Um ou mais campos não são editáveis nesta versão do template.");
+    if (Object.hasOwn(patch, "items")) validateRepeatableItems(section.section_type, patch.items);
 
     const content = { ...(section.content as Record<string, unknown>), ...patch };
     await client.query(
@@ -137,6 +178,100 @@ export async function updateClientCmsLeadStatus(
     [projectId, actor.userId, leadId],
   );
   return result.rows[0];
+}
+
+function csvCell(value: unknown) {
+  let text = value == null
+    ? ""
+    : value instanceof Date
+      ? value.toISOString()
+    : typeof value === "object"
+      ? JSON.stringify(value)
+      : String(value);
+  if (/^[\u0000-\u0020\u007f\u00a0\uFEFF]*[=+\-@]/u.test(text)) text = `'${text}`;
+  return `"${text.replaceAll('"', '""')}"`;
+}
+
+export function buildClientCmsLeadsCsv(rows: Array<Record<string, unknown>>) {
+  const columns: Array<[string, (row: Record<string, unknown>) => unknown]> = [
+    ["ID", (row) => row.id],
+    ["Nome", (row) => row.name],
+    ["Email", (row) => row.email],
+    ["Telefone", (row) => row.phone],
+    ["Empresa", (row) => row.company],
+    ["Mensagem", (row) => row.message],
+    ["Estado", (row) => row.status],
+    ["Criado em", (row) => row.created_at],
+    ["Atualizado em", (row) => row.updated_at],
+    ["Dados do formulário", (row) => row.submission_data],
+  ];
+  return `\uFEFF${columns.map(([header]) => csvCell(header)).join(",")}\r\n${rows
+    .map((row) => columns.map(([, value]) => csvCell(value(row))).join(","))
+    .join("\r\n")}${rows.length ? "\r\n" : ""}`;
+}
+
+export async function exportClientCmsLeadsCsv(
+  actor: AuthorizedClientCmsContext,
+  transaction: typeof withClientCmsTransaction = withClientCmsTransaction,
+) {
+  const projectId = getActorInstallation(actor).projectId;
+  return transaction(async (client: PoolClient) => {
+    const result = await client.query(
+      `SELECT l.id, l.name, l.email, l.phone, l.company, l.message, l.status, l.created_at, l.updated_at,
+              s.data AS submission_data
+         FROM lf_cms_leads l
+         JOIN lf_cms_submissions s ON s.project_id = l.project_id AND s.id = l.submission_id
+        WHERE l.project_id = $1 AND s.project_id = $1
+        ORDER BY l.created_at DESC, l.id`,
+      [projectId],
+    );
+    await client.query(
+      `INSERT INTO lf_cms_audit_events(project_id, actor_user_id, action, resource_type)
+       VALUES ($1, $2, 'lead.export', 'lead_collection')`,
+      [projectId, actor.userId],
+    );
+    return buildClientCmsLeadsCsv(result.rows as Array<Record<string, unknown>>);
+  });
+}
+
+export async function deleteClientCmsLeadData(
+  actor: AuthorizedClientCmsContext,
+  leadId: string,
+  confirmed: unknown,
+  transaction: typeof withClientCmsTransaction = withClientCmsTransaction,
+) {
+  if (confirmed !== true) throw new Error("Confirma explicitamente a eliminação permanente dos dados deste contacto.");
+  const projectId = getActorInstallation(actor).projectId;
+  return transaction(async (client: PoolClient) => {
+    const result = await client.query(
+      `SELECT l.id, l.submission_id
+         FROM lf_cms_leads l
+         JOIN lf_cms_submissions s ON s.project_id = l.project_id AND s.id = l.submission_id
+        WHERE l.project_id = $1 AND s.project_id = $1 AND l.id = $2
+        FOR UPDATE OF l, s`,
+      [projectId, leadId],
+    );
+    const lead = result.rows[0];
+    if (!lead) throw new Error("Lead não encontrado neste Project.");
+
+    const deletedLead = await client.query(
+      "DELETE FROM lf_cms_leads WHERE project_id = $1 AND id = $2",
+      [projectId, leadId],
+    );
+    if (deletedLead.rowCount !== 1) throw new Error("Lead não encontrado neste Project.");
+    const deletedSubmission = await client.query(
+      "DELETE FROM lf_cms_submissions WHERE project_id = $1 AND id = $2",
+      [projectId, lead.submission_id],
+    );
+    if (deletedSubmission.rowCount !== 1) throw new Error("A submissão associada não pôde ser eliminada.");
+
+    await client.query(
+      `INSERT INTO lf_cms_audit_events(project_id, actor_user_id, action, resource_type, resource_id)
+       VALUES ($1, $2, 'lead.data.delete', 'lead', $3)`,
+      [projectId, actor.userId, leadId],
+    );
+    return { deleted: true };
+  });
 }
 
 export async function setClientCmsPageStatus(

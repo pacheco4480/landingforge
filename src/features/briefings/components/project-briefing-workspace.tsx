@@ -421,9 +421,7 @@ export async function ProjectBriefingWorkspace({
           )}
           {workspace.provisionedPageId ? (
             <ActionFeedbackForm
-              action={async (data) => {
-                await applyBriefingMappedContentAction(data);
-              }}
+              action={applyBriefingMappedContentAction}
               loadingMessage="A aplicar campos aprovados..."
               successMessage="Conteúdos aplicados à cópia do projeto."
             >

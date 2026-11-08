@@ -139,6 +139,31 @@ describe("client runtime payload", () => {
     expect(serialized).not.toContain("internalSchema");
   });
 
+  it("repairs legacy Real Estate generic Hero types for known official section keys", () => {
+    const legacyRealEstatePage: SnapshotInput = {
+      ...page,
+      template: { key: "real_estate" },
+      templateVariant: { key: "local_agency" },
+      sections: [
+        { ...page.sections[1], sectionKey: "hero", sectionType: "hero" },
+        { ...page.sections[1], sectionKey: "featured-properties", sectionType: "hero" },
+        { ...page.sections[1], sectionKey: "local-expertise", sectionType: "hero" },
+        { ...page.sections[1], sectionKey: "team", sectionType: "hero" },
+        { ...page.sections[1], sectionKey: "luxury-advisory", sectionType: "hero" },
+      ],
+    };
+
+    const payload = buildPayload(legacyRealEstatePage);
+
+    expect(payload.page.sections.map(({ sectionType }) => sectionType)).toEqual([
+      "real_estate_hero",
+      "featured_properties",
+      "local_area_expertise",
+      "real_estate_agents",
+      "luxury_advisory",
+    ]);
+  });
+
   it("fails closed when a public content field contains a recognizable credential", () => {
     const credentialPage: SnapshotInput = {
       ...page,

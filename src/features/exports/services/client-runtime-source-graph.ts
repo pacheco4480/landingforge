@@ -16,6 +16,7 @@ const allowedSourceRoots = [
   "src/features/exports/client-runtime",
   "src/features/exports/services/client-runtime-payload.ts",
   "src/features/public-renderer",
+  "src/features/branding/services/contrast.service.ts",
   "src/features/legal/components/cookie-consent-banner.tsx",
   "src/components/ui",
   "src/lib/utils.ts",

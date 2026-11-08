@@ -13,7 +13,7 @@ const exportRequestSchema = z.object({ acknowledgeLegalReview: z.literal(true), 
 function sameOrigin(request: NextRequest) {
   const origin = request.headers.get("origin");
   if (!origin) return false;
-  const allowed = new Set([request.nextUrl.origin, process.env.NEXT_PUBLIC_SITE_URL, process.env.AUTH_URL]
+  const allowed = new Set([request.nextUrl.origin, process.env.NEXT_PUBLIC_SITE_URL, process.env.AUTH_URL, process.env.NEXTAUTH_URL]
     .filter((value): value is string => Boolean(value))
     .map((value) => {
       try { return new URL(value).origin; } catch { return ""; }

@@ -10,6 +10,26 @@ import { projectWhereForActor } from "@/features/projects/project-access";
 
 type ContentActor = { id: string; roles: readonly string[]; permissions: readonly string[] };
 
+export function getPageVisibilityFilter(userRoles: readonly string[], actor?: ContentActor): Prisma.PageWhereInput {
+  const mode = getContentMode(userRoles);
+  const alternatives: Prisma.PageWhereInput[] = [mode.pageFilter];
+
+  if (actor?.permissions.includes("projects.write")) {
+    alternatives.push({
+      provisionedVersions: {
+        some: {
+          project: {
+            deletedAt: null,
+            ...projectWhereForActor(actor),
+          },
+        },
+      },
+    });
+  }
+
+  return { OR: alternatives };
+}
+
 function nullableId(value?: string) {
   return value && value.length > 0 ? value : null;
 }
@@ -53,10 +73,8 @@ export async function listPagesForUser(userRoles: readonly string[]) {
 }
 
 export async function getPageForUser(id: string, userRoles: readonly string[], actor?: ContentActor) {
-  const mode = getContentMode(userRoles);
-
   const page = await db.page.findFirst({
-    where: { id, deletedAt: null, ...mode.pageFilter },
+    where: { id, deletedAt: null, ...getPageVisibilityFilter(userRoles, actor) },
     include: {
       template: true,
       templateVariant: true,

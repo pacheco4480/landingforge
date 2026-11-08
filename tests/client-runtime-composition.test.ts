@@ -116,6 +116,8 @@ describe("client runtime composition", () => {
     for (const profile of listClientRuntimeTemplateProfiles()) {
       const files = collectClientRuntimeSourceGraph(profile.templateKey, profile.variantKey);
       expect(files.files).toContain(profile.entrypoint);
+      expect(files.files).toContain("src/features/public-renderer/components/public-base-styles.tsx");
+      expect(files.files).toContain("src/features/public-renderer/components/forms/public-form.tsx");
       expect(files.files.every((file) => !/(?:\/|^)(?:clients|projects|crm|protected|auth)(?:\/|$)/i.test(file))).toBe(true);
       expect(files.dependencies).not.toContain("next-auth");
       expect(files.dependencies).not.toContain("@prisma/client");
@@ -175,6 +177,10 @@ describe("client runtime composition", () => {
       const lockfile = JSON.parse(readFileSync(resolve("package-lock.json"), "utf8"));
 
       expect(generated.files).toContain("app/page.tsx");
+      expect(generated.files).toContain("app/favicon.ico/route.ts");
+      expect(generated.files).toContain("app/icon.svg");
+      expect(readFileSync(join(destination, "app/favicon.ico/route.ts"), "utf8")).toContain('"Content-Type": "image/svg+xml"');
+      expect(readFileSync(join(destination, "app/icon.svg"), "utf8")).toContain("#e35b46");
       expect(page).toContain("generateMetadata");
       expect(page).toContain("restaurant/playful");
       expect(environment).toContain("RESEND_API_KEY=");

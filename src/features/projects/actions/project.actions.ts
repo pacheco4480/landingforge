@@ -71,4 +71,5 @@ export async function provisionProjectSourceAction(formData: FormData) {
   await provisionProjectSource(id, user);
   revalidatePath(`/projects/${id}`);
   revalidatePath("/projects");
+  redirect(`/projects/${id}`);
 }

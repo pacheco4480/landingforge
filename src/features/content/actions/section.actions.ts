@@ -18,6 +18,7 @@ import { requireAuth } from "@/lib/auth/require-auth";
 import { hasPermission } from "@/features/rbac/rbac.service";
 import { getMaintenanceCandidateForPage, invalidateMaintenanceCandidate } from "@/features/projects/services/project-maintenance.service";
 import { normalizePresentationSettings } from "@/features/public-renderer/section-presentation";
+import { isSectionTypeSupported } from "@/features/public-renderer/template-registry";
 import { db } from "@/lib/db";
 
 function formValue(formData: FormData, key: string) {
@@ -70,6 +71,9 @@ export async function updateSectionAction(formData: FormData) {
   const { user, pageId, page } = await requireEditablePage(formData);
   await assertSectionBelongsToPage(formValue(formData, "id"), pageId);
   const sectionType = formValue(formData, "sectionType");
+  if (!isSectionTypeSupported(page.template?.key ?? null, sectionType)) {
+    throw new Error("Este tipo de secção não é suportado pelo template selecionado.");
+  }
   const settings = normalizePresentationSettings(
     parseJsonObject(formValue(formData, "settings") || "{}"),
     sectionType,

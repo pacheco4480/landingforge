@@ -373,7 +373,7 @@
   transition: transform 420ms ease;
 }
 
-.gym-modern-gallery__item:hover .gym-modern-gallery__image {
+.gym-modern-gallery__item:hover .gym-modern-gallery__image[data-public-motion="hover-zoom"] {
   transform: scale(1.025);
 }
 
@@ -443,7 +443,7 @@
   transition: transform 450ms ease;
 }
 
-.gym-modern-program:hover .gym-modern-program__image {
+.gym-modern-program:hover .gym-modern-program__image[data-public-motion="hover-zoom"] {
   transform: scale(1.035);
 }
 
@@ -652,7 +652,7 @@
   transition: transform 400ms ease;
 }
 
-.gym-modern-coaches article:hover .gym-modern-coach-image__photo {
+.gym-modern-coaches article:hover .gym-modern-coach-image__photo[data-public-motion="hover-zoom"] {
   transform: scale(1.025);
 }
 

@@ -123,9 +123,14 @@ async function downloadImage(urlValue: string) {
     );
   }
   const addresses = await lookup(url.hostname, { all: true, verbatim: true });
-  const address = addresses.find(({ address: candidate }) =>
-    isPublicNetworkAddress(candidate),
-  );
+  const address =
+    addresses.find(
+      ({ address: candidate, family }) =>
+        family === 4 && isPublicNetworkAddress(candidate),
+    ) ??
+    addresses.find(({ address: candidate }) =>
+      isPublicNetworkAddress(candidate),
+    );
   if (
     !address ||
     addresses.some(
@@ -146,8 +151,13 @@ async function downloadImage(urlValue: string) {
           headers: {
             accept: "image/avif,image/webp,image/png,image/jpeg,image/gif",
           },
-          lookup: (_hostname, _options, callback) =>
-            callback(null, address.address, address.family),
+          lookup: (_hostname, options, callback) => {
+            if (options.all) {
+              callback(null, [address]);
+              return;
+            }
+            callback(null, address.address, address.family);
+          },
         },
         (response) => {
           if (response.statusCode !== 200) {
@@ -345,7 +355,7 @@ export async function packageClientRuntimeAssets(
   payload: unknown,
   destination: string,
 ) {
-  const cache = new Map<string, string>();
+  const cache = new Map<string, Promise<string>>();
   let totalBytes = 0;
   const assetRoot = resolve(destination, "public/assets");
 
@@ -354,22 +364,44 @@ export async function packageClientRuntimeAssets(
     if (cached) return cached;
     if (cache.size >= MAX_ASSET_COUNT)
       throw new Error("O pacote excede o limite de assets referenciados.");
-    const asset = value.startsWith("/")
-      ? localAssetPath(value)
-      : await downloadImage(value);
-    totalBytes += asset.bytes.length;
-    if (totalBytes > MAX_ASSET_TOTAL_BYTES)
-      throw new Error("Os assets do pacote excedem o limite total permitido.");
-    const checksum = createHash("sha256").update(asset.bytes).digest("hex");
-    const path = `/assets/${checksum}${asset.extension}`;
-    mkdirSync(assetRoot, { recursive: true });
-    writeFileSync(
-      resolve(assetRoot, `${checksum}${asset.extension}`),
-      asset.bytes,
-      { flag: "wx" },
-    );
-    cache.set(value, path);
-    return path;
+    const pending = (async () => {
+      const asset = value.startsWith("/")
+        ? localAssetPath(value)
+        : await downloadImage(value);
+      totalBytes += asset.bytes.length;
+      if (totalBytes > MAX_ASSET_TOTAL_BYTES)
+        throw new Error("Os assets do pacote excedem o limite total permitido.");
+      const checksum = createHash("sha256").update(asset.bytes).digest("hex");
+      const path = `/assets/${checksum}${asset.extension}`;
+      const outputPath = resolve(assetRoot, `${checksum}${asset.extension}`);
+      mkdirSync(assetRoot, { recursive: true });
+      try {
+        writeFileSync(outputPath, asset.bytes, { flag: "wx" });
+      } catch (error) {
+        if (
+          !error ||
+          typeof error !== "object" ||
+          !("code" in error) ||
+          error.code !== "EEXIST"
+        ) {
+          throw error;
+        }
+        const existingChecksum = createHash("sha256")
+          .update(readFileSync(outputPath))
+          .digest("hex");
+        if (existingChecksum !== checksum) {
+          throw new Error("Um asset existente não corresponde ao checksum esperado.");
+        }
+      }
+      return path;
+    })();
+    cache.set(value, pending);
+    try {
+      return await pending;
+    } catch (error) {
+      cache.delete(value);
+      throw error;
+    }
   }
 
   async function visit(value: unknown, key = ""): Promise<unknown> {
@@ -643,6 +675,6 @@ export async function assembleAuditedLandingOnlyPackage(
       templateVersion: composition.payload.templateVersion,
     };
   } finally {
-    rmSync(temporaryRoot, { recursive: true, force: true });
+    rmSync(temporaryRoot, { recursive: true, force: true, maxRetries: 6, retryDelay: 1000 });
   }
 }

@@ -1,6 +1,9 @@
 import { saveCookieConsentAction } from "@/features/legal/actions/legal.actions";
 import { getPublicLegalSettings } from "@/features/legal/services/legal-settings.service";
-import { submitPublicFormAction } from "@/features/public-renderer/actions/public-form.actions";
+import {
+  rejectPreviewFormSubmissionAction,
+  submitPublicFormAction,
+} from "@/features/public-renderer/actions/public-form.actions";
 import { getSecuritySettings } from "@/lib/security/security-settings.service";
 import type { PublicRendererContext } from "@/features/public-renderer/types";
 import { PublicLayout } from "@/features/public-renderer/components/public-layout";
@@ -21,11 +24,13 @@ export async function PublicPageRenderer({
     ...context,
     integrations: {
       submitFormAction: context.previewMode
-        ? async () => ({ ok: false, fieldErrors: {}, formError: "Os formulários estão desativados na pré-visualização interna." })
+        ? rejectPreviewFormSubmissionAction
         : submitPublicFormAction,
-      turnstileEnabled: security.turnstileEnabled,
-      turnstileSiteKey:
-        security.turnstileSiteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+      turnstileEnabled: context.previewMode ? false : security.turnstileEnabled,
+      turnstileSiteKey: context.previewMode
+        ? null
+        : (security.turnstileSiteKey ??
+          process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY),
     },
   };
 

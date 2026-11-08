@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { SharedBriefingForm } from "@/features/briefings/components/shared-briefing-form";
+import { ResponsiveProjectPreview } from "@/features/briefings/components/responsive-project-preview";
 import { getBriefingByShareToken } from "@/features/briefings/briefing.service";
 import { PublicPageRenderer } from "@/features/public-renderer/components/public-page-renderer";
 
@@ -12,12 +13,19 @@ export const metadata: Metadata = {
 
 export default async function SharedBriefingPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ token: string }>;
+  searchParams: Promise<{ view?: string }>;
 }) {
-  const { token } = await params;
+  const [{ token }, query] = await Promise.all([params, searchParams]);
   const shared = await getBriefingByShareToken(token);
   if (!shared) notFound();
+
+  if (query.view === "canvas") {
+    if (!shared.previewContext || !shared.previewChecksum) notFound();
+    return <PublicPageRenderer context={shared.previewContext} />;
+  }
 
   return (
     <div className="bg-background text-foreground min-h-screen px-4 py-10 sm:px-6">
@@ -73,7 +81,7 @@ export default async function SharedBriefingPage({
                 </div>
               ) : null}
             </div>
-            <PublicPageRenderer context={shared.previewContext} />
+            <ResponsiveProjectPreview canvasUrl={`/briefing/${token}?view=canvas`} />
           </section>
         ) : null}
         <section className="border-border grid gap-5 rounded-md border p-5">

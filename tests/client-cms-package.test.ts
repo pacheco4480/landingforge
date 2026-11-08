@@ -26,7 +26,12 @@ function createCmsComposition() {
       textSecondaryColor: "#685f56", headingFont: "DM Sans", bodyFont: "Inter", borderRadius: "medium",
       shadowStyle: "soft", settings: {},
     },
-    sections: [{ sectionKey: "hero", sectionType: "restaurant_hero", name: "Hero", sortOrder: 0, isVisible: true, content: { headline: "Uma mesa de teste" }, settings: {} }],
+    sections: [
+      { sectionKey: "hero", sectionType: "restaurant_hero", name: "Hero", sortOrder: 0, isVisible: true, content: { brandName: "Casa do Teste", headline: "Uma mesa de teste", subheadline: "Pratos para partilhar no centro da mesa." }, settings: {} },
+      { sectionKey: "menu", sectionType: "restaurant_menu_highlights", name: "Menu", sortOrder: 1, isVisible: true, content: { title: "Para partilhar", text: "Favoritos da casa.", items: [{ category: "Entrada", title: "Pão de alho", description: "Pão tostado com ervas.", price: "6" }] }, settings: {} },
+      { sectionKey: "reviews", sectionType: "restaurant_reviews", name: "Avaliações", sortOrder: 2, isVisible: true, content: { title: "Quem veio recomenda", text: "Opiniões de quem já nos visitou.", items: [{ name: "Rita QA", quote: "Uma noite muito agradável.", context: "Jantar de teste" }] }, settings: {} },
+      { sectionKey: "faq", sectionType: "faq", name: "Perguntas frequentes", sortOrder: 3, isVisible: true, content: { title: "Perguntas frequentes", text: "Informação antes da visita.", items: [{ question: "Têm opções vegetarianas?", answer: "Sim, confirma a disponibilidade com a equipa." }] }, settings: {} },
+    ],
     forms: [],
     seoSetting: {
       metaTitle: "Casa do Teste | Reservas",
@@ -56,6 +61,7 @@ describe("Landing + CMS package source and bootstrap", () => {
   it("selects only the approved template graph and the dedicated CMS runtime", () => {
     const graph = collectClientCmsSourceGraph("restaurant", "playful");
     expect(graph.files).toContain("src/features/exports/client-runtime/cms/auth.ts");
+    expect(graph.files).toContain("src/features/exports/client-runtime/cms/components/section-content-editor.tsx");
     expect(graph.files).toContain("src/types/next-auth.d.ts");
     expect(graph.files.some((file) => /(?:features\/(?:clients|projects|crm)|prisma|briefings?|src\/app)/i.test(file))).toBe(false);
     expect(graph.dependencies).toEqual(expect.arrayContaining(["@supabase/supabase-js", "argon2", "next-auth", "pg"]));
@@ -81,6 +87,43 @@ describe("Landing + CMS package source and bootstrap", () => {
       };
       expect(existsSync(join(destination, "app/api/auth/[...nextauth]/route.ts"))).toBe(true);
       expect(existsSync(join(destination, "app/cms/(workspace)/content/page.tsx"))).toBe(true);
+      expect(existsSync(join(destination, "app/cms/(workspace)/preview/page.tsx"))).toBe(true);
+      const forgotPasswordPage = readFileSync(join(destination, "app/cms/forgot-password/page.tsx"), "utf8");
+      expect(forgotPasswordPage).toContain("Se existir uma conta com esse endereço, receberás instruções.");
+      expect(forgotPasswordPage).toContain('role="status"');
+      expect(forgotPasswordPage).toContain('type="email" required');
+      const resetPasswordPage = readFileSync(join(destination, "app/cms/reset-password/page.tsx"), "utf8");
+      expect(resetPasswordPage).toContain('role="alert"');
+      expect(resetPasswordPage).toContain('type="password" required minLength={12}');
+      const authActions = readFileSync(join(destination, "src/client-runtime/features/exports/client-runtime/cms/auth.actions.ts"), "utf8");
+      expect(authActions).toContain('redirect("/cms/forgot-password?sent=true")');
+      expect(authActions).toContain('success ? "/cms/login?reset=true" : "/cms/reset-password?error=invalid"');
+      expect(existsSync(join(destination, "app/cms/(workspace)/leads/export/route.ts"))).toBe(true);
+      const leadsPage = readFileSync(join(destination, "app/cms/(workspace)/leads/page.tsx"), "utf8");
+      expect(leadsPage).toContain("Exportar CSV");
+      expect(leadsPage).toContain('<a href="/cms/leads/export" className="min-h-10 border px-4 py-2">Exportar CSV</a>');
+      expect(leadsPage).not.toContain('import Link from "next/link";');
+      expect(leadsPage).toContain("required");
+      expect(leadsPage).toContain("Confirmo a eliminação permanente");
+      expect(leadsPage).toContain('permissions.has("leads.delete")');
+      const leadsExportRoute = readFileSync(join(destination, "app/cms/(workspace)/leads/export/route.ts"), "utf8");
+      expect(leadsExportRoute).toContain('requireClientCmsActor("leads.export")');
+      expect(leadsExportRoute).toContain("filename=contactos-");
+      expect(leadsExportRoute).toContain('"Cache-Control": "private, no-store, max-age=0"');
+      const cmsActions = readFileSync(join(destination, "app/cms/actions.ts"), "utf8");
+      expect(cmsActions).toContain('revalidatePath("/cms/forms")');
+      expect(cmsActions).toContain('revalidatePath("/")');
+      const contentRoute = readFileSync(join(destination, "app/cms/(workspace)/content/page.tsx"), "utf8");
+      expect(contentRoute).toContain("SectionContentEditor");
+      expect(contentRoute).toContain("/cms/preview");
+      const previewRoute = readFileSync(join(destination, "app/cms/(workspace)/preview/page.tsx"), "utf8");
+      expect(previewRoute).toContain('requireClientCmsActor("content.read")');
+      expect(previewRoute).toContain("getClientCmsPreviewPayload");
+      expect(previewRoute).toContain("getClientCmsPreviewPayload(actor)");
+      expect(previewRoute).toContain("previewMode={true}");
+      expect(previewRoute).toContain("robots: { index: false, follow: false }");
+      expect(previewRoute).not.toContain('setPageStatus({');
+      expect(readFileSync(join(destination, "app/cms/(workspace)/layout.tsx"), "utf8")).toContain('href="/cms/preview"');
       expect(existsSync(join(destination, "public/assets/restaurant/boca-pop/sticker-plate.svg"))).toBe(true);
       expect(existsSync(join(destination, "public/assets/restaurant/boca-pop/sticker-glass.svg"))).toBe(true);
       expect(existsSync(join(destination, "public/assets/restaurant/boca-pop/confetti-pattern.svg"))).toBe(true);
@@ -96,12 +139,24 @@ describe("Landing + CMS package source and bootstrap", () => {
       expect(deliverySummary).toContain("#e35b46");
       expect(deliverySummary).toContain("DM Sans");
       expect(deliverySummary).toContain("- Hero");
-      expect(faq).toContain("editor trabalha com JSON por secção");
+      expect(faq).toContain("controlos para adicionar, editar, remover e ordenar");
       expect(faq).toContain("não envia notificações automáticas de lead por email");
+      expect(faq).toContain("CSV neutraliza valores");
+      expect(faq).toContain("não executa apagamento automático");
       expect(deliveryChecklist).toContain("Confirmar base de dados dedicada");
       expect(cmsGuide).toContain("`headline`");
+      expect(cmsGuide).toContain("avaliações de restaurante: até 30");
+      const clientCmsContentService = readFileSync(join(destination, "src/client-runtime/features/exports/client-runtime/cms/content.service.ts"), "utf8");
+      expect(clientCmsContentService).toContain("restaurant_reviews: { max: 30");
+      expect(clientCmsContentService).toContain("s.id IS NOT NULL AND s.is_visible");
+      expect(clientCmsContentService).toContain("capability.sectionKey)");
+      expect(clientCmsContentService).toContain("id = $3 AND is_visible = true");
+      expect(readFileSync(join(destination, "src/client-runtime/features/exports/client-runtime/cms/components/section-content-editor.tsx"), "utf8")).toContain("maxItems: 30");
       expect(cmsGuide).toContain("5 000 caracteres");
       expect(cmsGuide).toContain("mas não editar os seus campos");
+      expect(cmsGuide).toContain("exportar todos os contactos");
+      expect(cmsGuide).toContain("confirmação explícita");
+      expect(cmsGuide).toContain("cópias de segurança, que seguem a política do alojamento");
       expect(handover).toContain("CMS dedicado incluído");
       expect(handover).toContain("LandingForge");
       expect(handover).toContain("Alterações de conteúdo acordadas");

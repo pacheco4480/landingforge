@@ -335,10 +335,21 @@
 }
 @media (max-width: 767px) {
   .clinic-luxury-hero__content {
-    padding: 130px 20px 52px;
+    padding: 70px 20px 24px;
   }
   .clinic-luxury-hero h1 {
-    font-size: 3.35rem;
+    margin-top: 12px;
+    font-size: 2.6rem;
+  }
+  .clinic-luxury-hero__lead {
+    margin-top: 16px;
+    line-height: 1.55;
+  }
+  .clinic-luxury-hero__actions {
+    margin-top: 16px;
+  }
+  .clinic-luxury-hero__promise {
+    margin-top: 12px;
   }
   .clinic-luxury-experience-card,
   .clinic-luxury-experience-card--offset {

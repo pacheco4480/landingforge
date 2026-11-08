@@ -6,7 +6,9 @@ import {
   updateSectionAction,
 } from "@/features/content/actions/section.actions";
 import { sectionTypeOptions } from "@/features/content/section-types";
+import { getTemplateDefinition } from "@/features/public-renderer/template-registry";
 import { SectionPresentationControl } from "@/features/content/components/section-presentation-control";
+import { RepeatableSectionEditor } from "@/features/content/components/repeatable-section-editor";
 import {
   presentationOptions,
   resolvePresentation,
@@ -78,6 +80,20 @@ export function SectionForm({
     templateKey,
     templateVariantKey,
   );
+  const availableSectionTypes = Array.from(
+    new Set([
+      ...sectionTypeOptions.map((option) => option.value),
+      ...(getTemplateDefinition(templateKey ?? null)?.supportedSections ?? []),
+    ]),
+  ).map((value) => ({
+    value,
+    label:
+      sectionTypeOptions.find((option) => option.value === value)?.label ??
+      value
+        .split("_")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" "),
+  }));
 
   return (
     <form action={updateSectionAction}>
@@ -101,7 +117,7 @@ export function SectionForm({
               name="sectionType"
               defaultValue={section.sectionType}
             >
-              {sectionTypeOptions.map((option) => (
+              {availableSectionTypes.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -109,16 +125,29 @@ export function SectionForm({
             </Select>
           </Field>
         </Grid>
-        <Field>
-          <Label htmlFor={`section-content-${section.id}`}>Content JSON</Label>
-          <Textarea
-            className="font-mono text-xs"
-            id={`section-content-${section.id}`}
-            name="content"
-            defaultValue={toJsonText(section.content)}
-            required
+        {section.sectionType === "faq" ||
+        section.sectionType.endsWith("_faq") ||
+        section.sectionType === "testimonials" ||
+        section.sectionType.endsWith("_testimonials") ||
+        section.sectionType === "restaurant_reviews" ||
+        section.sectionType === "restaurant_menu_highlights" ? (
+          <RepeatableSectionEditor
+            initialContent={section.content}
+            sectionId={section.id}
+            sectionType={section.sectionType}
           />
-        </Field>
+        ) : (
+          <Field>
+            <Label htmlFor={`section-content-${section.id}`}>Content JSON</Label>
+            <Textarea
+              className="font-mono text-xs"
+              id={`section-content-${section.id}`}
+              name="content"
+              defaultValue={toJsonText(section.content)}
+              required
+            />
+          </Field>
+        )}
         <Field>
           {options.length ? (
             <>

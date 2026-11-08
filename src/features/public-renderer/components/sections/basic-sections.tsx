@@ -7,10 +7,12 @@ import {
   text,
 } from "@/features/public-renderer/components/section-utils";
 import { resolvePresentation } from "@/features/public-renderer/section-presentation";
+import { isPrimaryHeroSection } from "@/features/public-renderer/hero-heading";
 import { FaqAccordion } from "@/features/public-renderer/components/sections/faq-accordion";
 
 export function HeroSection({ section, context }: PublicSectionProps) {
   const c = section.content;
+  const Heading = isPrimaryHeroSection(section, context) ? "h1" : "h2";
   return (
     <PublicBand className="pt-16 sm:pt-24">
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
@@ -18,9 +20,9 @@ export function HeroSection({ section, context }: PublicSectionProps) {
           <p className="text-sm font-semibold text-[var(--public-primary)] uppercase">
             {text(c, "eyebrow", context.site.businessName)}
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl leading-tight font-bold sm:text-6xl">
+          <Heading className="mt-4 max-w-4xl text-4xl leading-tight font-bold sm:text-6xl">
             {text(c, "headline", text(c, "title", context.page.title))}
-          </h1>
+          </Heading>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--public-muted)]">
             {text(
               c,

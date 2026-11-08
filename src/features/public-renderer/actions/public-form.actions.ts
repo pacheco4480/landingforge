@@ -51,3 +51,12 @@ export async function submitPublicFormAction(formData: FormData) {
     };
   }
 }
+
+export async function rejectPreviewFormSubmissionAction(formData: FormData) {
+  void formData;
+  return {
+    ok: false,
+    fieldErrors: {},
+    formError: "O envio está desativado nesta pré-visualização.",
+  };
+}

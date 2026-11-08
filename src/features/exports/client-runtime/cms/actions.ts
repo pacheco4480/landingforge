@@ -8,6 +8,7 @@ import {
   getClientCmsForms,
   getClientCmsPage,
   listClientCmsLeads,
+  deleteClientCmsLeadData,
   setClientCmsFormActive,
   setClientCmsPageStatus,
   updateClientCmsLeadStatus,
@@ -53,6 +54,11 @@ export async function clientCmsSetLeadStatus(input: unknown) {
     status: z.enum(["new", "contacted", "converted", "lost"]),
   }).strict().parse(input);
   return updateClientCmsLeadStatus(await requireClientCmsActor("leads.write"), parsed.leadId, parsed.status);
+}
+
+export async function clientCmsDeleteLead(input: unknown) {
+  const parsed = z.object({ leadId: z.string().uuid(), confirmed: z.literal(true) }).strict().parse(input);
+  return deleteClientCmsLeadData(await requireClientCmsActor("leads.delete"), parsed.leadId, parsed.confirmed);
 }
 
 export async function clientCmsSubmitLead(input: unknown) {

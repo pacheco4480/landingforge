@@ -45,6 +45,8 @@ describe("client CMS capabilities", () => {
     const permissions = permissionsForClientCmsRole("viewer");
     expect(permissions.has("content.read")).toBe(true);
     expect(permissions.has("leads.read")).toBe(true);
+    expect(permissions.has("leads.export")).toBe(false);
+    expect(permissions.has("leads.delete")).toBe(false);
     expect(permissions.has("content.write")).toBe(false);
     expect(permissions.has("leads.write")).toBe(false);
   });

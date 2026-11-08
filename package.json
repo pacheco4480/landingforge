@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
+    "test:client-cms:isolation": "node scripts/run-client-cms-isolation-disposable.mjs",
     "test:privacy:integration": "tsx scripts/run-privacy-integration-disposable.mjs",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",

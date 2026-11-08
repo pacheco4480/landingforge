@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { containsSecretMaterial } from "@/features/exports/services/client-package-audit";
 import type { ClientRuntimePayload } from "@/features/exports/client-runtime/contracts";
+import { resolvePublicSectionType } from "@/features/public-renderer/template-registry";
 import {
   validateProjectSourceSnapshot,
   type ProjectSourceSnapshot,
@@ -162,7 +163,7 @@ export function buildClientRuntimePayload(snapshotInput: ProjectSourceSnapshot, 
         .sort((left, right) => left.sortOrder - right.sortOrder)
         .map(({ sectionKey, sectionType, name, sortOrder, content, settings }) => ({
           sectionKey,
-          sectionType,
+          sectionType: resolvePublicSectionType(snapshot.templateKey, sectionKey, sectionType),
           name,
           sortOrder,
           content,

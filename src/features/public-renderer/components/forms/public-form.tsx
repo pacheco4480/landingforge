@@ -30,6 +30,7 @@ export function PublicForm({
   gdprConsentLabel,
   gdprConsentRequired,
   gdprConsentVersion,
+  previewMode = false,
   turnstileSiteKey,
   className,
 }: {
@@ -40,6 +41,7 @@ export function PublicForm({
   gdprConsentLabel: string;
   gdprConsentRequired: boolean;
   gdprConsentVersion: string;
+  previewMode?: boolean;
   turnstileSiteKey?: string | null;
   className?: string;
 }) {
@@ -54,14 +56,18 @@ export function PublicForm({
   );
   const [formError, setFormError] = React.useState<string | null>(null);
   const [isPending, startTransition] = React.useTransition();
+  const formInstanceId = React.useId();
+  const formStatusId = `${formInstanceId}-public-form-status`;
+  const formErrorId = `${formInstanceId}-public-form-error`;
+  const gdprErrorId = `${formInstanceId}-public-gdpr-consent-error`;
   const visibleFields = fields.filter((field) =>
     shouldShowField(field, formValues),
   );
 
   return (
     <form
-      aria-describedby="public-form-status"
       className={`grid gap-4 ${className ?? ""}`}
+      method="post"
       noValidate
       onChange={(event) => {
         const target = event.target;
@@ -75,6 +81,8 @@ export function PublicForm({
       }}
       onSubmit={(event) => {
         event.preventDefault();
+        if (previewMode) return;
+
         const form = event.currentTarget;
         const formData = new FormData(form);
         const validationErrors = validateVisibleFields({
@@ -127,6 +135,7 @@ export function PublicForm({
         <PublicField
           error={fieldErrors[field.name]}
           field={field}
+          idPrefix={formInstanceId}
           key={field.id}
         />
       ))}
@@ -134,6 +143,9 @@ export function PublicForm({
         <label className="flex min-h-11 items-start gap-3 text-sm text-[var(--public-muted)]">
           <Checkbox
             aria-invalid={Boolean(fieldErrors.gdprConsent)}
+            aria-describedby={
+              fieldErrors.gdprConsent ? gdprErrorId : undefined
+            }
             className="mt-0.5"
             name="gdprConsent"
             required
@@ -151,7 +163,10 @@ export function PublicForm({
         </label>
       ) : null}
       {fieldErrors.gdprConsent ? (
-        <p className="text-sm font-medium text-red-600" role="alert">
+        <p
+          className="text-sm font-medium text-red-600"
+          id={gdprErrorId}
+        >
           {fieldErrors.gdprConsent}
         </p>
       ) : null}
@@ -167,34 +182,47 @@ export function PublicForm({
             aria-label="Verificação anti-spam"
           />
           {fieldErrors.turnstile ? (
-            <p className="text-sm font-medium text-red-600" role="alert">
+            <p className="text-sm font-medium text-red-600">
               {fieldErrors.turnstile}
             </p>
           ) : null}
         </>
       ) : null}
-      <Button type="submit" isLoading={isPending}>
-        Enviar
+      {previewMode ? (
+        <p className="text-sm text-[var(--public-muted)]" role="status">
+          Envio desativado nesta pré-visualização.
+        </p>
+      ) : null}
+      <Button type="submit" disabled={previewMode} isLoading={isPending}>
+        {previewMode ? "Envio desativado" : "Enviar"}
       </Button>
-      {status === "success" ? (
-        <p
-          className="text-sm font-medium text-[var(--public-primary)]"
-          id="public-form-status"
-          role="status"
-        >
-          Pedido enviado. Obrigado.
-        </p>
-      ) : null}
-      {status === "error" ? (
-        <p
-          className="text-sm font-medium text-red-600"
-          id="public-form-status"
-          role="alert"
-        >
-          {formError ??
-            "Não foi possível enviar. Verifica os campos e tenta novamente."}
-        </p>
-      ) : null}
+      <p
+        aria-atomic="true"
+        aria-live="polite"
+        className={
+          status === "success"
+            ? "text-sm font-medium text-[var(--public-primary)]"
+            : "sr-only"
+        }
+        id={formStatusId}
+        role="status"
+      >
+        {status === "success" ? "Pedido enviado. Obrigado." : ""}
+      </p>
+      <p
+        aria-atomic="true"
+        aria-live="assertive"
+        className={
+          status === "error" ? "text-sm font-medium text-red-600" : "sr-only"
+        }
+        id={formErrorId}
+        role="alert"
+      >
+        {status === "error"
+          ? formError ??
+            "Não foi possível enviar. Verifica os campos e tenta novamente."
+          : ""}
+      </p>
     </form>
   );
 }
@@ -234,8 +262,16 @@ function validateVisibleFields({
   return errors;
 }
 
-function PublicField({ error, field }: { error?: string; field: PublicFormField }) {
-  const id = `public-field-${field.id}`;
+function PublicField({
+  error,
+  field,
+  idPrefix,
+}: {
+  error?: string;
+  field: PublicFormField;
+  idPrefix: string;
+}) {
+  const id = `${idPrefix}-public-field-${field.id}`;
   const helpId = field.helpText ? `${id}-help` : undefined;
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [helpId, errorId].filter(Boolean).join(" ") || undefined;
@@ -254,7 +290,7 @@ function PublicField({ error, field }: { error?: string; field: PublicFormField 
       <Label htmlFor={id}>
         {field.label}
         {field.isRequired ? (
-          <span className="ml-1 text-red-600" aria-label="obrigatório">
+          <span aria-hidden="true" className="ml-1 text-red-600">
             *
           </span>
         ) : null}
@@ -269,7 +305,6 @@ function PublicField({ error, field }: { error?: string; field: PublicFormField 
         <p
           className="text-sm font-medium text-red-600"
           id={errorId}
-          role="alert"
         >
           {error}
         </p>

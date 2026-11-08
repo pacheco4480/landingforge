@@ -125,11 +125,20 @@ describe("briefing questions", () => {
 
   it("redacts obvious contact details, credentials and explicit clinical phrases", () => {
     const result = redactSensitiveBriefingText(
-      "email ana@example.pt, telefone +351 912 345 678, password=abc123; histórico clínico do paciente",
+      "email qa@example.invalid, telefone +351 000 000 000, password=synthetic-test-credential; histórico clínico do paciente; diagnóstico médico reservado",
     );
     expect(result).toContain("[EMAIL REDIGIDO]");
     expect(result).toContain("[TELEFONE REDIGIDO]");
     expect(result).toContain("[CREDENCIAL REDIGIDA]");
     expect(result).toContain("[DADO DE SAÚDE OMITIDO]");
+  });
+
+  it("preserves ordinary business uses of the word diagnóstico", () => {
+    const result = redactSensitiveBriefingText(
+      "Diagnóstico do objetivo, seleção segundo critérios confirmados e acompanhamento da proposta.",
+    );
+
+    expect(result).toContain("Diagnóstico do objetivo");
+    expect(result).not.toContain("[DADO DE SAÚDE OMITIDO]");
   });
 });

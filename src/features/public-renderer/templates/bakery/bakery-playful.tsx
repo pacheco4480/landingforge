@@ -27,12 +27,14 @@ import type { PublicSectionProps } from "@/features/public-renderer/types";
 function CmsImage({
   alt,
   className,
+  motion,
   position,
   sizes,
   src,
 }: {
   alt: string;
   className: string;
+  motion?: "hover-zoom";
   position?: string;
   sizes: string;
   src: string;
@@ -41,6 +43,7 @@ function CmsImage({
     <Image
       alt={alt}
       className={className}
+      data-public-motion={motion}
       fill
       sizes={sizes}
       src={src}
@@ -161,6 +164,7 @@ export function BakeryPlayfulProducts({ section }: PublicSectionProps) {
                   itemText(featured, "title", "Doce da Boca Doce"),
                 )}
                 className="bakery-playful-photo"
+                motion="hover-zoom"
                 position={itemText(featured, "imagePosition", "center")}
                 sizes="(min-width: 1024px) 58vw, 100vw"
                 src={itemText(featured, "image")}
@@ -216,6 +220,7 @@ export function BakeryPlayfulProducts({ section }: PublicSectionProps) {
                       itemText(product, "title", "Doce da Boca Doce"),
                     )}
                     className="bakery-playful-photo"
+                    motion="hover-zoom"
                     position={itemText(product, "imagePosition", "center")}
                     sizes="(min-width: 1024px) 25vw, (min-width: 640px) 44vw, 100vw"
                     src={itemText(product, "image")}
@@ -367,6 +372,7 @@ export function BakeryPlayfulGallery({ section }: PublicSectionProps) {
                     itemText(photo, "title", "Doce da Boca Doce"),
                   )}
                   className="bakery-playful-photo"
+                  motion="hover-zoom"
                   position={itemText(photo, "imagePosition", "center")}
                   sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 100vw"
                   src={itemText(photo, "image")}

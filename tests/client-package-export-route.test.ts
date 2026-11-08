@@ -21,8 +21,8 @@ const projectId = "950e8400-e29b-41d4-a716-446655440000";
 const actor = { id: "operator-1", roles: ["super_admin"] };
 const context = { params: Promise.resolve({ projectId }) };
 
-function postRequest(body: unknown, origin = "http://localhost:3000") {
-  return new NextRequest(`http://localhost:3000/api/projects/${projectId}/exports`, {
+function postRequest(body: unknown, origin = "http://localhost:3000", requestOrigin = "http://localhost:3000") {
+  return new NextRequest(`${requestOrigin}/api/projects/${projectId}/exports`, {
     method: "POST",
     headers: { origin, "content-type": "application/json" },
     body: JSON.stringify(body),
@@ -32,7 +32,23 @@ function postRequest(body: unknown, origin = "http://localhost:3000") {
 describe("client package export route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.unstubAllEnvs();
     requirePermission.mockResolvedValue(actor);
+  });
+
+  it("accepts the configured NextAuth origin when the request host is proxied", async () => {
+    vi.stubEnv("NEXTAUTH_URL", "http://localhost:3000");
+    const response = await POST(
+      postRequest(
+        { acknowledgeLegalReview: true, mode: "LANDING_ONLY" },
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+      ),
+      context,
+    );
+
+    expect(response.status).not.toBe(403);
+    expect(createLandingOnlyExport).toHaveBeenCalledWith(projectId, actor);
   });
 
   it("blocks a cross-origin export before permission or assembly", async () => {

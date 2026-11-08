@@ -44,6 +44,8 @@ export function FieldForm({
   formId: string;
   field?: FormField;
 }) {
+  const fieldId = field?.id ?? "new";
+
   return (
     <ActionFeedbackForm
       action={saveFormFieldAction}
@@ -59,10 +61,14 @@ export function FieldForm({
           <Input
             id={`label-${field?.id ?? "new"}`}
             name="label"
+            aria-describedby={`label-help-${fieldId}`}
             defaultValue={field?.label ?? ""}
             required
           />
-          <p className="text-muted-foreground text-xs">
+          <p
+            className="text-muted-foreground text-xs"
+            id={`label-help-${fieldId}`}
+          >
             Texto visivel para o visitante, por exemplo <code>Email</code>.
           </p>
         </Field>
@@ -71,10 +77,14 @@ export function FieldForm({
           <Input
             id={`name-${field?.id ?? "new"}`}
             name="name"
+            aria-describedby={`name-help-${fieldId}`}
             defaultValue={field?.name ?? ""}
             required
           />
-          <p className="text-muted-foreground text-xs">
+          <p
+            className="text-muted-foreground text-xs"
+            id={`name-help-${fieldId}`}
+          >
             Chave interna sem espacos, por exemplo email, phone ou message.
           </p>
         </Field>
@@ -83,6 +93,7 @@ export function FieldForm({
           <Select
             id={`type-${field?.id ?? "new"}`}
             name="type"
+            aria-describedby={`type-help-${fieldId}`}
             defaultValue={field?.type ?? FormFieldType.TEXT}
           >
             {Object.values(FormFieldType).map((type) => (
@@ -91,57 +102,93 @@ export function FieldForm({
               </option>
             ))}
           </Select>
-          <p className="text-muted-foreground text-xs">
+          <p
+            className="text-muted-foreground text-xs"
+            id={`type-help-${fieldId}`}
+          >
             Define o tipo de input renderizado no formulario publico.
           </p>
         </Field>
       </Grid>
       <Grid className="md:grid-cols-3">
         <Field>
-          <Label>Placeholder</Label>
-          <Input name="placeholder" defaultValue={field?.placeholder ?? ""} />
+          <Label htmlFor={`field-${fieldId}-placeholder`}>Placeholder</Label>
+          <Input
+            id={`field-${fieldId}-placeholder`}
+            name="placeholder"
+            defaultValue={field?.placeholder ?? ""}
+          />
         </Field>
         <Field>
-          <Label>Help text</Label>
-          <Input name="helpText" defaultValue={field?.helpText ?? ""} />
+          <Label htmlFor={`field-${fieldId}-help-text`}>Help text</Label>
+          <Input
+            id={`field-${fieldId}-help-text`}
+            name="helpText"
+            defaultValue={field?.helpText ?? ""}
+          />
         </Field>
         <Field>
-          <Label>Default value</Label>
-          <Input name="defaultValue" defaultValue={field?.defaultValue ?? ""} />
+          <Label htmlFor={`field-${fieldId}-default-value`}>
+            Default value
+          </Label>
+          <Input
+            id={`field-${fieldId}-default-value`}
+            name="defaultValue"
+            defaultValue={field?.defaultValue ?? ""}
+          />
         </Field>
       </Grid>
       <Grid className="md:grid-cols-3">
         <Field>
-          <Label>Options JSON</Label>
+          <Label htmlFor={`field-${fieldId}-options`}>Options JSON</Label>
           <Textarea
             className="font-mono text-xs"
+            id={`field-${fieldId}-options`}
             name="options"
+            aria-describedby={`field-${fieldId}-options-help`}
             defaultValue={json(field?.options, [])}
           />
-          <p className="text-muted-foreground text-xs">
-            Para select/radio: <code>{`[{"label":"Consulta","value":"consulta"}]`}</code>
+          <p
+            className="text-muted-foreground text-xs"
+            id={`field-${fieldId}-options-help`}
+          >
+            Para select/radio:{" "}
+            <code>{`[{"label":"Consulta","value":"consulta"}]`}</code>
           </p>
         </Field>
         <Field>
-          <Label>Validation JSON</Label>
+          <Label htmlFor={`field-${fieldId}-validation`}>Validation JSON</Label>
           <Textarea
             className="font-mono text-xs"
+            id={`field-${fieldId}-validation`}
             name="validation"
+            aria-describedby={`field-${fieldId}-validation-help`}
             defaultValue={json(field?.validation, {})}
           />
-          <p className="text-muted-foreground text-xs">
+          <p
+            className="text-muted-foreground text-xs"
+            id={`field-${fieldId}-validation-help`}
+          >
             Exemplo: <code>{`{"minLength":3,"maxLength":120}`}</code>
           </p>
         </Field>
         <Field>
-          <Label>Conditional Logic JSON</Label>
+          <Label htmlFor={`field-${fieldId}-conditional-logic`}>
+            Conditional Logic JSON
+          </Label>
           <Textarea
             className="font-mono text-xs"
+            id={`field-${fieldId}-conditional-logic`}
             name="conditionalLogic"
+            aria-describedby={`field-${fieldId}-conditional-logic-help`}
             defaultValue={json(field?.conditionalLogic, [])}
           />
-          <p className="text-muted-foreground text-xs">
-            Exemplo: <code>{`[{"field":"service","operator":"equals","value":"orcamento","action":"show"}]`}</code>
+          <p
+            className="text-muted-foreground text-xs"
+            id={`field-${fieldId}-conditional-logic-help`}
+          >
+            Exemplo:{" "}
+            <code>{`[{"field":"service","operator":"equals","value":"orcamento","action":"show"}]`}</code>
           </p>
         </Field>
       </Grid>

@@ -28,6 +28,8 @@ type ToastContextValue = {
   dismissToast: (id: string) => void;
 };
 
+type FormServerAction = (formData: FormData) => Promise<unknown>;
+
 const ToastContext = React.createContext<ToastContextValue | null>(null);
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -92,8 +94,8 @@ export function ActionFeedbackForm({
   loadingMessage = "A guardar...",
   successMessage = "Alterações guardadas.",
   errorMessage = "Não foi possível concluir a ação.",
-}: React.FormHTMLAttributes<HTMLFormElement> & {
-  action: (formData: FormData) => Promise<void>;
+}: Omit<React.FormHTMLAttributes<HTMLFormElement>, "action"> & {
+  action: FormServerAction;
   loadingMessage?: string;
   successMessage?: string;
   errorMessage?: string;
@@ -115,11 +117,22 @@ export function ActionFeedbackForm({
 
         startTransition(async () => {
           try {
-            await action(formData);
+            const result = await action(formData);
+            if (isActionFailure(result)) {
+              setInlineError(result.message);
+              updateToast(toastId, {
+                tone: "error",
+                title: result.message,
+              });
+              return;
+            }
             updateToast(toastId, { tone: "success", title: successMessage });
             router.refresh();
           } catch (error) {
-            if (isNextRedirect(error)) throw error;
+            if (isNextRedirect(error)) {
+              updateToast(toastId, { tone: "success", title: successMessage });
+              throw error;
+            }
             const message = getActionErrorMessage(error, errorMessage);
             setInlineError(message);
             updateToast(toastId, { tone: "error", title: message });
@@ -155,8 +168,8 @@ export function ConfirmActionForm({
   loadingMessage = "A processar...",
   successMessage = "Ação concluída.",
   errorMessage = "Não foi possível concluir a ação.",
-}: React.FormHTMLAttributes<HTMLFormElement> & {
-  action: (formData: FormData) => Promise<void>;
+}: Omit<React.FormHTMLAttributes<HTMLFormElement>, "action"> & {
+  action: FormServerAction;
   title?: string;
   description?: string;
   confirmLabel?: string;
@@ -302,6 +315,19 @@ function ToastItem({
         </button>
       ) : null}
     </div>
+  );
+}
+
+function isActionFailure(
+  result: unknown,
+): result is { success: false; message: string } {
+  return (
+    typeof result === "object" &&
+    result !== null &&
+    "success" in result &&
+    (result as { success?: unknown }).success === false &&
+    "message" in result &&
+    typeof (result as { message?: unknown }).message === "string"
   );
 }
 

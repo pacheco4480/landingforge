@@ -31,6 +31,19 @@ export function PublicBaseStyles() {
       h1, h2, h3 {
         font-family: var(--public-heading-font);
       }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+
+        :root img[data-public-motion="hover-zoom"] {
+          transform: none !important;
+        }
+      }
     `}</style>
   );
 }

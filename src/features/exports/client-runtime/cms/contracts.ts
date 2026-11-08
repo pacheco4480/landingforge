@@ -8,6 +8,8 @@ export const clientCmsPermissionSchema = z.enum([
   "content.write",
   "leads.read",
   "leads.write",
+  "leads.export",
+  "leads.delete",
   "media.read",
   "media.write",
   "forms.read",

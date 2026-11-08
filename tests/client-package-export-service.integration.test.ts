@@ -109,12 +109,17 @@ integration("Master Project provisioning and Landing Only export against disposa
     }
 
     requirePermission.mockResolvedValue(actor);
-    const request = new NextRequest(`http://localhost/api/projects/${projectId}/exports`, {
+    const exportRequest = () => new NextRequest(`http://localhost/api/projects/${projectId}/exports`, {
       method: "POST",
       headers: { origin: "http://localhost", "content-type": "application/json" },
       body: JSON.stringify({ acknowledgeLegalReview: true, mode: "LANDING_ONLY" }),
     });
-    const response = await POST(request, { params: Promise.resolve({ projectId }) });
+    const blockedResponse = await POST(exportRequest(), { params: Promise.resolve({ projectId }) });
+    expect(blockedResponse.status).toBe(422);
+    expect(await blockedResponse.json()).toMatchObject({ error: "PROJECT_STATUS_NOT_EXPORTABLE" });
+    await db.project.update({ where: { id: projectId }, data: { status: "APPROVED" } });
+
+    const response = await POST(exportRequest(), { params: Promise.resolve({ projectId }) });
     expect(response.status).toBe(200);
     expect(response.headers.get("content-type")).toBe("application/zip");
     expect(response.headers.get("cache-control")).toBe("private, no-store, max-age=0");

@@ -130,8 +130,8 @@ const baseCta =
   "inline-flex min-h-11 items-center justify-center rounded-md px-4 py-2 text-sm font-bold transition-all";
 
 const lightLink = `${baseFocus} text-[var(--public-muted)] transition-colors hover:text-[var(--public-primary)]`;
-const lightCta = `${baseCta} ${baseFocus} border border-[var(--public-primary)]/30 text-[var(--public-primary)] hover:bg-[var(--public-primary)] hover:text-white`;
-const solidCta = `${baseCta} ${baseFocus} bg-[var(--public-primary)] text-white shadow-sm shadow-slate-950/10 hover:-translate-y-0.5 hover:shadow-md`;
+const lightCta = `${baseCta} ${baseFocus} border border-[var(--public-primary)]/30 text-[var(--public-primary)] hover:bg-[var(--public-primary)] hover:text-[var(--public-on-primary)]`;
+const solidCta = `${baseCta} ${baseFocus} bg-[var(--public-primary)] text-[var(--public-on-primary)] shadow-sm shadow-slate-950/10 hover:-translate-y-0.5 hover:shadow-md`;
 const darkFocus =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
 const darkLink = `${darkFocus} text-white/68 transition-colors hover:text-white`;
@@ -319,7 +319,7 @@ const footerProfileClasses: Record<
     top: `${baseTop} items-center border-b border-[var(--public-primary)]/15 pb-7`,
     brandName: "text-xl font-bold text-[var(--public-primary)]",
     meta: `${baseMeta} text-[var(--public-muted)] sm:flex-row sm:flex-wrap sm:gap-x-5`,
-    cta: "inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-bold text-white transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
+    cta: "inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-bold text-[var(--public-on-primary)] transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
     navigation: `${baseNavigation} mt-6`,
     link: "text-[var(--public-muted)] transition-colors hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)]",
     bottom: `${baseBottom} border-[var(--public-primary)]/15 text-[var(--public-muted)]`,
@@ -359,7 +359,7 @@ const footerProfileClasses: Record<
     top: `${baseTop} rounded-2xl border-2 border-[var(--public-primary)]/15 bg-[var(--public-background)]/70 p-6 sm:p-8`,
     brandName: "text-3xl font-black text-[var(--public-text)]",
     meta: `${baseMeta} text-[var(--public-muted)] sm:flex-row sm:flex-wrap sm:gap-x-5`,
-    cta: `${baseCta} ${baseFocus} rounded-full bg-[var(--public-primary)] px-6 text-white shadow-[0_4px_0_rgba(0,0,0,0.18)]`,
+    cta: `${baseCta} ${baseFocus} rounded-full bg-[var(--public-primary)] px-6 text-[var(--public-on-primary)] shadow-[0_4px_0_rgba(0,0,0,0.18)]`,
     navigation: `${baseNavigation} mt-7`,
     link: "rounded-full px-3 py-2 font-bold text-[var(--public-text)] transition-colors hover:bg-white/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)]",
     bottom: `${baseBottom} border-[var(--public-primary)]/20 text-[var(--public-muted)]`,
@@ -372,7 +372,7 @@ const footerProfileClasses: Record<
     top: `${baseTop} border-b border-[var(--public-primary)]/20 pb-8`,
     brandName: "font-serif text-3xl font-bold text-[var(--public-primary)]",
     meta: `${baseMeta} text-[var(--public-muted)] sm:flex-row sm:flex-wrap sm:gap-x-5`,
-    cta: `${baseCta} ${baseFocus} rounded-md bg-[var(--public-primary)] px-5 text-white shadow-[0_3px_0_rgba(0,0,0,0.16)]`,
+    cta: `${baseCta} ${baseFocus} rounded-md bg-[var(--public-primary)] px-5 text-[var(--public-on-primary)] shadow-[0_3px_0_rgba(0,0,0,0.16)]`,
     navigation: `${baseNavigation} mt-6`,
     link: "rounded-md px-2 py-1 text-[var(--public-muted)] transition-colors hover:bg-[var(--public-background)] hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)]",
     bottom: `${baseBottom} border-[var(--public-primary)]/20 text-[var(--public-muted)]`,

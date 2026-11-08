@@ -25,12 +25,14 @@ const fallbackImage =
 function CmsImage({
   alt,
   className,
+  motion,
   position,
   sizes,
   src,
 }: {
   alt: string;
   className: string;
+  motion?: "hover-zoom";
   position?: string;
   sizes: string;
   src: string;
@@ -39,6 +41,7 @@ function CmsImage({
     <Image
       alt={alt}
       className={className}
+      data-public-motion={motion}
       fill
       sizes={sizes}
       src={src}
@@ -195,6 +198,7 @@ export function GymModernPrograms({ section }: PublicSectionProps) {
                   <CmsImage
                     alt={itemText(program, "imageAlt", title)}
                     className="gym-modern-program__image"
+                    motion="hover-zoom"
                     position={itemText(program, "imagePosition")}
                     sizes="(min-width: 900px) 36vw, 90vw"
                     src={image}
@@ -304,7 +308,7 @@ export function GymModernCoaches({ section }: PublicSectionProps) {
           return (
             <article key={index}>
               <div className="gym-modern-coach-image">
-                {image ? <CmsImage alt={itemText(person, "imageAlt", name)} className="gym-modern-coach-image__photo" position={itemText(person, "imagePosition")} sizes="(min-width: 900px) 28vw, 80vw" src={image} /> : <div className="gym-modern-program__empty" aria-hidden="true"><Dumbbell size={32} /></div>}
+                {image ? <CmsImage alt={itemText(person, "imageAlt", name)} className="gym-modern-coach-image__photo" motion="hover-zoom" position={itemText(person, "imagePosition")} sizes="(min-width: 900px) 28vw, 80vw" src={image} /> : <div className="gym-modern-program__empty" aria-hidden="true"><Dumbbell size={32} /></div>}
                 <span>0{index + 1}</span>
               </div>
               <h3>{name}</h3><p>{itemText(person, "role", itemText(person, "specialty", itemText(person, "title", itemText(person, "description", "Treino acompanhado"))))}</p>

@@ -11,7 +11,7 @@ export function redactSensitiveBriefingText(value: string) {
       "[CREDENCIAL REDIGIDA]",
     )
     .replace(
-      /\b(?:diagn[oó]stico|sintomas?|hist[oó]rico cl[ií]nico|n[uú]mero de utente|processo cl[ií]nico)\b[^.!?\n]*/gi,
+      /\b(?:diagn[oó]stico\s+(?:m[eé]dico|cl[ií]nico)|sintomas?\s+(?:m[eé]dicos?|cl[ií]nicos?|de sa[uú]de)|hist[oó]rico cl[ií]nico|n[uú]mero de utente|processo cl[ií]nico)\b[^.!?\n]*/gi,
       "[DADO DE SAÚDE OMITIDO]",
     );
 }

@@ -1,6 +1,6 @@
 import { CmsPageHeader } from "@/features/cms/components/cms-page-header";
 import { ContentHistoryFoundation } from "@/features/content/components/content-history-foundation";
-import { ContentPreview } from "@/features/content/components/content-preview";
+import { ResponsiveContentPreview } from "@/features/content/components/responsive-content-preview";
 import { DemoSettingsPanel } from "@/features/content/components/demo-settings-panel";
 import { CreateSectionForm } from "@/features/content/components/section-form";
 import { SectionList } from "@/features/content/components/section-list";
@@ -47,7 +47,7 @@ export default async function ContentEditorPage({
         templateKey={page.template?.key}
         templateVariantKey={page.templateVariant?.key}
       />
-      <ContentPreview sections={page.sections} />
+      <ResponsiveContentPreview pageId={page.id} />
       <ContentHistoryFoundation />
     </div>
   );

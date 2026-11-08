@@ -164,8 +164,8 @@ const baseCta =
 
 const lightNavLink =
   "text-[var(--public-muted)] transition-colors hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2";
-const lightCta = `${baseCta} border border-[var(--public-primary)]/30 text-[var(--public-primary)] hover:bg-[var(--public-primary)] hover:text-white`;
-const solidCta = `${baseCta} bg-[var(--public-primary)] text-white shadow-sm shadow-slate-950/10 hover:-translate-y-0.5 hover:shadow-md`;
+const lightCta = `${baseCta} border border-[var(--public-primary)]/30 text-[var(--public-primary)] hover:bg-[var(--public-primary)] hover:text-[var(--public-on-primary)]`;
+const solidCta = `${baseCta} bg-[var(--public-primary)] text-[var(--public-on-primary)] shadow-sm shadow-slate-950/10 hover:-translate-y-0.5 hover:shadow-md`;
 const darkNavLink =
   "text-white/72 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
 
@@ -333,12 +333,12 @@ const headerProfileClasses: Record<
     desktopNav: `${baseDesktopNav} gap-7 text-[11px] uppercase tracking-[0.12em]`,
     navLink:
       "text-[var(--public-muted)] transition-colors hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
-    cta: "inline-flex h-10 min-h-0 shrink-0 self-center items-center justify-center border border-[var(--public-primary)] bg-[var(--public-primary)] px-5 py-0 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:border-[var(--public-text)] hover:bg-[var(--public-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
+    cta: "inline-flex h-10 min-h-0 shrink-0 self-center items-center justify-center border border-[var(--public-primary)] bg-[var(--public-primary)] px-5 py-0 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--public-on-primary)] transition-colors hover:border-[var(--public-text)] hover:bg-[var(--public-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
     menuButton: `${baseMenuButton} border-[var(--public-accent)]/35 bg-transparent text-[var(--public-text)]`,
     mobileNav: `${baseMobileNav} border-[var(--public-accent)]/35 bg-[var(--public-surface)]`,
     mobileLink: `${baseMobileLink} text-[var(--public-muted)] hover:bg-white/70 hover:text-[var(--public-text)]`,
     mobileCta:
-      "inline-flex min-h-11 w-full items-center justify-center border border-[var(--public-primary)] bg-[var(--public-primary)] px-5 text-xs font-semibold uppercase tracking-[0.1em] text-white",
+      "inline-flex min-h-11 w-full items-center justify-center border border-[var(--public-primary)] bg-[var(--public-primary)] px-5 text-xs font-semibold uppercase tracking-[0.1em] text-[var(--public-on-primary)]",
   },
   "clinic-modern": {
     header:
@@ -348,12 +348,12 @@ const headerProfileClasses: Record<
     desktopNav: `${baseDesktopNav} gap-6 text-sm`,
     navLink:
       "text-[var(--public-muted)] transition-colors hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-accent)] focus-visible:ring-offset-2",
-    cta: "inline-flex h-10 min-h-0 shrink-0 self-center items-center justify-center rounded-full bg-[var(--public-primary)] px-5 py-0 text-sm font-bold text-white shadow-sm transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-accent)] focus-visible:ring-offset-2",
+    cta: "inline-flex h-10 min-h-0 shrink-0 self-center items-center justify-center rounded-full bg-[var(--public-primary)] px-5 py-0 text-sm font-bold text-[var(--public-on-primary)] shadow-sm transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-accent)] focus-visible:ring-offset-2",
     menuButton: `${baseMenuButton} rounded-full border-[var(--public-primary)]/20 bg-[var(--public-surface)] text-[var(--public-primary)]`,
     mobileNav: `${baseMobileNav} border-[var(--public-primary)]/15 bg-[var(--public-background)]`,
     mobileLink: `${baseMobileLink} text-[var(--public-muted)] hover:bg-[var(--public-surface)] hover:text-[var(--public-primary)]`,
     mobileCta:
-      "inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-bold text-white",
+      "inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-bold text-[var(--public-on-primary)]",
   },
   "clinic-luxury": {
     header:
@@ -393,12 +393,12 @@ const headerProfileClasses: Record<
     desktopNav: `${baseDesktopNav} gap-2 text-sm font-bold`,
     navLink:
       "rounded-full px-3 py-2 text-[var(--public-text)] transition-transform hover:-translate-y-0.5 hover:bg-white/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
-    cta: "inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-black text-white shadow-[0_4px_0_rgba(0,0,0,0.18)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
+    cta: "inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-black text-[var(--public-on-primary)] shadow-[0_4px_0_rgba(0,0,0,0.18)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
     menuButton: `${baseMenuButton} rounded-full border-2 border-[var(--public-primary)] bg-white/40 text-[var(--public-text)]`,
     mobileNav: `${baseMobileNav} border-[var(--public-primary)]/30 bg-[var(--public-accent)]`,
     mobileLink: `${baseMobileLink} font-bold text-[var(--public-text)] hover:bg-white/45`,
     mobileCta:
-      "inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-black text-white",
+      "inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--public-primary)] px-5 text-sm font-black text-[var(--public-on-primary)]",
   },
   "bakery-playful": {
     header:
@@ -408,12 +408,12 @@ const headerProfileClasses: Record<
     desktopNav: `${baseDesktopNav} gap-3 text-sm font-bold`,
     navLink:
       "rounded-md px-3 py-2 text-[var(--public-muted)] transition-colors hover:bg-[var(--public-accent)]/20 hover:text-[var(--public-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
-    cta: "inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--public-primary)] px-5 text-sm font-bold text-white shadow-[0_3px_0_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
+    cta: "inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--public-primary)] px-5 text-sm font-bold text-[var(--public-on-primary)] shadow-[0_3px_0_rgba(0,0,0,0.16)] transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--public-primary)] focus-visible:ring-offset-2",
     menuButton: `${baseMenuButton} rounded-md border-[var(--public-primary)]/35 bg-[var(--public-accent)]/20 text-[var(--public-primary)]`,
     mobileNav: `${baseMobileNav} border-[var(--public-primary)]/20 bg-[var(--public-background)]`,
     mobileLink: `${baseMobileLink} text-[var(--public-muted)] hover:bg-[var(--public-accent)]/20 hover:text-[var(--public-primary)]`,
     mobileCta:
-      "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--public-primary)] px-5 text-sm font-bold text-white",
+      "inline-flex min-h-11 w-full items-center justify-center rounded-md bg-[var(--public-primary)] px-5 text-sm font-bold text-[var(--public-on-primary)]",
   },
   "gym-modern": {
     header:
