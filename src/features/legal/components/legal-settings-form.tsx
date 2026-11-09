@@ -35,20 +35,20 @@ export function LegalSettingsForm({
       <CardHeader>
         <CardTitle>Legal e RGPD</CardTitle>
         <CardDescription>
-          Configuracao de cookies, consentimento e paginas legais.
+          Configuração de cookies, consentimento e páginas legais.
         </CardDescription>
       </CardHeader>
       <div className="grid gap-5">
         <ActionFeedbackForm
           action={saveLegalSettingsAction}
           className="grid gap-5"
-          loadingMessage="A guardar configuracao legal..."
-          successMessage="Configuracao legal guardada."
+          loadingMessage="A guardar configuração legal..."
+          successMessage="Configuração legal guardada."
         >
           <input name="id" type="hidden" value={settings.id} />
           <Grid className="md:grid-cols-3">
             <Field>
-              <Label htmlFor="consentVersion">Versao de consentimento</Label>
+              <Label htmlFor="consentVersion">Versão de consentimento</Label>
               <Input
                 id="consentVersion"
                 name="consentVersion"
@@ -58,7 +58,7 @@ export function LegalSettingsForm({
               />
             </Field>
             <Field>
-              <Label htmlFor="retentionDays">Retencao de dados em dias</Label>
+              <Label htmlFor="retentionDays">Retenção de dados em dias</Label>
               <Input
                 id="retentionDays"
                 name="retentionDays"
@@ -104,14 +104,14 @@ export function LegalSettingsForm({
               disabled={!canWrite}
             />
             <PageSelect
-              label="Politica de Cookies"
+              label="Política de Cookies"
               name="cookiePageId"
               pages={legalPages}
               value={settings.cookiePageId}
               disabled={!canWrite}
             />
             <PageSelect
-              label="Termos e Condicoes"
+              label="Termos e Condições"
               name="termsPageId"
               pages={legalPages}
               value={settings.termsPageId}
@@ -120,7 +120,7 @@ export function LegalSettingsForm({
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="dataControllerName">Responsavel pelo tratamento</Label>
+              <Label htmlFor="dataControllerName">Responsável pelo tratamento</Label>
               <Input
                 id="dataControllerName"
                 name="dataControllerName"
@@ -129,7 +129,7 @@ export function LegalSettingsForm({
               />
             </Field>
             <Field>
-              <Label htmlFor="dataControllerEmail">Email para pedidos RGPD</Label>
+              <Label htmlFor="dataControllerEmail">E-mail para pedidos RGPD</Label>
               <Input
                 id="dataControllerEmail"
                 name="dataControllerEmail"
@@ -144,11 +144,11 @@ export function LegalSettingsForm({
         {canWrite ? (
           <ActionFeedbackForm
             action={ensureLegalPagesAction}
-            loadingMessage="A criar paginas legais..."
-            successMessage="Paginas legais preparadas."
+            loadingMessage="A criar páginas legais..."
+            successMessage="Páginas legais preparadas."
           >
             <Button type="submit" variant="outline">
-              Criar/atualizar paginas legais
+              Criar/atualizar páginas legais
             </Button>
           </ActionFeedbackForm>
         ) : null}
@@ -174,13 +174,19 @@ function PageSelect({
     <Field>
       <Label htmlFor={name}>{label}</Label>
       <Select id={name} name={name} defaultValue={value ?? ""} disabled={disabled}>
-        <option value="">Nao configurada</option>
+        <option value="">Não configurada</option>
         {pages.map((page) => (
           <option key={page.id} value={page.id}>
-            {page.title} /{page.slug}
+            {formatLegalPageTitle(page)} /{page.slug}
           </option>
         ))}
       </Select>
     </Field>
   );
+}
+
+function formatLegalPageTitle(page: LegalPageOption) {
+  if (page.slug === "politica-cookies") return "Política de Cookies";
+  if (page.slug === "termos-condicoes") return "Termos e Condições";
+  return page.title;
 }

@@ -14,11 +14,11 @@ export function CmsSidebar({ items }: { items: CmsNavigationItem[] }) {
     <aside className="border-border bg-surface hidden min-h-screen w-72 border-r px-4 py-5 lg:block">
       <div className="px-2">
         <p className="text-lg font-bold">LandingForge</p>
-        <p className="text-muted-foreground mt-1 text-sm">CMS</p>
+        <p className="text-muted-foreground mt-1 text-sm">Gestão de conteúdo</p>
       </div>
-      <nav className="mt-8 grid gap-1" aria-label="CMS navigation">
+      <nav className="mt-8 grid gap-1" aria-label="Navegação do CMS">
         {items
-          .filter((item) => item.label !== "Notifications")
+          .filter((item) => item.href !== "/dashboard#notifications")
           .map((item) => {
             const isActive =
               pathname === item.href || pathname.startsWith(`${item.href}/`);

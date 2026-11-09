@@ -355,10 +355,19 @@
   align-items: center;
   gap: 0.5rem;
   margin-top: 1.5rem;
-  color: var(--bakery-rose);
+  color: var(--bakery-ink);
   font-weight: 900;
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+.bakery-playful-featured__copy > a:hover {
+  color: var(--bakery-plum);
+  text-decoration-thickness: 3px;
+}
+
+.bakery-playful-featured__copy > a:focus-visible {
+  outline-color: var(--bakery-ink);
 }
 
 .bakery-playful-products__supporting {

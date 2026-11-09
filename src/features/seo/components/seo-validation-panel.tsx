@@ -16,9 +16,9 @@ export function SeoValidationPanel({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>SEO Score</CardTitle>
+        <CardTitle>Pontuação SEO</CardTitle>
         <CardDescription>
-          Simple readiness checks for metadata and visibility.
+          Verificações de preparação dos metadados e da visibilidade.
         </CardDescription>
       </CardHeader>
       <div className="flex items-end gap-3">
@@ -42,7 +42,7 @@ export function SeoValidationPanel({
                   : "bg-warning/10 text-warning rounded-md px-2 py-1 text-xs font-semibold"
               }
             >
-              {check.passed ? "OK" : "Review"}
+              {check.passed ? "OK" : "Rever"}
             </span>
           </li>
         ))}

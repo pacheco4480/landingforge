@@ -11,10 +11,10 @@ describe("getAuthorizedNavigation", () => {
     ]);
 
     expect(items.map((item) => item.label)).toEqual([
-      "Dashboard",
-      "Leads",
-      "Analytics",
-      "Notifications",
+      "Painel",
+      "Contactos",
+      "Análise",
+      "Notificações",
     ]);
   });
 
@@ -38,8 +38,8 @@ describe("getAuthorizedNavigation", () => {
       permissions.leadsRead,
     ]);
 
-    expect(items.some((item) => item.label === "Clients")).toBe(false);
-    expect(items.some((item) => item.label === "Projects")).toBe(false);
+    expect(items.some((item) => item.label === "Clientes")).toBe(false);
+    expect(items.some((item) => item.label === "Projetos")).toBe(false);
   });
 
   it("does not show global admin with audit-only permissions", () => {
@@ -49,7 +49,7 @@ describe("getAuthorizedNavigation", () => {
       permissions.auditExport,
     ]);
 
-    expect(items.some((item) => item.label === "Admin")).toBe(false);
+    expect(items.some((item) => item.label === "Administração")).toBe(false);
   });
 
   it("shows global admin only with admin access permission", () => {
@@ -58,6 +58,6 @@ describe("getAuthorizedNavigation", () => {
       permissions.adminAccess,
     ]);
 
-    expect(items.some((item) => item.label === "Admin")).toBe(true);
+    expect(items.some((item) => item.label === "Administração")).toBe(true);
   });
 });

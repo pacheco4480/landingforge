@@ -20,15 +20,15 @@ export function LocalSeoForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Local SEO</CardTitle>
+        <CardTitle>SEO local</CardTitle>
         <CardDescription>
-          Business location data used for local structured data.
+          Dados de localização da empresa utilizados nos dados estruturados locais.
         </CardDescription>
       </CardHeader>
       <form action={updateLocalSeoAction} className="grid gap-5">
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor="city">City</Label>
+            <Label htmlFor="city">Localidade</Label>
             <Input
               id="city"
               name="city"
@@ -37,7 +37,7 @@ export function LocalSeoForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="region">Region</Label>
+            <Label htmlFor="region">Distrito ou região</Label>
             <Input
               id="region"
               name="region"
@@ -46,7 +46,7 @@ export function LocalSeoForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="country">Country</Label>
+            <Label htmlFor="country">País</Label>
             <Input
               id="country"
               name="country"
@@ -55,7 +55,7 @@ export function LocalSeoForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="postalCode">Postal code</Label>
+            <Label htmlFor="postalCode">Código postal</Label>
             <Input
               id="postalCode"
               name="postalCode"
@@ -83,7 +83,7 @@ export function LocalSeoForm({
           </Field>
         </Grid>
         <Field>
-          <Label htmlFor="openingHours">Opening hours</Label>
+          <Label htmlFor="openingHours">Horário de funcionamento</Label>
           <Textarea
             id="openingHours"
             name="openingHours"
@@ -91,7 +91,7 @@ export function LocalSeoForm({
             disabled={!canWrite}
           />
         </Field>
-        {canWrite ? <Button type="submit">Save local SEO</Button> : null}
+        {canWrite ? <Button type="submit">Guardar SEO local</Button> : null}
       </form>
     </Card>
   );

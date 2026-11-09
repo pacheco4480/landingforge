@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getSeoScore } from "@/features/seo/services/seo-score.service";
+import { getSeoChecks, getSeoScore } from "@/features/seo/services/seo-score.service";
 
 describe("seo score", () => {
   it("scores complete SEO data higher than incomplete data", () => {
@@ -25,5 +25,24 @@ describe("seo score", () => {
     });
 
     expect(complete).toBeGreaterThan(incomplete);
+  });
+
+  it("uses Portuguese user-facing labels and guidance", () => {
+    const checks = getSeoChecks({
+      robotsIndex: true,
+      robotsFollow: true,
+      missingAltTextCount: 1,
+    });
+
+    expect(checks.map(({ label }) => label)).toEqual([
+      "Título SEO",
+      "Descrição SEO",
+      "URL canónico",
+      "Imagem para partilha",
+      "Indexação e seguimento",
+      "Dados estruturados",
+      "Texto alternativo das imagens",
+    ]);
+    expect(checks.every(({ message }) => /[áéíóúãõç]|\b(Usa|Define|Seleciona|Recomenda-se|Gera|Adiciona)\b/i.test(message))).toBe(true);
   });
 });

@@ -16,16 +16,16 @@ export default async function PagesPage() {
     <div className="grid gap-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <CmsPageHeader
-          eyebrow="Landing Pages"
-          title="Pages"
-          description="Create, edit, duplicate, archive and organize landing pages."
+          eyebrow="Landing pages"
+          title="Páginas"
+          description="Cria, edita, duplica, arquiva e organiza landing pages."
         />
         {canWrite ? (
           <Link
             className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-11 w-fit items-center justify-center rounded-md px-4 py-2 text-sm font-semibold"
             href="/pages/new"
           >
-            Create page
+            Criar página
           </Link>
         ) : null}
       </div>

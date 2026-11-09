@@ -33,9 +33,9 @@ export default async function ContentEditorPage({
   return (
     <div className="grid gap-6">
       <CmsPageHeader
-        eyebrow={page.isDemo ? "Internal Demo" : "Client Mode"}
-        title={`Content: ${page.title}`}
-        description="Edit content sections, ordering and visibility for this landing page."
+        eyebrow={page.isDemo ? "Demonstração interna" : "Modo de cliente"}
+        title={`Conteúdo: ${page.title}`}
+        description="Edita as secções, a respetiva ordem e visibilidade nesta landing page."
       />
       {page.isDemo && canWrite ? (
         <DemoSettingsPanel page={page} templates={templates} themes={themes} />

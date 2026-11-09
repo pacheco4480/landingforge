@@ -28,7 +28,7 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
         <Stack>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="theme-name">Theme Name</Label>
+              <Label htmlFor="theme-name">Nome do tema</Label>
               <Input
                 id="theme-name"
                 name="name"
@@ -37,7 +37,7 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="theme-key">Theme Key</Label>
+              <Label htmlFor="theme-key">Identificador do tema</Label>
               <Input
                 id="theme-key"
                 name="key"
@@ -48,13 +48,13 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
           </Grid>
           <Grid className="md:grid-cols-3">
             {[
-              ["primaryColor", "Primary"],
-              ["secondaryColor", "Secondary"],
-              ["accentColor", "Accent"],
-              ["backgroundColor", "Background"],
-              ["surfaceColor", "Surface"],
-              ["textPrimaryColor", "Text Primary"],
-              ["textSecondaryColor", "Text Secondary"],
+              ["primaryColor", "Principal"],
+              ["secondaryColor", "Secundária"],
+              ["accentColor", "Destaque"],
+              ["backgroundColor", "Fundo"],
+              ["surfaceColor", "Superfície"],
+              ["textPrimaryColor", "Texto principal"],
+              ["textSecondaryColor", "Texto secundário"],
             ].map(([name, label]) => (
               <Field key={name}>
                 <Label htmlFor={`theme-${name}`}>{label}</Label>
@@ -73,7 +73,7 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="theme-headingFont">Heading Font</Label>
+              <Label htmlFor="theme-headingFont">Tipo de letra dos títulos</Label>
               <Input
                 id="theme-headingFont"
                 name="headingFont"
@@ -82,7 +82,7 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="theme-bodyFont">Body Font</Label>
+              <Label htmlFor="theme-bodyFont">Tipo de letra do corpo</Label>
               <Input
                 id="theme-bodyFont"
                 name="bodyFont"
@@ -91,33 +91,33 @@ export function ThemeForm({ theme }: { theme?: ThemeFormValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="theme-borderRadius">Radius</Label>
+              <Label htmlFor="theme-borderRadius">Arredondamento</Label>
               <Select
                 id="theme-borderRadius"
                 name="borderRadius"
                 defaultValue={theme?.borderRadius ?? "medium"}
               >
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
+                <option value="small">Pequeno</option>
+                <option value="medium">Médio</option>
+                <option value="large">Grande</option>
               </Select>
             </Field>
             <Field>
-              <Label htmlFor="theme-shadowStyle">Shadow</Label>
+              <Label htmlFor="theme-shadowStyle">Sombra</Label>
               <Select
                 id="theme-shadowStyle"
                 name="shadowStyle"
                 defaultValue={theme?.shadowStyle ?? "small"}
               >
-                <option value="none">None</option>
-                <option value="small">Small</option>
-                <option value="medium">Medium</option>
-                <option value="large">Large</option>
+                <option value="none">Nenhuma</option>
+                <option value="small">Pequena</option>
+                <option value="medium">Média</option>
+                <option value="large">Grande</option>
               </Select>
             </Field>
           </Grid>
           <Button type="submit">
-            {theme?.id ? "Save theme" : "Create theme"}
+            {theme?.id ? "Guardar tema" : "Criar tema"}
           </Button>
         </Stack>
       </form>

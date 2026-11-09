@@ -18,7 +18,7 @@ export function UserMenu({
           {roles.join(", ") || email}
         </p>
       </div>
-      <Avatar alt={`${name} profile`} fallback={name || email} />
+      <Avatar alt={`Perfil de ${name}`} fallback={name || email} />
       <div>
         <LogoutButton />
       </div>

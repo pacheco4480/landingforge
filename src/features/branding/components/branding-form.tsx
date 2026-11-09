@@ -36,8 +36,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
       <CardHeader>
         <CardTitle>Identidade global</CardTitle>
         <CardDescription>
-          Dados base usados por SEO, contactos, legal e templates que nao tenham
-          valores proprios.
+          Dados de base utilizados por SEO, contactos, informação legal e templates sem valores próprios.
         </CardDescription>
       </CardHeader>
       <ActionFeedbackForm
@@ -48,7 +47,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
         <Stack>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="businessName">Business Name</Label>
+              <Label htmlFor="businessName">Nome da empresa</Label>
               <Input
                 id="businessName"
                 name="businessName"
@@ -57,7 +56,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="siteName">Site Name</Label>
+              <Label htmlFor="siteName">Nome do site</Label>
               <Input
                 id="siteName"
                 name="siteName"
@@ -68,7 +67,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="businessType">Business Type</Label>
+              <Label htmlFor="businessType">Área de atividade</Label>
               <Input
                 id="businessType"
                 name="businessType"
@@ -77,7 +76,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="contactEmail">Contact Email</Label>
+              <Label htmlFor="contactEmail">Email de contacto</Label>
               <Input
                 id="contactEmail"
                 name="contactEmail"
@@ -89,7 +88,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
           </Grid>
           <Grid className="md:grid-cols-3">
             <Field>
-              <Label htmlFor="primaryColor">Primary Color</Label>
+              <Label htmlFor="primaryColor">Cor principal</Label>
               <Input
                 id="primaryColor"
                 name="primaryColor"
@@ -98,11 +97,11 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
                 required
               />
               <p className="text-muted-foreground text-xs">
-                Usada por templates sem tema especifico.
+                Utilizada por templates sem tema específico.
               </p>
             </Field>
             <Field>
-              <Label htmlFor="secondaryColor">Secondary Color</Label>
+              <Label htmlFor="secondaryColor">Cor secundária</Label>
               <Input
                 id="secondaryColor"
                 name="secondaryColor"
@@ -115,7 +114,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               </p>
             </Field>
             <Field>
-              <Label htmlFor="accentColor">Accent Color</Label>
+              <Label htmlFor="accentColor">Cor de destaque</Label>
               <Input
                 id="accentColor"
                 name="accentColor"
@@ -130,7 +129,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="contactPhone">Phone</Label>
+              <Label htmlFor="contactPhone">Telefone</Label>
               <Input
                 id="contactPhone"
                 name="contactPhone"
@@ -138,7 +137,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="address">Address</Label>
+              <Label htmlFor="address">Morada</Label>
               <Input
                 id="address"
                 name="address"
@@ -148,7 +147,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="facebookUrl">Facebook URL</Label>
+              <Label htmlFor="facebookUrl">URL do Facebook</Label>
               <Input
                 id="facebookUrl"
                 name="facebookUrl"
@@ -156,7 +155,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="instagramUrl">Instagram URL</Label>
+              <Label htmlFor="instagramUrl">URL do Instagram</Label>
               <Input
                 id="instagramUrl"
                 name="instagramUrl"
@@ -164,7 +163,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="linkedinUrl">LinkedIn URL</Label>
+              <Label htmlFor="linkedinUrl">URL do LinkedIn</Label>
               <Input
                 id="linkedinUrl"
                 name="linkedinUrl"
@@ -172,7 +171,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
             <Field>
-              <Label htmlFor="whatsappUrl">WhatsApp URL</Label>
+              <Label htmlFor="whatsappUrl">URL do WhatsApp</Label>
               <Input
                 id="whatsappUrl"
                 name="whatsappUrl"
@@ -180,7 +179,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
               />
             </Field>
           </Grid>
-          <Button type="submit">Save branding</Button>
+          <Button type="submit">Guardar identidade da marca</Button>
         </Stack>
       </ActionFeedbackForm>
       <ActionFeedbackForm
@@ -190,7 +189,7 @@ export function BrandingForm({ settings }: { settings: BrandingValue }) {
         successMessage="Cores repostas."
       >
         <Button type="submit" variant="outline">
-          Reset colors
+          Repor cores
         </Button>
       </ActionFeedbackForm>
     </Card>

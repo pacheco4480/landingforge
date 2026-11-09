@@ -78,7 +78,7 @@ describe("seo audit service", () => {
       {
         severity: "error",
         code: "missing-seo",
-        message: "Page is missing SEO settings.",
+        message: "Faltam definições de SEO nesta página.",
       },
     ]);
   });

@@ -15,20 +15,20 @@ export default async function DashboardPage() {
   return (
     <div className="grid gap-8">
       <CmsPageHeader
-        eyebrow="CMS Home"
-        title="Dashboard"
-        description="Monitor lead activity, page readiness and the operational status of the LandingForge CMS."
+        eyebrow="Área de gestão"
+        title="Painel"
+        description="Acompanha os contactos recebidos, a preparação das páginas e o estado operacional do LandingForge."
       />
       <DashboardMetricGrid metrics={metrics} />
       <section aria-labelledby="quick-actions-heading">
         <h2 id="quick-actions-heading" className="mb-4 text-xl font-semibold">
-          Quick Actions
+          Acesso rápido
         </h2>
-        <DashboardQuickActions />
+        <DashboardQuickActions userPermissions={user.permissions} />
       </section>
       <section aria-labelledby="foundations-heading">
         <h2 id="foundations-heading" className="mb-4 text-xl font-semibold">
-          CMS Foundations
+          Visão geral do CMS
         </h2>
         <DashboardFoundations
           backupSummary={metrics.backupSummary}

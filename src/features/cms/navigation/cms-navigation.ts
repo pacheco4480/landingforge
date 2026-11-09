@@ -12,7 +12,7 @@ export function getAuthorizedNavigation(
 
 export function getBreadcrumbs(pathname: string) {
   const normalizedPathname = pathname.split("?")[0] || "/dashboard";
-  const crumbs = [{ label: "Dashboard", href: "/dashboard" }];
+  const crumbs = [{ label: "Painel", href: "/dashboard" }];
 
   const item = cmsNavigationItems.find((navigationItem) =>
     normalizedPathname.startsWith(navigationItem.href),

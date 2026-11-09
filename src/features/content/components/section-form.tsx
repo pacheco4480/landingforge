@@ -5,7 +5,7 @@ import {
   createSectionAction,
   updateSectionAction,
 } from "@/features/content/actions/section.actions";
-import { sectionTypeOptions } from "@/features/content/section-types";
+import { sectionTypeLabel, sectionTypeOptions } from "@/features/content/section-types";
 import { getTemplateDefinition } from "@/features/public-renderer/template-registry";
 import { SectionPresentationControl } from "@/features/content/components/section-presentation-control";
 import { RepeatableSectionEditor } from "@/features/content/components/repeatable-section-editor";
@@ -34,11 +34,11 @@ export function CreateSectionForm({ pageId }: { pageId: string }) {
         <input name="pageId" type="hidden" value={pageId} />
         <Grid className="md:grid-cols-[1fr_1fr_auto]">
           <Field>
-            <Label htmlFor="new-section-name">Section name</Label>
+            <Label htmlFor="new-section-name">Nome da secção</Label>
             <Input id="new-section-name" name="name" required />
           </Field>
           <Field>
-            <Label htmlFor="new-section-type">Section type</Label>
+            <Label htmlFor="new-section-type">Tipo de secção</Label>
             <Select
               id="new-section-type"
               name="sectionType"
@@ -52,7 +52,7 @@ export function CreateSectionForm({ pageId }: { pageId: string }) {
             </Select>
           </Field>
           <div className="flex items-end">
-            <Button type="submit">Add section</Button>
+            <Button type="submit">Adicionar secção</Button>
           </div>
         </Grid>
       </form>
@@ -89,10 +89,7 @@ export function SectionForm({
     value,
     label:
       sectionTypeOptions.find((option) => option.value === value)?.label ??
-      value
-        .split("_")
-        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(" "),
+      sectionTypeLabel(value),
   }));
 
   return (
@@ -102,7 +99,7 @@ export function SectionForm({
       <Stack>
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor={`section-name-${section.id}`}>Name</Label>
+            <Label htmlFor={`section-name-${section.id}`}>Nome</Label>
             <Input
               id={`section-name-${section.id}`}
               name="name"
@@ -111,7 +108,7 @@ export function SectionForm({
             />
           </Field>
           <Field>
-            <Label htmlFor={`section-type-${section.id}`}>Type</Label>
+            <Label htmlFor={`section-type-${section.id}`}>Tipo de secção</Label>
             <Select
               id={`section-type-${section.id}`}
               name="sectionType"
@@ -138,7 +135,7 @@ export function SectionForm({
           />
         ) : (
           <Field>
-            <Label htmlFor={`section-content-${section.id}`}>Content JSON</Label>
+            <Label htmlFor={`section-content-${section.id}`}>Conteúdo (JSON)</Label>
             <Textarea
               className="font-mono text-xs"
               id={`section-content-${section.id}`}
@@ -179,7 +176,7 @@ export function SectionForm({
         </Field>
         <Field>
           <Label htmlFor={`section-settings-${section.id}`}>
-            Settings JSON
+            Definições (JSON)
           </Label>
           <Textarea
             className="font-mono text-xs"
@@ -190,7 +187,7 @@ export function SectionForm({
           />
         </Field>
         <div>
-          <Button type="submit">Save section</Button>
+          <Button type="submit">Guardar secção</Button>
         </div>
       </Stack>
     </form>

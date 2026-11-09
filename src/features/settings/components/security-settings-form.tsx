@@ -22,7 +22,7 @@ export function SecuritySettingsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Security</CardTitle>
+        <CardTitle>Segurança</CardTitle>
         <CardDescription>
           Proteções contra spam, abuso e utilização excessiva.
         </CardDescription>
@@ -32,7 +32,7 @@ export function SecuritySettingsForm({
           Turnstile {settings.turnstileEnabled ? "ativo" : "inativo"}
         </Badge>
         <Badge tone={settings.honeypotEnabled ? "success" : "neutral"}>
-          Honeypot {settings.honeypotEnabled ? "ativo" : "inativo"}
+          Filtro anti-spam (honeypot) {settings.honeypotEnabled ? "ativo" : "inativo"}
         </Badge>
       </div>
       <ActionFeedbackForm
@@ -48,7 +48,7 @@ export function SecuritySettingsForm({
               defaultChecked={settings.turnstileEnabled}
               disabled={!canWrite}
             />
-            Turnstile
+            Verificação anti-spam Turnstile
           </label>
           <label className="flex items-center gap-2 text-sm font-medium">
             <Checkbox
@@ -56,11 +56,11 @@ export function SecuritySettingsForm({
               defaultChecked={settings.honeypotEnabled}
               disabled={!canWrite}
             />
-            Honeypot
+            Campo anti-spam (honeypot)
           </label>
         </div>
         <Field>
-          <Label htmlFor="turnstileSiteKey">Turnstile site key</Label>
+          <Label htmlFor="turnstileSiteKey">Chave pública do Turnstile</Label>
           <Input
             id="turnstileSiteKey"
             name="turnstileSiteKey"
@@ -72,10 +72,10 @@ export function SecuritySettingsForm({
         <Grid className="md:grid-cols-3">
           <NumberField name="loginLimitPerMinute" label="Login/min" value={settings.loginLimitPerMinute} disabled={!canWrite} />
           <NumberField name="passwordResetLimitPerHour" label="Reset/hora" value={settings.passwordResetLimitPerHour} disabled={!canWrite} />
-          <NumberField name="formLimitPerMinute" label="Forms/min" value={settings.formLimitPerMinute} disabled={!canWrite} />
-          <NumberField name="uploadLimitPerMinute" label="Uploads/min" value={settings.uploadLimitPerMinute} disabled={!canWrite} />
-          <NumberField name="apiLimitPerMinute" label="APIs/min" value={settings.apiLimitPerMinute} disabled={!canWrite} />
-          <NumberField name="duplicateCooldownSeconds" label="Cooldown form" value={settings.duplicateCooldownSeconds} disabled={!canWrite} />
+          <NumberField name="formLimitPerMinute" label="Formulários por minuto" value={settings.formLimitPerMinute} disabled={!canWrite} />
+          <NumberField name="uploadLimitPerMinute" label="Carregamentos por minuto" value={settings.uploadLimitPerMinute} disabled={!canWrite} />
+          <NumberField name="apiLimitPerMinute" label="Pedidos à API por minuto" value={settings.apiLimitPerMinute} disabled={!canWrite} />
+          <NumberField name="duplicateCooldownSeconds" label="Intervalo anti-duplicados (segundos)" value={settings.duplicateCooldownSeconds} disabled={!canWrite} />
         </Grid>
         {canWrite ? <Button type="submit">Guardar segurança</Button> : null}
       </ActionFeedbackForm>

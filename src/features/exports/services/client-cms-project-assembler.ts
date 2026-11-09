@@ -105,19 +105,26 @@ function cmsActions() {
   return `"use server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { clientCmsDeleteLead, clientCmsSetFormActive, clientCmsSetLeadStatus, clientCmsSetPageStatus, clientCmsUpdateSection } from "@/client-runtime/features/exports/client-runtime/cms/actions";
+import { clientCmsDeleteLead, clientCmsSetFormActive, clientCmsSetLeadStatus, clientCmsSetPageStatus } from "@/client-runtime/features/exports/client-runtime/cms/actions";
+import { requireClientCmsActor } from "@/client-runtime/features/exports/client-runtime/cms/authorization";
+import { updateClientCmsSection } from "@/client-runtime/features/exports/client-runtime/cms/content.service";
 import { deleteClientCmsMedia, uploadClientCmsMedia } from "@/client-runtime/features/exports/client-runtime/cms/media.service";
+import { ClientCmsMediaError } from "@/client-runtime/features/exports/client-runtime/cms/media-errors";
 
 const id = z.string().uuid();
 export async function saveSection(formData: FormData) {
+  const actor = await requireClientCmsActor("content.write");
   try {
     const pageId = id.parse(formData.get("pageId"));
     const sectionId = id.parse(formData.get("sectionId"));
     const content = JSON.parse(String(formData.get("content") ?? "")) as unknown;
-    await clientCmsUpdateSection({ pageId, sectionId, content });
+    await updateClientCmsSection(actor, { pageId, sectionId, content });
     revalidatePath("/cms/content");
     revalidatePath("/");
-  } catch { throw new Error("Não foi possível guardar a secção. Confirma os campos editáveis desta versão."); }
+    return { ok: true, message: "Secção guardada. As alterações estão disponíveis na pré-visualização." };
+  } catch {
+    return { ok: false, message: "Não foi possível guardar a secção. O conteúdo mantém-se; verifica os campos e tenta novamente." };
+  }
 }
 export async function setPageStatus(formData: FormData) {
   await clientCmsSetPageStatus({ pageId: id.parse(formData.get("pageId")), status: z.enum(["draft", "published"]).parse(formData.get("status")) });
@@ -141,9 +148,15 @@ export async function deleteLead(formData: FormData) {
 }
 export async function uploadMedia(formData: FormData) {
   const file = formData.get("file");
-  if (!(file instanceof File)) throw new Error("Seleciona uma imagem válida.");
-  await uploadClientCmsMedia(file, String(formData.get("altText") ?? "").slice(0, 300));
-  revalidatePath("/cms/media");
+  if (!(file instanceof File)) return { ok: false, message: "Seleciona uma imagem válida." };
+  try {
+    const media = await uploadClientCmsMedia(file, String(formData.get("altText") ?? "").slice(0, 300));
+    revalidatePath("/cms/media");
+    return { ok: true, message: "Imagem carregada. Copia o URL público para o campo de imagem da secção.", publicUrl: media.publicUrl };
+  } catch (error) {
+    if (error instanceof ClientCmsMediaError) return { ok: false, message: error.message };
+    throw error;
+  }
 }
 export async function deleteMedia(formData: FormData) {
   await deleteClientCmsMedia(id.parse(formData.get("mediaId")));
@@ -176,7 +189,7 @@ import { exportClientCmsLeadsCsv } from "@/client-runtime/features/exports/clien
 export const dynamic = "force-dynamic";
 export async function GET() { const actor = await requireClientCmsActor("leads.export"); const csv = await exportClientCmsLeadsCsv(actor); const date = new Date().toISOString().slice(0, 10); return new Response(csv, { headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": "attachment; filename=contactos-" + date + ".csv", "Cache-Control": "private, no-store, max-age=0", "X-Content-Type-Options": "nosniff" } }); }
 `,
-    "app/cms/(workspace)/media/page.tsx": `import { listClientCmsMedia } from "@/client-runtime/features/exports/client-runtime/cms/media.service";\nimport { deleteMedia, uploadMedia } from "../../actions";\nexport default async function Media() { const media = await listClientCmsMedia(); return <main className="mx-auto grid max-w-5xl gap-6 p-6"><h1 className="text-2xl font-semibold">Biblioteca de media</h1><form action={uploadMedia} className="grid gap-3 border p-4 sm:grid-cols-[1fr_1fr_auto]"><label className="grid gap-2 text-sm">Imagem<input name="file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required className="min-h-11"/></label><label className="grid gap-2 text-sm">Texto alternativo<input name="altText" maxLength={300} className="min-h-11 border px-3"/></label><button className="min-h-11 self-end bg-primary px-4 text-primary-foreground">Carregar imagem</button></form><p className="text-sm text-muted-foreground">JPEG, PNG, WebP ou AVIF até 10 MB. O storage do cliente tem de estar configurado.</p>{media.length ? <ul className="grid gap-3">{media.map((item: {id:string;filename:string;mime_type:string;size_bytes:number;alt_text:string|null;object_path:string}) => <li key={item.id} className="flex flex-wrap items-center justify-between gap-3 border p-4"><div><p className="font-medium">{item.filename}</p><p className="text-xs text-muted-foreground">{item.mime_type} · {Math.ceil(item.size_bytes/1024)} KB · {item.alt_text || "Sem texto alternativo"}</p></div><form action={deleteMedia}><input type="hidden" name="mediaId" value={item.id}/><button className="min-h-10 border px-3">Eliminar</button></form></li>)}</ul> : <p>A biblioteca ainda não tem imagens.</p>}</main>; }\n`,
+    "app/cms/(workspace)/media/page.tsx": `import { listClientCmsMedia } from "@/client-runtime/features/exports/client-runtime/cms/media.service";\nimport { MediaUploadForm } from "@/client-runtime/features/exports/client-runtime/cms/components/media-upload-form";\nimport { deleteMedia, uploadMedia } from "../../actions";\nexport default async function Media() { const media = await listClientCmsMedia(); return <main className="mx-auto grid max-w-5xl gap-6 p-6"><h1 className="text-2xl font-semibold">Biblioteca de media</h1><MediaUploadForm uploadAction={uploadMedia}/><p className="text-sm text-muted-foreground">JPEG, PNG, WebP ou AVIF até 10 MB. O storage do cliente tem de estar configurado.</p>{media.length ? <ul className="grid gap-3">{media.map((item: {id:string;filename:string;mime_type:string;size_bytes:number;alt_text:string|null;object_path:string}) => <li key={item.id} className="flex flex-wrap items-center justify-between gap-3 border p-4"><div><p className="font-medium">{item.filename}</p><p className="text-xs text-muted-foreground">{item.mime_type} · {Math.ceil(item.size_bytes/1024)} KB · {item.alt_text || "Sem texto alternativo"}</p></div><form action={deleteMedia}><input type="hidden" name="mediaId" value={item.id}/><button className="min-h-10 border px-3">Eliminar</button></form></li>)}</ul> : <p role="status">A biblioteca ainda não tem imagens.</p>}</main>; }\n`,
     "app/politica-privacidade/page.tsx": `export const metadata = { title: "Política de Privacidade", robots: { index: false, follow: false } }; export default function Legal() { return <main className="mx-auto max-w-3xl px-6 py-20"><h1 className="text-3xl font-semibold">Política de Privacidade</h1><p className="mt-4">Esta página deve ser revista e preenchida com a informação do responsável pelo tratamento antes da publicação.</p></main>; }\n`,
     "app/politica-cookies/page.tsx": `export const metadata = { title: "Política de Cookies", robots: { index: false, follow: false } }; export default function Legal() { return <main className="mx-auto max-w-3xl px-6 py-20"><h1 className="text-3xl font-semibold">Política de Cookies</h1><p className="mt-4">Esta página deve ser revista e preenchida antes da publicação.</p></main>; }\n`,
     "app/termos-condicoes/page.tsx": `export const metadata = { title: "Termos e Condições", robots: { index: false, follow: false } }; export default function Legal() { return <main className="mx-auto max-w-3xl px-6 py-20"><h1 className="text-3xl font-semibold">Termos e Condições</h1><p className="mt-4">Esta página deve ser revista e preenchida antes da publicação.</p></main>; }\n`,

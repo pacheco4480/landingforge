@@ -39,16 +39,16 @@ export function SeoSettingsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Metadata</CardTitle>
+        <CardTitle>Metadados</CardTitle>
         <CardDescription>
-          Search, social sharing and indexation settings for this page.
+          Definições de pesquisa, partilha social e indexação desta página.
         </CardDescription>
       </CardHeader>
       <form action={updateSeoSettingAction} className="grid gap-5">
         <input name="pageId" type="hidden" value={seoSetting.pageId} />
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor="metaTitle">Meta title</Label>
+            <Label htmlFor="metaTitle">Título SEO</Label>
             <Input
               id="metaTitle"
               name="metaTitle"
@@ -58,10 +58,10 @@ export function SeoSettingsForm({
               maxLength={60}
               required
             />
-            <FieldMessage>Recommended: 30 to 60 characters.</FieldMessage>
+            <FieldMessage>Recomendado: entre 30 e 60 caracteres.</FieldMessage>
           </Field>
             <Field>
-              <Label htmlFor="canonicalUrl">Canonical URL</Label>
+              <Label htmlFor="canonicalUrl">URL canónico</Label>
               <Input
                 id="canonicalUrl"
                 name="canonicalUrl"
@@ -69,13 +69,13 @@ export function SeoSettingsForm({
                 disabled={!canWrite}
               />
               <FieldMessage>
-                Canonical é metadata SEO. Para mudar o URL publico, altera o
-                slug em Pages.
+                O URL canónico é um metadado de SEO. Para alterar o endereço
+                público, atualiza o slug em Páginas.
               </FieldMessage>
             </Field>
         </Grid>
         <Field>
-          <Label htmlFor="metaDescription">Meta description</Label>
+          <Label htmlFor="metaDescription">Descrição SEO</Label>
           <Textarea
             id="metaDescription"
             name="metaDescription"
@@ -85,10 +85,10 @@ export function SeoSettingsForm({
             maxLength={160}
             required
           />
-          <FieldMessage>Recommended: 120 to 160 characters.</FieldMessage>
+          <FieldMessage>Recomendado: entre 120 e 160 caracteres.</FieldMessage>
         </Field>
         <Field>
-          <Label htmlFor="keywords">Keywords</Label>
+          <Label htmlFor="keywords">Palavras-chave</Label>
           <Input
             id="keywords"
             name="keywords"
@@ -98,7 +98,7 @@ export function SeoSettingsForm({
         </Field>
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor="ogTitle">Open Graph title</Label>
+            <Label htmlFor="ogTitle">Título para partilha (Open Graph)</Label>
             <Input
               id="ogTitle"
               name="ogTitle"
@@ -107,20 +107,20 @@ export function SeoSettingsForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="twitterCardType">Twitter/X card</Label>
+            <Label htmlFor="twitterCardType">Formato do cartão Twitter/X</Label>
             <Select
               id="twitterCardType"
               name="twitterCardType"
               defaultValue={seoSetting.twitterCardType ?? "summary_large_image"}
               disabled={!canWrite}
             >
-              <option value="summary_large_image">Summary large image</option>
-              <option value="summary">Summary</option>
+              <option value="summary_large_image">Resumo com imagem grande</option>
+              <option value="summary">Resumo</option>
             </Select>
           </Field>
         </Grid>
         <Field>
-          <Label htmlFor="ogDescription">Open Graph description</Label>
+          <Label htmlFor="ogDescription">Descrição para partilha (Open Graph)</Label>
           <Textarea
             id="ogDescription"
             name="ogDescription"
@@ -129,14 +129,14 @@ export function SeoSettingsForm({
           />
         </Field>
         <Field>
-          <Label htmlFor="ogImageMediaId">Open Graph image</Label>
+          <Label htmlFor="ogImageMediaId">Imagem para partilha (Open Graph)</Label>
           <Select
             id="ogImageMediaId"
             name="ogImageMediaId"
             defaultValue={seoSetting.ogImageMediaId ?? ""}
             disabled={!canWrite}
           >
-            <option value="">No image selected</option>
+            <option value="">Sem imagem selecionada</option>
             {mediaAssets.map((asset) => (
               <option key={asset.id} value={asset.id}>
                 {asset.filename}
@@ -151,7 +151,7 @@ export function SeoSettingsForm({
               defaultChecked={seoSetting.robotsIndex}
               disabled={!canWrite}
             />
-            Index
+            Permitir indexação
           </label>
           <label className="flex items-center gap-2 text-sm font-medium">
             <Checkbox
@@ -159,11 +159,11 @@ export function SeoSettingsForm({
               defaultChecked={seoSetting.robotsFollow}
               disabled={!canWrite}
             />
-            Follow
+            Seguir ligações
           </label>
         </div>
         <Field>
-          <Label htmlFor="schemaJson">Structured data JSON</Label>
+          <Label htmlFor="schemaJson">Dados estruturados (JSON-LD)</Label>
           <Textarea
             className="font-mono text-xs"
             id="schemaJson"
@@ -177,13 +177,13 @@ export function SeoSettingsForm({
             rows={10}
           />
         </Field>
-        {canWrite ? <Button type="submit">Save SEO settings</Button> : null}
+        {canWrite ? <Button type="submit">Guardar definições de SEO</Button> : null}
       </form>
       {canWrite ? (
         <form action={generateStructuredDataAction} className="mt-3">
           <input name="pageId" type="hidden" value={seoSetting.pageId} />
           <Button type="submit" variant="outline">
-            Generate structured data
+            Gerar dados estruturados
           </Button>
         </form>
       ) : null}

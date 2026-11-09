@@ -17,20 +17,32 @@ export function NotificationOverview({
     nextRunAt: Date | null;
   };
 }) {
+  const frequencyLabels: Record<EmailDigestFrequency, string> = {
+    DISABLED: "Desativado",
+    DAILY: "Diário",
+    WEEKLY: "Semanal",
+    MONTHLY: "Mensal",
+  };
+  const statusLabels: Record<EmailDeliveryStatus, string> = {
+    PENDING: "Pendente",
+    SENT: "Enviado",
+    FAILED: "Falhado",
+  };
+
   return (
     <Card id="notifications">
       <CardHeader>
-        <CardTitle>Email Notifications</CardTitle>
+        <CardTitle>Notificações por email</CardTitle>
         <CardDescription>
           Estado dos resumos periódicos de leads.
         </CardDescription>
       </CardHeader>
       <div className="flex flex-wrap gap-3">
         <Badge tone={overview.frequency === "DISABLED" ? "neutral" : "success"}>
-          {overview.frequency.toLowerCase()}
+          {frequencyLabels[overview.frequency]}
         </Badge>
         <Badge tone={overview.lastStatus === "FAILED" ? "error" : "info"}>
-          {overview.lastStatus?.toLowerCase() ?? "sem histórico"}
+          {overview.lastStatus ? statusLabels[overview.lastStatus] : "Sem histórico"}
         </Badge>
       </div>
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">

@@ -18,39 +18,39 @@ export type SeoCheck = {
 export function getSeoChecks(input: SeoScoreInput): SeoCheck[] {
   return [
     {
-      label: "Meta title",
+      label: "Título SEO",
       passed: isLengthBetween(input.metaTitle, 30, 60),
-      message: "Use 30 to 60 characters.",
+      message: "Usa entre 30 e 60 caracteres.",
     },
     {
-      label: "Meta description",
+      label: "Descrição SEO",
       passed: isLengthBetween(input.metaDescription, 120, 160),
-      message: "Use 120 to 160 characters.",
+      message: "Usa entre 120 e 160 caracteres.",
     },
     {
-      label: "Canonical URL",
+      label: "URL canónico",
       passed: Boolean(input.canonicalUrl),
-      message: "Set a canonical URL or let LandingForge generate one.",
+      message: "Define um URL canónico ou deixa o LandingForge gerar um.",
     },
     {
-      label: "Open Graph image",
+      label: "Imagem para partilha",
       passed: Boolean(input.ogImageUrl),
-      message: "Select a social sharing image.",
+      message: "Seleciona uma imagem para partilha nas redes sociais.",
     },
     {
-      label: "Robots",
+      label: "Indexação e seguimento",
       passed: input.robotsIndex && input.robotsFollow,
-      message: "Index/follow is recommended for published landing pages.",
+      message: "Recomenda-se indexar e seguir ligações nas landing pages publicadas.",
     },
     {
-      label: "Structured data",
+      label: "Dados estruturados",
       passed: Boolean(input.schemaJson),
-      message: "Generate schema.org data for richer search results.",
+      message: "Gera dados estruturados para enriquecer os resultados de pesquisa.",
     },
     {
-      label: "Image alt text",
+      label: "Texto alternativo das imagens",
       passed: input.missingAltTextCount === 0,
-      message: "Add alt text to images used by the page.",
+      message: "Adiciona texto alternativo às imagens utilizadas na página.",
     },
   ];
 }

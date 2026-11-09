@@ -35,8 +35,8 @@ export function PagesTable({
   if (pages.length === 0) {
     return (
       <EmptyState
-        title="No pages yet"
-        description="Create the first landing page or seed internal demos to start editing content."
+        title="Ainda não existem páginas"
+        description="Cria a primeira landing page ou adiciona demonstrações internas para começar a editar conteúdo."
       />
     );
   }
@@ -46,25 +46,25 @@ export function PagesTable({
       <thead className="border-border text-muted-foreground border-b text-xs uppercase">
         <tr>
           <th className="px-3 py-2" scope="col">
-            Name
+            Nome
           </th>
           <th className="px-3 py-2" scope="col">
             Slug
           </th>
           <th className="px-3 py-2" scope="col">
-            Template
+            Modelo
           </th>
           <th className="px-3 py-2" scope="col">
-            Variant
+            Variante
           </th>
           <th className="px-3 py-2" scope="col">
-            Status
+            Estado
           </th>
           <th className="px-3 py-2" scope="col">
-            Last Update
+            Última atualização
           </th>
           <th className="px-3 py-2" scope="col">
-            Actions
+            Acções
           </th>
         </tr>
       </thead>
@@ -83,16 +83,16 @@ export function PagesTable({
               {page.slug}
             </td>
             <td className="px-3 py-3 text-sm">
-              {page.template?.name ?? "No template"}
+              {page.template?.name ?? "Sem modelo"}
             </td>
             <td className="px-3 py-3 text-sm">
-              {page.templateVariant?.name ?? "No variant"}
+              {page.templateVariant?.name ?? "Sem variante"}
             </td>
             <td className="px-3 py-3">
               <PageStatusBadge status={page.status} />
             </td>
             <td className="text-muted-foreground px-3 py-3 text-sm">
-              {page.updatedAt.toLocaleDateString("en")}
+              {page.updatedAt.toLocaleDateString("pt-PT")}
             </td>
             <td className="px-3 py-3">
               <div className="flex flex-wrap gap-2">
@@ -100,50 +100,50 @@ export function PagesTable({
                   className="border-border hover:bg-muted inline-flex min-h-9 items-center rounded-md border px-3 text-xs font-semibold"
                   href={`/pages/${page.id}/edit`}
                 >
-                  Edit
+                  Editar
                 </Link>
                 <Link
                   className="border-border hover:bg-muted inline-flex min-h-9 items-center rounded-md border px-3 text-xs font-semibold"
                   href={`/content/${page.id}`}
                 >
-                  Content
+                  Conteúdo
                 </Link>
                 {canWrite ? (
                   <>
                     <ActionFeedbackForm
                       action={duplicatePageAction}
-                      loadingMessage="A duplicar pagina..."
-                      successMessage="Pagina duplicada."
+                      loadingMessage="A duplicar página..."
+                      successMessage="Página duplicada."
                     >
                       <input name="id" type="hidden" value={page.id} />
                       <Button size="sm" type="submit" variant="outline">
-                        Duplicate
+                        Duplicar
                       </Button>
                     </ActionFeedbackForm>
                     <ConfirmActionForm
                       action={archivePageAction}
-                      title="Arquivar pagina?"
-                      description="A pagina deixa de estar disponivel publicamente e sai do sitemap."
+                      title="Arquivar página?"
+                      description="A página deixa de estar disponível publicamente e sai do sitemap."
                       confirmLabel="Arquivar"
-                      loadingMessage="A arquivar pagina..."
-                      successMessage="Pagina arquivada."
+                      loadingMessage="A arquivar página..."
+                      successMessage="Página arquivada."
                     >
                       <input name="id" type="hidden" value={page.id} />
                       <Button size="sm" type="submit" variant="outline">
-                        Archive
+                        Arquivar
                       </Button>
                     </ConfirmActionForm>
                     <ConfirmActionForm
                       action={deletePageAction}
-                      title="Eliminar pagina?"
-                      description="A pagina será removida do CMS e do acesso publico."
+                      title="Eliminar página?"
+                      description="A página será removida do CMS e do acesso público."
                       confirmLabel="Eliminar"
-                      loadingMessage="A eliminar pagina..."
-                      successMessage="Pagina eliminada."
+                      loadingMessage="A eliminar página..."
+                      successMessage="Página eliminada."
                     >
                       <input name="id" type="hidden" value={page.id} />
                       <Button size="sm" type="submit" variant="destructive">
-                        Delete
+                        Eliminar
                       </Button>
                     </ConfirmActionForm>
                   </>

@@ -197,7 +197,7 @@ integration("client CMS media service with isolated Supabase test resources", ()
     const plainText = new File(["not an image"], "nota.txt", { type: "text/plain" });
     await expect(uploadClientCmsMedia(plainText)).rejects.toThrow("imagem suportada até 10 MB");
     const mismatched = new File(["not a PNG"], "fake.png", { type: "image/png" });
-    await expect(uploadClientCmsMedia(mismatched)).rejects.toThrow("não corresponde ao formato de imagem indicado");
+    await expect(uploadClientCmsMedia(mismatched)).rejects.toThrow("imagem suportada até 10 MB");
     expect(await listClientCmsMedia()).toHaveLength(0);
   });
 });

@@ -3,12 +3,12 @@ import { PageStatus } from "@/generated/prisma/client";
 
 export function PageStatusBadge({ status }: { status: PageStatus }) {
   if (status === PageStatus.PUBLISHED) {
-    return <Badge tone="success">Published</Badge>;
+    return <Badge tone="success">Publicada</Badge>;
   }
 
   if (status === PageStatus.ARCHIVED) {
-    return <Badge tone="warning">Archived</Badge>;
+    return <Badge tone="warning">Arquivada</Badge>;
   }
 
-  return <Badge>Draft</Badge>;
+  return <Badge>Rascunho</Badge>;
 }

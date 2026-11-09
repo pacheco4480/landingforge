@@ -9,17 +9,10 @@ import {
   sslStatuses,
 } from "@/config/deployment";
 import { updateDeploymentSettingsAction } from "@/features/deployment/actions/deployment.actions";
+import { deploymentDisplayLabel } from "@/features/deployment/deployment-display";
 import type { getDeploymentWorkspace } from "@/features/deployment/services/deployment.service";
 
 type DeploymentWorkspace = Awaited<ReturnType<typeof getDeploymentWorkspace>>;
-
-function label(value: string) {
-  return value
-    .toLowerCase()
-    .split("_")
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(" ");
-}
 
 export function DeploymentSettingsForm({
   canWrite,
@@ -50,7 +43,7 @@ export function DeploymentSettingsForm({
             >
               {deploymentModes.map((mode) => (
                 <option key={mode} value={mode}>
-                  {label(mode)}
+                  {deploymentDisplayLabel(mode)}
                 </option>
               ))}
             </Select>
@@ -65,7 +58,7 @@ export function DeploymentSettingsForm({
             >
               {deploymentEnvironments.map((environment) => (
                 <option key={environment} value={environment}>
-                  {label(environment)}
+                  {deploymentDisplayLabel(environment)}
                 </option>
               ))}
             </Select>
@@ -80,7 +73,7 @@ export function DeploymentSettingsForm({
             >
               {deploymentStatuses.map((status) => (
                 <option key={status} value={status}>
-                  {label(status)}
+                  {deploymentDisplayLabel(status)}
                 </option>
               ))}
             </Select>
@@ -108,7 +101,7 @@ export function DeploymentSettingsForm({
             >
               {domainStatuses.map((status) => (
                 <option key={status} value={status}>
-                  {label(status)}
+                  {deploymentDisplayLabel(status)}
                 </option>
               ))}
             </Select>
@@ -123,7 +116,7 @@ export function DeploymentSettingsForm({
             >
               {sslStatuses.map((status) => (
                 <option key={status} value={status}>
-                  {label(status)}
+                  {deploymentDisplayLabel(status)}
                 </option>
               ))}
             </Select>
@@ -144,7 +137,7 @@ export function DeploymentSettingsForm({
         </label>
         {canWrite ? (
           <Button type="submit" className="w-fit">
-            Guardar deployment
+            Guardar definições de publicação
           </Button>
         ) : null}
       </form>

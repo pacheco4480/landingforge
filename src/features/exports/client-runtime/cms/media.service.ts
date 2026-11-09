@@ -6,6 +6,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { getActorInstallation, requireClientCmsActor } from "./authorization";
 import { getClientCmsPool, withClientCmsTransaction } from "./database";
+import { ClientCmsMediaError } from "./media-errors";
 
 const acceptedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
 const maxUploadBytes = 10 * 1024 * 1024;
@@ -14,7 +15,7 @@ function storageConfig() {
   const url = process.env.CLIENT_CMS_SUPABASE_URL;
   const key = process.env.CLIENT_CMS_SUPABASE_SERVICE_ROLE_KEY;
   const bucket = process.env.CLIENT_CMS_PUBLIC_MEDIA_BUCKET;
-  if (!url || !key || !bucket) throw new Error("O storage desta instalação não está configurado.");
+  if (!url || !key || !bucket) throw new ClientCmsMediaError("storage_not_configured");
   return { client: createClient(url, key, { auth: { persistSession: false } }), bucket };
 }
 
@@ -22,20 +23,30 @@ export async function uploadClientCmsMedia(file: File, altText = "") {
   const actor = await requireClientCmsActor("media.write");
   const projectId = getActorInstallation(actor).projectId;
   if (!acceptedMimeTypes.has(file.type) || file.size <= 0 || file.size > maxUploadBytes) {
-    throw new Error("O ficheiro tem de ser uma imagem suportada até 10 MB.");
+    throw new ClientCmsMediaError("invalid_file");
   }
   const config = storageConfig();
   const safeFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-120) || "image";
   const objectPath = `${projectId}/${randomUUID()}-${safeFilename}`;
   const bytes = new Uint8Array(await file.arrayBuffer());
-  if (!matchesImageSignature(file.type, bytes)) throw new Error("O conteúdo do ficheiro não corresponde ao formato de imagem indicado.");
-  const upload = await config.client.storage.from(config.bucket).upload(objectPath, bytes, {
-    contentType: file.type,
-    upsert: false,
-  });
-  if (upload.error) throw new Error("Não foi possível guardar o ficheiro.");
+  if (!matchesImageSignature(file.type, bytes)) throw new ClientCmsMediaError("invalid_file");
+  let upload;
   try {
-    const publicUrl = config.client.storage.from(config.bucket).getPublicUrl(objectPath).data.publicUrl;
+    upload = await config.client.storage.from(config.bucket).upload(objectPath, bytes, {
+      contentType: file.type,
+      upsert: false,
+    });
+  } catch {
+    throw new ClientCmsMediaError("storage_unavailable");
+  }
+  if (upload.error) throw new ClientCmsMediaError("storage_unavailable");
+  try {
+    let publicUrl: string;
+    try {
+      publicUrl = config.client.storage.from(config.bucket).getPublicUrl(objectPath).data.publicUrl;
+    } catch {
+      throw new ClientCmsMediaError("storage_unavailable");
+    }
     const media = await withClientCmsTransaction(async (client) => {
       const result = await client.query(
         `INSERT INTO lf_cms_media(project_id, object_path, filename, mime_type, size_bytes, alt_text)
@@ -50,9 +61,9 @@ export async function uploadClientCmsMedia(file: File, altText = "") {
       return result.rows[0];
     });
     return { ...media, publicUrl };
-  } catch (error) {
-    await config.client.storage.from(config.bucket).remove([objectPath]);
-    throw error;
+  } catch {
+    await config.client.storage.from(config.bucket).remove([objectPath]).catch(() => undefined);
+    throw new ClientCmsMediaError("storage_unavailable");
   }
 }
 
@@ -74,15 +85,20 @@ export async function deleteClientCmsMedia(mediaId: string) {
   const db = getClientCmsPool();
   const found = await db.query(`SELECT object_path FROM lf_cms_media WHERE project_id = $1 AND id = $2`, [projectId, mediaId]);
   const objectPath = found.rows[0]?.object_path;
-  if (!objectPath) throw new Error("Ficheiro não encontrado nesta instalação.");
+  if (!objectPath) throw new ClientCmsMediaError("media_not_found");
   if (!String(objectPath).startsWith(`${projectId}/`)) throw new Error("O ficheiro não pertence a esta instalação.");
   const publicUrl = config.client.storage.from(config.bucket).getPublicUrl(String(objectPath)).data.publicUrl;
   const sections = await db.query(`SELECT content FROM lf_cms_sections WHERE project_id = $1`, [projectId]);
   if (sections.rows.some(({ content }) => containsValue(content, String(objectPath)) || containsValue(content, publicUrl))) {
-    throw new Error("A imagem está a ser usada numa secção. Substitua-a antes de a eliminar.");
+    throw new ClientCmsMediaError("media_in_use");
   }
-  const removed = await config.client.storage.from(config.bucket).remove([String(objectPath)]);
-  if (removed.error) throw new Error("Não foi possível remover o ficheiro do storage.");
+  let removed;
+  try {
+    removed = await config.client.storage.from(config.bucket).remove([String(objectPath)]);
+  } catch {
+    throw new ClientCmsMediaError("storage_unavailable");
+  }
+  if (removed.error) throw new ClientCmsMediaError("storage_unavailable");
   await withClientCmsTransaction(async (client) => {
     await client.query(`DELETE FROM lf_cms_media WHERE project_id = $1 AND id = $2`, [projectId, mediaId]);
     await client.query(

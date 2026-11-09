@@ -7,6 +7,7 @@ import {
   Grid,
 } from "@/components/ui/layout";
 import type { getDeploymentWorkspace } from "@/features/deployment/services/deployment.service";
+import { deploymentDisplayLabel } from "@/features/deployment/deployment-display";
 
 type DeploymentWorkspace = Awaited<ReturnType<typeof getDeploymentWorkspace>>;
 
@@ -17,15 +18,6 @@ function statusTone(value: string) {
   if (["BLOCKED", "ERROR"].includes(value)) return "error" as const;
   if (["CONFIGURING", "PENDING"].includes(value)) return "warning" as const;
   return "neutral" as const;
-}
-
-function label(value: string | boolean) {
-  if (typeof value === "boolean") return value ? "Ativo" : "Inativo";
-  return value
-    .toLowerCase()
-    .split("_")
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(" ");
 }
 
 export function DeploymentStatusPanel({
@@ -40,23 +32,23 @@ export function DeploymentStatusPanel({
       <Card>
         <p className="text-muted-foreground text-sm font-medium">Modo</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Badge tone="info">{label(workspace.runtimeMode)}</Badge>
+          <Badge tone="info">{deploymentDisplayLabel(workspace.runtimeMode)}</Badge>
           <Badge tone={workspace.cmsEnabled ? "success" : "neutral"}>
-            {workspace.cmsEnabled ? "Landing + CMS" : "Landing Only"}
+            {workspace.cmsEnabled ? "Landing page + CMS" : "Apenas landing page"}
           </Badge>
         </div>
       </Card>
       <Card>
         <p className="text-muted-foreground text-sm font-medium">Ambiente</p>
         <p className="mt-3 text-lg font-semibold">
-          {label(workspace.runtimeEnvironment)}
+          {deploymentDisplayLabel(workspace.runtimeEnvironment)}
         </p>
       </Card>
       <Card>
         <p className="text-muted-foreground text-sm font-medium">Deploy</p>
         <div className="mt-3">
           <Status tone={statusTone(settings.deploymentStatus)}>
-            {label(settings.deploymentStatus)}
+            {deploymentDisplayLabel(settings.deploymentStatus)}
           </Status>
         </div>
       </Card>
@@ -83,20 +75,20 @@ export function DeploymentStatusPanel({
           <div className="flex justify-between gap-3">
             <span className="text-muted-foreground">DNS</span>
             <Status tone={statusTone(settings.domainStatus)}>
-              {label(settings.domainStatus)}
+              {deploymentDisplayLabel(settings.domainStatus)}
             </Status>
           </div>
           <div className="flex justify-between gap-3">
             <span className="text-muted-foreground">SSL</span>
             <Status tone={statusTone(settings.sslStatus)}>
-              {label(settings.sslStatus)}
+              {deploymentDisplayLabel(settings.sslStatus)}
             </Status>
           </div>
         </div>
       </Card>
       <Card className="md:col-span-2">
         <CardHeader>
-          <CardTitle>Readiness</CardTitle>
+          <CardTitle>Preparação para entrega</CardTitle>
           <CardDescription>
             A entrega deve ser marcada como pronta apenas depois da checklist.
           </CardDescription>

@@ -564,8 +564,8 @@ async function seedClinicDemos(prisma: PrismaClient) {
         proofText:
           "O primeiro contacto recolhe apenas o essencial. A equipa confirma disponibilidade e explica o próximo passo sem pedir informação clínica detalhada.",
         heroImage:
-          "https://images.unsplash.com/photo-1758691462878-6edc3d3da1be?auto=format&fit=crop&w=1600&q=82",
-        heroImageAlt: "Médica a explicar informação clínica a um paciente",
+          "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1600&q=82",
+        heroImageAlt: "Médica a conversar com uma paciente durante uma consulta clínica",
         stats: [
           { label: "Marcação", value: "Pedido simples" },
           { label: "Cuidados", value: "Acompanhamento" },
@@ -1917,15 +1917,11 @@ async function seedRealEstateDemos(prisma: PrismaClient) {
         {
           name: "Sofia Almeida",
           role: "Luxury advisor",
-          phone: "+351 210 000 021",
-          email: "sofia@example.com",
           bio: "Acompanha compradores e proprietários em transações de alto valor.",
         },
         {
           name: "Miguel Duarte",
           role: "Private market director",
-          phone: "+351 210 000 022",
-          email: "miguel@example.com",
           bio: "Especialista em mercado privado, carteira discreta e negociação confidencial.",
         },
       ],
@@ -2822,28 +2818,28 @@ async function seedRestaurantDemos(prisma: PrismaClient) {
           type: "restaurant_menu_highlights",
           content: {
             layout: "playful",
-            text: "Pratos para partilhar, bebidas da casa e escolhas fáceis para grupos que querem combinar tudo depressa.",
+            text: "Pratos para partilhar, bebidas da casa e escolhas fáceis para grupos que querem combinar tudo depressa. Preços indicados em euros, por item.",
             title: "Favoritos que chegam ao centro.",
             items: [
               {
                 category: "Para dividir",
                 description:
                   "Tacos crocantes, pickles vivos e três molhos da casa para começar sem pedir opinião a toda a mesa.",
-                price: "Desde 9",
+                price: "Desde 9 €",
                 title: "Tacos em festa",
               },
               {
                 category: "Principal",
                 description:
                   "Frango glaceado, lima, ervas frescas e arroz tostado. Chega grande, desaparece depressa.",
-                price: "18",
+                price: "18 €",
                 title: "Taça de frango picante",
               },
               {
                 category: "Cocktail",
                 description:
                   "Manga, malagueta, citrinos e uma pitada de sal. Colorido, picante e feito para o primeiro brinde.",
-                price: "11",
+                price: "11 €",
                 title: "Spritz de manga picante",
               },
             ],

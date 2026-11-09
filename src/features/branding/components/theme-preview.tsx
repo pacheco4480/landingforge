@@ -20,18 +20,18 @@ export function ThemePreview({ theme }: { theme: ThemePreviewValue }) {
   return (
     <Card>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold">Theme Preview</h3>
+        <h3 className="text-lg font-semibold">Pré-visualização do tema</h3>
         <p className="text-muted-foreground text-sm">
-          Contrast ratio:{" "}
+          Rácio de contraste:{" "}
           {getContrastRatio(
             theme.textPrimaryColor,
             theme.backgroundColor,
           ).toFixed(2)}{" "}
-          ({passes ? "AA" : "Needs work"})
+          ({passes ? "AA" : "Requer revisão"})
         </p>
       </div>
       <Grid className="md:grid-cols-3">
-        {["Desktop", "Tablet", "Mobile"].map((viewport) => (
+        {["Computador", "Tablet", "Telemóvel"].map((viewport) => (
           <div
             key={viewport}
             className="rounded-md border p-4"
@@ -50,14 +50,14 @@ export function ThemePreview({ theme }: { theme: ThemePreviewValue }) {
                 className="mt-2 text-sm"
                 style={{ color: theme.textSecondaryColor }}
               >
-                Landing page content preview.
+                Pré-visualização do conteúdo da landing page.
               </p>
               <button
                 className="mt-4 rounded-md px-3 py-2 text-sm font-semibold"
                 style={{ background: theme.primaryColor, color: "#ffffff" }}
                 type="button"
               >
-                Primary CTA
+                CTA principal
               </button>
             </div>
           </div>

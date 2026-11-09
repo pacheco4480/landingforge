@@ -13,10 +13,12 @@ export function LogoManager({
   logoId,
   faviconId,
   assets,
+  canWrite,
 }: {
   logoId: string | null;
   faviconId: string | null;
   assets: AssetOption[];
+  canWrite: boolean;
 }) {
   const imageAssets = assets.filter((asset) =>
     asset.mimeType.startsWith("image/"),
@@ -24,11 +26,12 @@ export function LogoManager({
 
   return (
     <Grid className="lg:grid-cols-2">
-      <BrandAssetForm asset="logo" currentId={logoId} assets={imageAssets} />
+      <BrandAssetForm asset="logo" currentId={logoId} assets={imageAssets} canWrite={canWrite} />
       <BrandAssetForm
         asset="favicon"
         currentId={faviconId}
         assets={imageAssets}
+        canWrite={canWrite}
       />
     </Grid>
   );
@@ -38,11 +41,24 @@ function BrandAssetForm({
   asset,
   currentId,
   assets,
+  canWrite,
 }: {
   asset: "logo" | "favicon";
   currentId: string | null;
   assets: AssetOption[];
+  canWrite: boolean;
 }) {
+  const currentAsset = assets.find((item) => item.id === currentId);
+
+  if (!canWrite) {
+    return (
+      <Card>
+        <p className="text-sm font-medium">{asset === "logo" ? "Logótipo" : "Favicon"}</p>
+        <p className="text-muted-foreground mt-2 text-sm">{currentAsset?.filename ?? "Não definido"}</p>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <form action={updateBrandAssetAction} className="grid gap-4">
@@ -56,7 +72,7 @@ function BrandAssetForm({
             name="mediaId"
             defaultValue={currentId ?? ""}
           >
-            <option value="">No asset</option>
+            <option value="">Sem recurso selecionado</option>
             {assets.map((media) => (
               <option key={media.id} value={media.id}>
                 {media.filename}
@@ -65,7 +81,7 @@ function BrandAssetForm({
           </Select>
         </Field>
         <Button type="submit" variant="outline">
-          Save {asset}
+          Guardar {asset === "logo" ? "logótipo" : "favicon"}
         </Button>
       </form>
     </Card>

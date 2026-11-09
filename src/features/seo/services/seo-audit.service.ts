@@ -39,7 +39,7 @@ export function auditSeoPage({
     issues.push({
       severity: "error",
       code: "draft-indexable",
-      message: "Draft or archived pages should not be indexable.",
+      message: "As páginas em rascunho ou arquivadas não devem ser indexáveis.",
     });
   }
 
@@ -47,7 +47,7 @@ export function auditSeoPage({
     issues.push({
       severity: "error",
       code: "demo-indexable",
-      message: "Internal demo pages should not be indexable.",
+      message: "As páginas de demonstração internas não devem ser indexáveis.",
     });
   }
 
@@ -55,7 +55,7 @@ export function auditSeoPage({
     issues.push({
       severity: "error",
       code: "missing-seo",
-      message: "Page is missing SEO settings.",
+      message: "Faltam definições de SEO nesta página.",
     });
     return issues;
   }
@@ -64,7 +64,7 @@ export function auditSeoPage({
     issues.push({
       severity: "warning",
       code: "meta-title-length",
-      message: "Meta title should be between 30 and 60 characters.",
+      message: "O título SEO deve ter entre 30 e 60 caracteres.",
     });
   }
 
@@ -72,7 +72,7 @@ export function auditSeoPage({
     issues.push({
       severity: "warning",
       code: "meta-description-length",
-      message: "Meta description should be between 120 and 160 characters.",
+      message: "A descrição SEO deve ter entre 120 e 160 caracteres.",
     });
   }
 
@@ -86,14 +86,14 @@ export function auditSeoPage({
       issues.push({
         severity: "error",
         code: "canonical-invalid",
-        message: "Canonical URL must be absolute.",
+        message: "O URL canónico tem de ser absoluto.",
       });
     }
   } catch {
     issues.push({
       severity: "error",
       code: "canonical-invalid",
-      message: "Canonical URL must be absolute.",
+        message: "O URL canónico tem de ser absoluto.",
     });
   }
 
@@ -101,7 +101,7 @@ export function auditSeoPage({
     issues.push({
       severity: "warning",
       code: "missing-og-image",
-      message: "Open Graph image is recommended for social sharing.",
+      message: "Recomenda-se uma imagem Open Graph para partilha nas redes sociais.",
     });
   }
 
@@ -109,7 +109,7 @@ export function auditSeoPage({
     issues.push({
       severity: "warning",
       code: "missing-structured-data",
-      message: "Structured data is recommended for rich results.",
+      message: "Recomenda-se dados estruturados para resultados de pesquisa enriquecidos.",
     });
   }
 

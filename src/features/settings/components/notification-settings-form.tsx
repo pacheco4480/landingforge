@@ -41,7 +41,7 @@ export function NotificationSettingsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Notifications</CardTitle>
+        <CardTitle>Notificações</CardTitle>
         <CardDescription>
           Configure resumos periódicos de leads sem enviar email por cada lead.
         </CardDescription>
@@ -78,10 +78,10 @@ export function NotificationSettingsForm({
               defaultValue={settings.frequency}
               disabled={!canWrite}
             >
-              <option value={EmailDigestFrequency.DISABLED}>Disabled</option>
-              <option value={EmailDigestFrequency.DAILY}>Daily</option>
-              <option value={EmailDigestFrequency.WEEKLY}>Weekly</option>
-              <option value={EmailDigestFrequency.MONTHLY}>Monthly</option>
+              <option value={EmailDigestFrequency.DISABLED}>Desativado</option>
+              <option value={EmailDigestFrequency.DAILY}>Diariamente</option>
+              <option value={EmailDigestFrequency.WEEKLY}>Semanalmente</option>
+              <option value={EmailDigestFrequency.MONTHLY}>Mensalmente</option>
             </Select>
           </Field>
           <Field>
@@ -113,7 +113,7 @@ export function NotificationSettingsForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="timezone">Timezone</Label>
+            <Label htmlFor="timezone">Fuso horário</Label>
             <Select
               id="timezone"
               name="timezone"

@@ -10,18 +10,21 @@ const repeatableLimits: Record<string, { max: number; fields: Array<{ key: strin
   testimonials: { max: 30, fields: [{ key: "name", length: 100, required: true }, { key: "quote", length: 700, required: true }, { key: "context", length: 120, required: false }] },
   restaurant_reviews: { max: 30, fields: [{ key: "name", length: 100, required: true }, { key: "quote", length: 700, required: true }, { key: "context", length: 120, required: false }] },
   restaurant_menu_highlights: { max: 30, fields: [{ key: "category", length: 80, required: true }, { key: "title", length: 120, required: true }, { key: "description", length: 500, required: true }, { key: "price", length: 40, required: false }] },
+  restaurant_signature_dishes: { max: 30, fields: [{ key: "label", length: 80, required: true }, { key: "title", length: 140, required: true }, { key: "description", length: 600, required: true }, { key: "image", length: 2000, required: false }, { key: "imageAlt", length: 300, required: false }] },
+  restaurant_experience: { max: 12, fields: [{ key: "title", length: 140, required: true }, { key: "description", length: 600, required: true }] },
+  restaurant_gallery: { max: 30, fields: [{ key: "label", length: 120, required: true }, { key: "description", length: 500, required: false }, { key: "image", length: 2000, required: true }, { key: "imageAlt", length: 300, required: true }] },
+  restaurant_reservation_details: { max: 12, fields: [{ key: "label", length: 100, required: true }, { key: "value", length: 240, required: true }] },
 };
 
-function validateRepeatableItems(sectionType: string, value: unknown) {
-  const profile = sectionType === "restaurant_reviews"
-    ? repeatableLimits.restaurant_reviews
-    : sectionType === "restaurant_menu_highlights"
-      ? repeatableLimits.restaurant_menu_highlights
-      : sectionType === "faq" || sectionType.endsWith("_faq")
+function validateRepeatableItems(sectionType: string, collectionKey: string, value: unknown) {
+  const profile = collectionKey === "details" && sectionType === "restaurant_reservation"
+    ? repeatableLimits.restaurant_reservation_details
+    : repeatableLimits[sectionType]
+      ?? (sectionType === "faq" || sectionType.endsWith("_faq")
         ? repeatableLimits.faq
         : sectionType === "testimonials" || sectionType.endsWith("_testimonials")
           ? repeatableLimits.testimonials
-          : null;
+          : null);
   if (!profile || !Array.isArray(value)) return;
   if (value.length > profile.max) throw new Error(`Esta secção suporta até ${profile.max} itens.`);
   for (const [index, item] of value.entries()) {
@@ -107,7 +110,8 @@ export async function updateClientCmsSection(
     if (!capability) throw new Error("A secção não pertence às capacidades da versão fixada.");
     const unsupportedFields = Object.keys(patch).filter((key) => !capability.editableFields.includes(key));
     if (unsupportedFields.length) throw new Error("Um ou mais campos não são editáveis nesta versão do template.");
-    if (Object.hasOwn(patch, "items")) validateRepeatableItems(section.section_type, patch.items);
+    if (Object.hasOwn(patch, "items")) validateRepeatableItems(section.section_type, "items", patch.items);
+    if (Object.hasOwn(patch, "details")) validateRepeatableItems(section.section_type, "details", patch.details);
 
     const content = { ...(section.content as Record<string, unknown>), ...patch };
     await client.query(

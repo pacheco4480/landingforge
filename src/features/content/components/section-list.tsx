@@ -10,6 +10,7 @@ import {
   toggleSectionVisibilityAction,
 } from "@/features/content/actions/section.actions";
 import { SectionForm } from "@/features/content/components/section-form";
+import { sectionTypeLabel } from "@/features/content/section-types";
 
 type SectionRow = {
   id: string;
@@ -59,9 +60,9 @@ export function SectionList({
   if (sections.length === 0) {
     return (
       <Card>
-        <p className="font-semibold">No sections yet</p>
+        <p className="font-semibold">Ainda não existem secções</p>
         <p className="text-muted-foreground mt-2 text-sm">
-          Add a section to start building the landing page content structure.
+          Adiciona uma secção para começares a organizar o conteúdo da landing page.
         </p>
       </Card>
     );
@@ -75,9 +76,9 @@ export function SectionList({
             <div>
               <CardTitle>{section.name}</CardTitle>
               <div className="mt-2 flex flex-wrap gap-2">
-                <Badge>{section.sectionType}</Badge>
+                <Badge>{sectionTypeLabel(section.sectionType)}</Badge>
                 <Badge tone={section.isVisible ? "success" : "warning"}>
-                  {section.isVisible ? "Visible" : "Hidden"}
+                  {section.isVisible ? "Visível" : "Oculta"}
                 </Badge>
               </div>
             </div>
@@ -89,7 +90,7 @@ export function SectionList({
                   section={section}
                 >
                   <Button
-                    aria-label={`Move ${section.name} up`}
+                    aria-label={`Mover ${section.name} para cima`}
                     disabled={index === 0}
                     size="icon"
                     type="submit"
@@ -104,7 +105,7 @@ export function SectionList({
                   section={section}
                 >
                   <Button
-                    aria-label={`Move ${section.name} down`}
+                    aria-label={`Mover ${section.name} para baixo`}
                     disabled={index === sections.length - 1}
                     size="icon"
                     type="submit"
@@ -118,7 +119,7 @@ export function SectionList({
                   section={section}
                 >
                   <Button
-                    aria-label={`Toggle ${section.name} visibility`}
+                    aria-label={`${section.isVisible ? "Ocultar" : "Mostrar"} ${section.name}`}
                     size="icon"
                     type="submit"
                     variant="outline"
@@ -135,7 +136,7 @@ export function SectionList({
                   section={section}
                 >
                   <Button
-                    aria-label={`Duplicate ${section.name}`}
+                    aria-label={`Duplicar ${section.name}`}
                     size="icon"
                     type="submit"
                     variant="outline"
@@ -148,7 +149,7 @@ export function SectionList({
                   section={section}
                 >
                   <Button
-                    aria-label={`Delete ${section.name}`}
+                    aria-label={`Eliminar ${section.name}`}
                     size="icon"
                     type="submit"
                     variant="destructive"

@@ -23,8 +23,8 @@ export function SocialPreview({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Preview</CardTitle>
-        <CardDescription>Google and social sharing appearance.</CardDescription>
+        <CardTitle>Pré-visualização</CardTitle>
+        <CardDescription>Apresentação no Google e nas redes sociais.</CardDescription>
       </CardHeader>
       <Grid className="lg:grid-cols-2">
         <GoogleSearchPreview

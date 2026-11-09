@@ -21,7 +21,7 @@ export function SecurityOverview({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Security Overview</CardTitle>
+        <CardTitle>Resumo de segurança</CardTitle>
         <CardDescription>Eventos bloqueados nas últimas 24 horas.</CardDescription>
       </CardHeader>
       <div className="flex items-center gap-3">
@@ -29,8 +29,8 @@ export function SecurityOverview({
         <Badge tone="info">{summary.blocked} eventos</Badge>
       </div>
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-3">
-        <div><dt className="text-muted-foreground">Rate limit</dt><dd>{summary.rateLimited}</dd></div>
-        <div><dt className="text-muted-foreground">Spam</dt><dd>{summary.spam}</dd></div>
+        <div><dt className="text-muted-foreground">Limite de pedidos</dt><dd>{summary.rateLimited}</dd></div>
+        <div><dt className="text-muted-foreground">Tentativas de spam</dt><dd>{summary.spam}</dd></div>
         <div><dt className="text-muted-foreground">Turnstile</dt><dd>{summary.turnstileFailed}</dd></div>
       </dl>
     </Card>

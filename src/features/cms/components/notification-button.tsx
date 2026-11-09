@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 export function NotificationButton({ unreadCount }: { unreadCount: number }) {
   const label =
     unreadCount === 0
-      ? "No unread notifications"
-      : `${unreadCount} unread notifications`;
+      ? "Não tem notificações por ler"
+      : `${unreadCount} notificações por ler`;
 
   return (
     <Button aria-label={label} size="icon" type="button" variant="outline">

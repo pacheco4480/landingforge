@@ -13,10 +13,12 @@ import { StatCard } from "@/components/ui/data-display";
 import { NotificationOverview } from "@/features/settings/components/notification-overview";
 import { SecurityOverview } from "@/features/settings/components/security-overview";
 import type { DashboardMetrics } from "@/features/cms/dashboard/dashboard.types";
+import { permissions as permissionKeys } from "@/features/rbac/permissions";
+import { hasPermission } from "@/features/rbac/rbac.service";
 
 function formatDate(date: Date | null) {
-  if (!date) return "No activity yet";
-  return new Intl.DateTimeFormat("en", {
+  if (!date) return "Ainda sem atividade";
+  return new Intl.DateTimeFormat("pt-PT", {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(date);
@@ -29,25 +31,28 @@ export function DashboardMetricGrid({
 }) {
   return (
     <Grid className="md:grid-cols-2 xl:grid-cols-4">
-      <StatCard label="Total Leads" value={String(metrics.totalLeads)} />
-      <StatCard label="Leads Today" value={String(metrics.leadsToday)} />
-      <StatCard label="Leads This Week" value={String(metrics.leadsThisWeek)} />
+      <StatCard label="Total de contactos" value={String(metrics.totalLeads)} helper="Contagem global de contactos não eliminados na plataforma, não limitada à lista visível ao teu perfil." />
+      <StatCard label="Contactos de hoje" value={String(metrics.leadsToday)} helper="Contagem global de contactos não eliminados na plataforma, não limitada à lista visível ao teu perfil." />
+      <StatCard label="Contactos desta semana" value={String(metrics.leadsThisWeek)} helper="Contagem global de contactos não eliminados na plataforma, não limitada à lista visível ao teu perfil." />
       <StatCard
-        label="Leads This Month"
+        label="Contactos deste mês"
         value={String(metrics.leadsThisMonth)}
+        helper="Contagem global de contactos não eliminados na plataforma, não limitada à lista visível ao teu perfil."
       />
-      <StatCard label="Total Pages" value={String(metrics.totalPages)} />
-      <StatCard label="Last Update" value={formatDate(metrics.lastUpdatedAt)} />
+      <StatCard label="Páginas na plataforma" value={String(metrics.totalPages)} helper="Total global de páginas não eliminadas, incluindo demonstrações; pode diferir das páginas visíveis na tua lista." />
+      <StatCard label="Última atualização" value={formatDate(metrics.lastUpdatedAt)} />
       <Card>
         <p className="text-muted-foreground text-sm font-medium">
-          System Status
+          Estado do sistema
         </p>
         <div className="mt-3">
-          <Status tone="success">{metrics.systemStatus}</Status>
+          <Status tone={metrics.systemStatus === "Operational" ? "success" : "warning"}>
+            {metrics.systemStatus === "Operational" ? "Operacional" : "Requer atenção"}
+          </Status>
         </div>
       </Card>
       <StatCard
-        label="Unread Notifications"
+        label="Notificações por ler"
         value={String(metrics.unreadNotifications)}
       />
     </Grid>
@@ -56,35 +61,43 @@ export function DashboardMetricGrid({
 
 const quickActions = [
   {
-    title: "Pages",
-    description: "Prepare page management and publishing workflows.",
+    title: "Páginas",
+    description: "Consulta e gere páginas e os respetivos estados.",
     href: "/pages",
     icon: FileText,
+    permission: permissionKeys.pagesRead,
   },
   {
-    title: "Leads",
-    description: "Review captured leads and pipeline foundations.",
+    title: "Contactos",
+    description: "Consulta os contactos recebidos através dos formulários.",
     href: "/leads",
     icon: Users,
+    permission: permissionKeys.leadsRead,
   },
   {
-    title: "Media",
-    description: "Organize images and reusable landing page assets.",
+    title: "Multimédia",
+    description: "Consulta imagens, documentos e recursos reutilizáveis.",
     href: "/media",
     icon: ImageIcon,
+    permission: permissionKeys.mediaRead,
   },
   {
     title: "SEO",
-    description: "Prepare metadata and search visibility controls.",
+    description: "Consulta metadados e visibilidade nos motores de pesquisa.",
     href: "/seo",
     icon: Search,
+    permission: permissionKeys.seoRead,
   },
 ] as const;
 
-export function DashboardQuickActions() {
+export function getDashboardQuickActions(userPermissions: readonly string[]) {
+  return quickActions.filter((action) => hasPermission(userPermissions, action.permission));
+}
+
+export function DashboardQuickActions({ userPermissions }: { userPermissions: readonly string[] }) {
   return (
     <Grid className="md:grid-cols-2 xl:grid-cols-4">
-      {quickActions.map((action) => {
+      {getDashboardQuickActions(userPermissions).map((action) => {
         const Icon = action.icon;
 
         return (
@@ -119,20 +132,19 @@ export function DashboardFoundations({
   securitySummary: DashboardMetrics["securitySummary"];
 }) {
   const foundations = [
-    ["Lead Metrics", "Connected to live lead counts."],
-    ["SEO Metrics", "Prepared for TASK 008."],
-    ["Analytics", "Prepared for future conversion events."],
-    ["Notifications", "Unread counter is connected."],
+    ["Métricas de contactos", "Ligadas às contagens atuais de contactos."],
+    ["Métricas de SEO", "Preparadas para uma evolução futura."],
+    ["Análise", "Preparada para futuros eventos de conversão."],
+    ["Notificações", "A contagem de notificações por ler está activa."],
   ] as const;
 
   return (
     <Grid className="lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Widget Architecture</CardTitle>
+          <CardTitle>Estrutura do Dashboard</CardTitle>
           <CardDescription>
-            Dashboard areas are ready for future modules without changing the
-            shell.
+            As áreas do Dashboard permitem acrescentar módulos sem alterar a estrutura principal.
           </CardDescription>
         </CardHeader>
         <div className="grid gap-3">
@@ -152,8 +164,8 @@ export function DashboardFoundations({
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Backup Status</CardTitle>
-          <CardDescription>Estado operacional dos backups.</CardDescription>
+          <CardTitle>Estado das cópias de segurança</CardTitle>
+          <CardDescription>Estado operacional das cópias de segurança.</CardDescription>
         </CardHeader>
         <div className="grid gap-3 text-sm">
           <div className="flex justify-between gap-3">
@@ -161,11 +173,11 @@ export function DashboardFoundations({
             <span className="font-semibold">{backupSummary.totalBackups}</span>
           </div>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Falhados</span>
+            <span className="text-muted-foreground">Com falhas</span>
             <span className="font-semibold">{backupSummary.failedBackups}</span>
           </div>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Ultimo</span>
+            <span className="text-muted-foreground">Última cópia</span>
             <span className="font-semibold">
               {backupSummary.lastBackup
                 ? formatDate(backupSummary.lastBackup.createdAt)
@@ -176,7 +188,7 @@ export function DashboardFoundations({
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Deployment</CardTitle>
+          <CardTitle>Disponibilização</CardTitle>
           <CardDescription>Estado de entrega do projeto.</CardDescription>
         </CardHeader>
         <div className="grid gap-3 text-sm">
@@ -184,7 +196,7 @@ export function DashboardFoundations({
             <Globe2 className="text-primary mt-0.5 size-4" aria-hidden="true" />
             <div>
               <p className="font-semibold">
-                {deploymentSummary.cmsEnabled ? "Landing + CMS" : "Landing Only"}
+                {deploymentSummary.cmsEnabled ? "Landing page com CMS" : "Apenas landing page"}
               </p>
               <p className="text-muted-foreground">
                 {deploymentSummary.domain ?? "Domínio não configurado"}
@@ -192,7 +204,7 @@ export function DashboardFoundations({
             </div>
           </div>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Checklist</span>
+            <span className="text-muted-foreground">Lista de verificação</span>
             <span className="font-semibold">
               {deploymentSummary.completedItems}/{deploymentSummary.totalItems}
             </span>
@@ -214,8 +226,8 @@ export function DashboardFoundations({
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Ultimas acoes auditadas.</CardDescription>
+          <CardTitle>Atividade recente</CardTitle>
+          <CardDescription>Últimas ações registadas na auditoria.</CardDescription>
         </CardHeader>
         <div className="grid gap-3">
           {recentAuditActivity.length === 0 ? (

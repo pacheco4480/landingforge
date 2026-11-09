@@ -26,9 +26,11 @@ type Page = { id: string; title: string };
 export function ThemeList({
   themes,
   pages,
+  canWrite,
 }: {
   themes: Theme[];
   pages: Page[];
+  canWrite: boolean;
 }) {
   return (
     <Grid>
@@ -39,29 +41,29 @@ export function ThemeList({
               <h3 className="text-lg font-semibold">{theme.name}</h3>
               <Badge>{theme.key}</Badge>
             </div>
-            <form action={duplicateThemeAction}>
-              <input name="id" type="hidden" value={theme.id} />
-              <Button type="submit" variant="outline">
-                Duplicate
-              </Button>
-            </form>
+            {canWrite ? (
+              <form action={duplicateThemeAction}>
+                <input name="id" type="hidden" value={theme.id} />
+                <Button type="submit" variant="outline">Duplicar</Button>
+              </form>
+            ) : null}
           </div>
           <ThemePreview theme={theme} />
-          <form
+          {canWrite ? <form
             action={applyThemeAction}
             className="mt-4 flex flex-col gap-3 md:flex-row"
           >
             <input name="themeId" type="hidden" value={theme.id} />
             <Select name="pageId" required>
-              <option value="">Apply to page</option>
+              <option value="">Aplicar a uma página</option>
               {pages.map((page) => (
                 <option key={page.id} value={page.id}>
                   {page.title}
                 </option>
               ))}
             </Select>
-            <Button type="submit">Apply</Button>
-          </form>
+            <Button type="submit">Aplicar</Button>
+          </form> : null}
         </Card>
       ))}
     </Grid>

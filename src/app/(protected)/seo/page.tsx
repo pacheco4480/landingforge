@@ -24,9 +24,9 @@ export default async function SeoPage({
   return (
     <div className="grid gap-8">
       <CmsPageHeader
-        eyebrow="Search Visibility"
+        eyebrow="Visibilidade nos motores de pesquisa"
         title="SEO"
-        description="Manage metadata, indexation, structured data and redirect foundations for landing pages."
+        description="Gere metadados, indexação, dados estruturados e redirecionamentos das landing pages."
       />
       <SeoPageSelector
         pages={workspace.pages}

@@ -27,15 +27,15 @@ export default async function SettingsPage() {
   const canWrite = hasPermission(user.permissions, permissions.settingsWrite);
 
   return (
-    <div className="grid gap-8">
+    <div className="grid min-w-0 grid-cols-1 gap-8">
       <CmsPageHeader
-        eyebrow="Configuration"
-        title="Settings"
-        description="Central area for site settings, notifications and publishing configuration."
+        eyebrow="Configuração"
+        title="Definições"
+        description="Área central para as definições do site, notificações e publicação."
       />
       <DeploymentStatusPanel workspace={deployment} />
       <DeploymentSettingsForm workspace={deployment} canWrite={canWrite} />
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-2">
         <DeploymentChecklist items={deployment.checklist} />
         <EnvironmentChecklist cmsEnabled={deployment.cmsEnabled} />
       </div>

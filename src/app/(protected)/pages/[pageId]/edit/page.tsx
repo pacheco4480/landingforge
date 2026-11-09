@@ -30,13 +30,13 @@ export default async function EditPagePage({
     <div className="grid gap-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <CmsPageHeader
-          eyebrow={page.isDemo ? "Demo Page" : "Client Page"}
-          title={`Edit ${page.title}`}
-          description="Manage page metadata and review the section structure."
+          eyebrow={page.isDemo ? "Página de demonstração" : "Página de cliente"}
+          title={`Editar ${page.title}`}
+          description="Gere os metadados e consulta a estrutura das secções."
         />
         <Link href={`/content/${page.id}`}>
           <Button type="button" variant="outline">
-            Edit content
+            Editar conteúdo
           </Button>
         </Link>
       </div>
@@ -44,7 +44,7 @@ export default async function EditPagePage({
       <ContentHistoryFoundation />
       <section aria-labelledby="page-sections-heading">
         <h2 id="page-sections-heading" className="mb-4 text-xl font-semibold">
-          Sections
+          Secções
         </h2>
         <SectionList canWrite={false} sections={page.sections} />
       </section>

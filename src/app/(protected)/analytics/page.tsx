@@ -11,14 +11,14 @@ export default async function AnalyticsPage() {
   return (
     <div>
       <CmsPageHeader
-        eyebrow="Performance"
-        title="Analytics"
-        description="Foundation for page views, conversion events and reporting widgets."
+        eyebrow="Desempenho"
+        title="Análise"
+        description="Base para visualizações de páginas, eventos de conversão e relatórios."
       />
       <CmsEmptyState
         icon={BarChart3}
-        title="Analytics widgets are planned"
-        description="Detailed analytics and conversion funnels remain future work after the renderer and forms engine exist."
+        title="Os indicadores detalhados ainda estão em preparação"
+        description="A análise detalhada e os funis de conversão serão considerados numa fase futura do motor de páginas e formulários."
       />
     </div>
   );

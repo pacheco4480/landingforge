@@ -24,6 +24,19 @@ type PageFormValue = {
   templateVariantId?: string | null;
 };
 
+const pageStatusLabels: Record<PageStatus, string> = {
+  [PageStatus.DRAFT]: "Rascunho",
+  [PageStatus.PUBLISHED]: "Publicada",
+  [PageStatus.ARCHIVED]: "Arquivada",
+};
+
+const pageTypeLabels: Record<PageType, string> = {
+  [PageType.LANDING]: "Landing page",
+  [PageType.LEGAL]: "Página legal",
+  [PageType.THANK_YOU]: "Página de confirmação",
+  [PageType.CUSTOM]: "Página personalizada",
+};
+
 export function PageForm({
   page,
   templates,
@@ -37,14 +50,14 @@ export function PageForm({
     <Card>
       <ActionFeedbackForm
         action={action}
-        loadingMessage="A guardar pagina..."
-        successMessage="Pagina guardada."
+        loadingMessage="A guardar página..."
+        successMessage="Página guardada."
       >
         {page?.id ? <input name="id" type="hidden" value={page.id} /> : null}
         <Stack>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title">Título</Label>
               <Input
                 id="title"
                 name="title"
@@ -62,14 +75,14 @@ export function PageForm({
                 required
               />
               <FieldMessage>
-                O slug define o URL publico. Usa apenas letras minusculas,
-                numeros e hifens.
+                O slug define o endereço público. Usa apenas letras minúsculas,
+                números e hífenes.
               </FieldMessage>
             </Field>
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">Estado</Label>
               <Select
                 id="status"
                 name="status"
@@ -77,13 +90,13 @@ export function PageForm({
               >
                 {Object.values(PageStatus).map((status) => (
                   <option key={status} value={status}>
-                    {status}
+                    {pageStatusLabels[status]}
                   </option>
                 ))}
               </Select>
             </Field>
             <Field>
-              <Label htmlFor="pageType">Page Type</Label>
+              <Label htmlFor="pageType">Tipo de página</Label>
               <Select
                 id="pageType"
                 name="pageType"
@@ -91,7 +104,7 @@ export function PageForm({
               >
                 {Object.values(PageType).map((pageType) => (
                   <option key={pageType} value={pageType}>
-                    {pageType}
+                    {pageTypeLabels[pageType]}
                   </option>
                 ))}
               </Select>
@@ -99,13 +112,13 @@ export function PageForm({
           </Grid>
           <Grid className="md:grid-cols-2">
             <Field>
-              <Label htmlFor="templateId">Template</Label>
+              <Label htmlFor="templateId">Modelo</Label>
               <Select
                 id="templateId"
                 name="templateId"
                 defaultValue={page?.templateId ?? ""}
               >
-                <option value="">No template</option>
+                <option value="">Sem modelo</option>
                 {templates.map((template) => (
                   <option key={template.id} value={template.id}>
                     {template.name}
@@ -114,13 +127,13 @@ export function PageForm({
               </Select>
             </Field>
             <Field>
-              <Label htmlFor="templateVariantId">Variant</Label>
+              <Label htmlFor="templateVariantId">Variante</Label>
               <Select
                 id="templateVariantId"
                 name="templateVariantId"
                 defaultValue={page?.templateVariantId ?? ""}
               >
-                <option value="">No variant</option>
+                <option value="">Sem variante</option>
                 {templates.flatMap((template) =>
                   template.variants.map((variant) => (
                     <option key={variant.id} value={variant.id}>
@@ -133,7 +146,7 @@ export function PageForm({
           </Grid>
           <div>
             <Button type="submit">
-              {page?.id ? "Save page" : "Create page"}
+              {page?.id ? "Guardar página" : "Criar página"}
             </Button>
           </div>
         </Stack>

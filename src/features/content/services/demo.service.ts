@@ -15,14 +15,22 @@ import { isInternalDemoModeEnabled } from "@/config/deployment";
 import { hasRole } from "@/features/rbac/rbac.service";
 import { db } from "@/lib/db";
 
+export class InternalDemosUnavailableError extends Error {
+  constructor() {
+    super("As demos internas não estão disponíveis neste ambiente.");
+    this.name = "InternalDemosUnavailableError";
+  }
+}
+
 function nullableId(value?: string) {
   return value && value.length > 0 ? value : null;
 }
 
 export function assertCanManageDemos(userRoles: readonly string[]) {
-  if (!isInternalDemoModeEnabled() || !hasRole(userRoles, "super_admin")) {
+  if (!hasRole(userRoles, "super_admin")) {
     throw new Error("Internal Demo Mode is not available.");
   }
+  if (!isInternalDemoModeEnabled()) throw new InternalDemosUnavailableError();
 }
 
 async function assertSlugAvailable(slug: string, ignoreId?: string) {

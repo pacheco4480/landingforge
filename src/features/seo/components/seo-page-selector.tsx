@@ -20,7 +20,7 @@ export function SeoPageSelector({
   return (
     <form action="/seo" className="flex max-w-xl gap-3">
       <Select
-        aria-label="Select SEO page"
+        aria-label="Selecionar página para SEO"
         defaultValue={selectedPageId}
         name="pageId"
       >
@@ -31,7 +31,7 @@ export function SeoPageSelector({
         ))}
       </Select>
       <Button type="submit" variant="outline">
-        Open
+        Abrir
       </Button>
     </form>
   );

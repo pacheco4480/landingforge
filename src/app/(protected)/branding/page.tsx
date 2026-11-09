@@ -25,25 +25,27 @@ export default async function BrandingPage() {
   return (
     <div className="grid gap-8">
       <CmsPageHeader
-        eyebrow="Brand Identity"
-        title="Branding"
-        description="Manage brand identity, logo, favicon, colors, typography and theme previews."
+        eyebrow="Identidade visual"
+        title="Identidade da marca"
+        description="Gere a identidade da marca, o logótipo, o favicon, as cores, a tipografia e as pré-visualizações de temas."
       />
       <Alert tone="info" title="Como o branding se aplica">
         A identidade global alimenta SEO, contactos e templates sem tema
-        proprio. Quando uma pagina tem um tema aplicado, esse tema pode
+        próprio. Quando uma página tem um tema aplicado, esse tema pode
         sobrepor cores e tipografia da identidade global.
       </Alert>
       {canWrite ? <BrandingForm settings={settings} /> : null}
-      <LogoManager
+        <LogoManager
         assets={mediaAssets}
         faviconId={settings.faviconMediaId}
         logoId={settings.logoMediaId}
+          canWrite={canWrite}
       />
       {canWrite ? <ThemeForm /> : null}
       <ThemeList
         pages={pages.map((page) => ({ id: page.id, title: page.title }))}
         themes={themes}
+        canWrite={canWrite}
       />
     </div>
   );

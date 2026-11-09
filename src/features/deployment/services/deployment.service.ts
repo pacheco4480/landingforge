@@ -110,11 +110,11 @@ export function buildDeliveryChecklist({
     },
     {
       key: "cms_mode",
-      label: cmsEnabled ? "CMS ativo" : "Landing only",
+      label: cmsEnabled ? "CMS activo" : "Apenas landing page",
       complete: true,
       description: cmsEnabled
         ? "Modo Landing + CMS configurado."
-        : "Modo Landing Only configurado.",
+        : "Modo de landing page sem CMS configurado.",
     },
     ...requiredEnvironmentChecks(cmsEnabled),
   ];
