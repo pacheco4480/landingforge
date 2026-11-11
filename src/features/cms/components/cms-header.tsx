@@ -2,6 +2,7 @@ import type { User } from "next-auth";
 
 import { CmsBreadcrumbs } from "@/features/cms/components/cms-breadcrumbs";
 import { CmsMobileNavigation } from "@/features/cms/components/cms-mobile-navigation";
+import { CmsProductBrand } from "@/features/cms/components/cms-product-brand";
 import { GlobalSearch } from "@/features/cms/components/global-search";
 import { NotificationButton } from "@/features/cms/components/notification-button";
 import { UserMenu } from "@/features/cms/components/user-menu";
@@ -22,7 +23,9 @@ export function CmsHeader({
         <div className="flex items-center gap-3">
           <CmsMobileNavigation items={items} />
           <div>
-            <p className="text-sm font-bold lg:hidden">LandingForge CMS</p>
+            <div className="lg:hidden">
+              <CmsProductBrand compact />
+            </div>
             <div className="hidden lg:block">
               <CmsBreadcrumbs />
             </div>

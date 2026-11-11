@@ -29,20 +29,20 @@ export function FieldsTable({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Fields</CardTitle>
+        <CardTitle>Campos</CardTitle>
         <CardDescription>
-          Field order, visibility and validation foundation.
+          Ordem, visibilidade e validação dos campos.
         </CardDescription>
       </CardHeader>
       <DataTable
         caption="Campos do formulário"
-        columns={["Label", "Name", "Type", "Required", "Visible", "Actions"]}
+        columns={["Rótulo", "Identificador", "Tipo", "Obrigatório", "Visível", "Ações"]}
         rows={fields.map((field) => [
           field.label,
           field.name,
           field.type.toLowerCase(),
-          field.isRequired ? "Yes" : "No",
-          field.isVisible ? "Yes" : "No",
+          field.isRequired ? "Sim" : "Não",
+          field.isVisible ? "Sim" : "Não",
           <div className="flex flex-wrap gap-2" key={field.id}>
             {canWrite ? (
               <>
@@ -50,22 +50,24 @@ export function FieldsTable({
                   action={moveFormFieldAction}
                   loadingMessage="A mover campo..."
                   successMessage="Campo movido."
+                  preventDuplicateSubmit
                 >
                   <input name="id" type="hidden" value={field.id} />
                   <input name="direction" type="hidden" value="up" />
                   <Button type="submit" variant="outline" size="sm">
-                    Up
+                    Subir
                   </Button>
                 </ActionFeedbackForm>
                 <ActionFeedbackForm
                   action={moveFormFieldAction}
                   loadingMessage="A mover campo..."
                   successMessage="Campo movido."
+                  preventDuplicateSubmit
                 >
                   <input name="id" type="hidden" value={field.id} />
                   <input name="direction" type="hidden" value="down" />
                   <Button type="submit" variant="outline" size="sm">
-                    Down
+                    Descer
                   </Button>
                 </ActionFeedbackForm>
                 <ConfirmActionForm
@@ -78,12 +80,12 @@ export function FieldsTable({
                 >
                   <input name="id" type="hidden" value={field.id} />
                   <Button type="submit" variant="destructive" size="sm">
-                    Delete
+                    Eliminar
                   </Button>
                 </ConfirmActionForm>
               </>
             ) : (
-              "Read only"
+              "Só de leitura"
             )}
           </div>,
         ])}
@@ -102,7 +104,7 @@ export function FieldsTable({
           {fields.map((field) => (
             <div className="rounded-md border p-4" key={field.id}>
               <h4 className="mb-4 text-sm font-semibold">{field.label}</h4>
-              <FieldForm field={field} formId={formId} />
+              <FieldForm field={field} fields={fields} formId={formId} />
             </div>
           ))}
         </div>

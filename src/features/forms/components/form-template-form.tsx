@@ -24,9 +24,9 @@ export function FormTemplateForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Template</CardTitle>
+        <CardTitle>Modelo</CardTitle>
         <CardDescription>
-          Create a form from a conversion-focused starter.
+          Crie um formulário a partir de uma estrutura preparada para conversão.
         </CardDescription>
       </CardHeader>
       <ActionFeedbackForm
@@ -34,10 +34,11 @@ export function FormTemplateForm({
         className="grid gap-4"
         loadingMessage="A criar formulário..."
         successMessage="Formulário criado."
+        preventDuplicateSubmit
       >
         <Grid className="md:grid-cols-3">
           <Field>
-            <Label htmlFor="templateKey">Template</Label>
+          <Label htmlFor="templateKey">Modelo</Label>
             <Select id="templateKey" name="templateKey">
               {Object.entries(formTemplates).map(([key, template]) => (
                 <option key={key} value={key}>
@@ -47,7 +48,7 @@ export function FormTemplateForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="templatePageId">Page</Label>
+          <Label htmlFor="templatePageId">Página</Label>
             <Select id="templatePageId" name="pageId">
               <option value="">Global</option>
               {pages.map((page) => (
@@ -58,7 +59,7 @@ export function FormTemplateForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="templateRecipientEmail">Recipient</Label>
+          <Label htmlFor="templateRecipientEmail">Email destinatário</Label>
             <Input
               id="templateRecipientEmail"
               name="recipientEmail"
@@ -68,7 +69,7 @@ export function FormTemplateForm({
             />
           </Field>
         </Grid>
-        <Button type="submit">Create from template</Button>
+        <Button type="submit">Criar a partir do modelo</Button>
       </ActionFeedbackForm>
     </Card>
   );

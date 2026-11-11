@@ -24,9 +24,9 @@ export default async function FormsPage({
   return (
     <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8">
       <CmsPageHeader
-        eyebrow="Lead Capture"
-        title="Forms"
-        description="Create, validate and reuse lead capture forms across landing pages."
+        eyebrow="Captação de contactos"
+        title="Formulários"
+        description="Crie, valide e reutilize formulários de contacto nas landing pages."
       />
       <FormTemplateForm pages={workspace.pages} canWrite={canWrite} />
       <FormsTable
@@ -45,7 +45,7 @@ export default async function FormsPage({
             fields={workspace.selectedForm.fields}
             canWrite={canWrite}
           />
-          <FieldEditor formId={workspace.selectedForm.id} canWrite={canWrite} />
+          <FieldEditor formId={workspace.selectedForm.id} fields={workspace.selectedForm.fields} canWrite={canWrite} />
           <FormPreview
             form={workspace.selectedForm}
             fields={workspace.selectedForm.fields}

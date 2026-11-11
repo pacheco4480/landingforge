@@ -22,22 +22,22 @@ export default async function LoginPage({
   const params = await searchParams;
   return (
     <AuthShell
-      title="Sign in"
-      description="Access the LandingForge CMS securely."
+      title="Iniciar sessão"
+      description="Acede ao CMS LandingForge de forma segura."
     >
       {params.error === "invalid" && (
         <Alert className="mb-4" tone="error">
-          Invalid email or password.
+          Email ou palavra-passe inválidos.
         </Alert>
       )}
       {params.error === "session-expired" && (
         <Alert className="mb-4" tone="error">
-          Your session expired. Please sign in again.
+          A sessão expirou. Inicia sessão novamente.
         </Alert>
       )}
       {params.reset && (
         <Alert className="mb-4" tone="success">
-          Password updated successfully.
+          Palavra-passe atualizada com sucesso.
         </Alert>
       )}
       <form action={loginAction} className="grid gap-5">
@@ -53,18 +53,18 @@ export default async function LoginPage({
           autoComplete="email"
         />
         <AuthField
-          label="Password"
+          label="Palavra-passe"
           name="password"
           type="password"
           autoComplete="current-password"
         />
-        <SubmitButton>Sign in</SubmitButton>
+        <SubmitButton>Iniciar sessão</SubmitButton>
       </form>
       <Link
         className="text-primary mt-6 inline-block text-sm font-medium underline-offset-4 hover:underline"
         href="/forgot-password"
       >
-        Forgot password?
+        Esqueceste-te da palavra-passe?
       </Link>
     </AuthShell>
   );

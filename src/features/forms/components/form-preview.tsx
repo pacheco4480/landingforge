@@ -29,9 +29,9 @@ export function FormPreview({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Preview</CardTitle>
+        <CardTitle>Pré-visualização</CardTitle>
         <CardDescription>
-          {form.description || "Responsive form preview."}
+          {form.description || "Pré-visualização responsiva do formulário."}
         </CardDescription>
       </CardHeader>
       <form className="grid gap-4">
@@ -40,7 +40,7 @@ export function FormPreview({
           .map((field) => (
             <PreviewField field={field} key={field.id} />
           ))}
-        <Button type="button">Submit</Button>
+        <Button type="button">Submeter</Button>
       </form>
     </Card>
   );

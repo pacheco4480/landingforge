@@ -340,7 +340,7 @@ integration("client CMS tenant isolation against PostgreSQL", () => {
     const uploaded = await uploadClientCmsMedia(new File([png], "qa.png", { type: "image/png" }), "Imagem sintética");
     expect(String(uploaded.object_path)).toMatch(new RegExp(`^${projectA}/`));
     expect(storageUpload).toHaveBeenCalledTimes(1);
-    await expect(deleteClientCmsMedia(mediaB)).rejects.toThrow("Ficheiro não encontrado nesta instalação.");
+    await expect(deleteClientCmsMedia(mediaB)).rejects.toThrow("O ficheiro já não está disponível nesta instalação. Atualiza a página.");
     expect(storageRemove).not.toHaveBeenCalled();
     expect((await tenantPool.query("SELECT count(*)::int AS count FROM lf_cms_media WHERE project_id = $1 AND id = $2", [projectB, mediaB])).rows[0].count).toBe(1);
     await deleteClientCmsMedia(mediaA);

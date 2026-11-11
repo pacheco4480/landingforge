@@ -39,14 +39,14 @@ export function FormsTable({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Forms</CardTitle>
+        <CardTitle>Formulários</CardTitle>
         <CardDescription>
-          Reusable lead capture forms for landing pages.
+          Formulários reutilizáveis para captar contactos nas landing pages.
         </CardDescription>
       </CardHeader>
       <DataTable
         caption="Formulários configurados"
-        columns={["Name", "Page", "Status", "Fields", "Submissions", "Actions"]}
+        columns={["Nome", "Página", "Estado", "Campos", "Submissões", "Ações"]}
         rows={forms.map((form) => [
           <a
             className={
@@ -73,7 +73,7 @@ export function FormsTable({
                   className="border-border bg-background text-foreground hover:bg-muted inline-flex min-h-9 items-center justify-center rounded-md border px-3 text-xs font-semibold transition-colors"
                   href={`/forms?formId=${form.id}`}
                 >
-                  Edit
+                  Editar
                 </a>
                 <ActionFeedbackForm
                   action={duplicateFormAction}
@@ -82,7 +82,7 @@ export function FormsTable({
                 >
                   <input name="id" type="hidden" value={form.id} />
                   <Button type="submit" variant="outline" size="sm">
-                    Duplicate
+                    Duplicar
                   </Button>
                 </ActionFeedbackForm>
                 <ConfirmActionForm
@@ -95,7 +95,7 @@ export function FormsTable({
                 >
                   <input name="id" type="hidden" value={form.id} />
                   <Button type="submit" variant="outline" size="sm">
-                    Archive
+                    Arquivar
                   </Button>
                 </ConfirmActionForm>
                 <ConfirmActionForm
@@ -108,12 +108,12 @@ export function FormsTable({
                 >
                   <input name="id" type="hidden" value={form.id} />
                   <Button type="submit" variant="destructive" size="sm">
-                    Delete
+                    Eliminar
                   </Button>
                 </ConfirmActionForm>
               </>
             ) : (
-              "Read only"
+              "Só de leitura"
             )}
           </div>,
         ])}

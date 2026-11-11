@@ -6,9 +6,9 @@ import {
 const jsonFields = ["options", "validation", "conditionalLogic"] as const;
 
 const fieldLabels: Record<string, string> = {
-  options: "Options JSON",
-  validation: "Validation JSON",
-  conditionalLogic: "Conditional Logic JSON",
+  options: "Opções (modo avançado)",
+  validation: "Validação avançada",
+  conditionalLogic: "Regras condicionais avançadas",
 };
 
 type FormFieldFormDataResult =
@@ -53,15 +53,30 @@ export function parseFormFieldFormData(
   if (!result.success) {
     const issue = result.error.issues[0];
     const field = issue?.path[0];
-    const label = typeof field === "string" ? fieldLabels[field] ?? field : "dados";
 
     return {
       success: false,
-      message: `Verifica o campo ${label}.`,
+      message: validationMessage(field, issue?.path[1]),
     };
   }
 
   return { success: true, data: result.data };
+}
+
+function validationMessage(field: unknown, detail: unknown) {
+  if (field === "label") return "Indica um rótulo com até 120 caracteres.";
+  if (field === "name") return "Usa um identificador iniciado por letra, com letras minúsculas, números ou underscore.";
+  if (field === "type") return "Seleciona um tipo de campo válido.";
+  if (field === "options") return "Revê as opções: cada uma precisa de um texto e de um valor, com até 80 caracteres.";
+  if (field === "validation") {
+    if (detail === "minLength" || detail === "maxLength") return "Revê os comprimentos mínimo e máximo; o mínimo não pode exceder o máximo.";
+    if (detail === "min" || detail === "max") return "Revê os valores mínimo e máximo; o mínimo não pode exceder o máximo.";
+    if (detail === "regex") return "A expressão regular não é válida. Corrige-a ou remove-a.";
+    return "Revê os limites e a expressão da validação avançada.";
+  }
+  if (field === "conditionalLogic") return "Revê as regras condicionais: confirma o campo, a condição e a ação.";
+  if (field === "formId") return "Não foi possível identificar o formulário. Atualiza a página e tenta novamente.";
+  return "Revê os dados do campo e corrige os valores assinalados.";
 }
 
 function readString(formData: FormData, key: string) {

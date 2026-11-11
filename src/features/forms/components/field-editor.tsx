@@ -6,8 +6,6 @@ import {
   Field,
   Input,
   Label,
-  Select,
-  Textarea,
 } from "@/components/ui/form";
 import {
   Card,
@@ -17,22 +15,25 @@ import {
   Grid,
 } from "@/components/ui/layout";
 import { saveFormFieldAction } from "@/features/forms/actions/form-field.actions";
+import { FormFieldConfiguration } from "@/features/forms/components/form-field-configuration";
 
 export function FieldEditor({
   formId,
   canWrite,
+  fields,
 }: {
   formId: string;
   canWrite: boolean;
+  fields: Pick<FormField, "name" | "label">[];
 }) {
   if (!canWrite) return null;
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add Field</CardTitle>
-        <CardDescription>Configure one reusable form field.</CardDescription>
+      <CardTitle>Adicionar campo</CardTitle>
+      <CardDescription>Configure um campo reutilizável do formulário.</CardDescription>
       </CardHeader>
-      <FieldForm formId={formId} />
+      <FieldForm formId={formId} fields={fields} key={formId} />
     </Card>
   );
 }
@@ -40,9 +41,11 @@ export function FieldEditor({
 export function FieldForm({
   formId,
   field,
+  fields = [],
 }: {
   formId: string;
   field?: FormField;
+  fields?: Pick<FormField, "name" | "label">[];
 }) {
   const fieldId = field?.id ?? "new";
 
@@ -52,12 +55,13 @@ export function FieldForm({
       className="grid gap-4"
       loadingMessage="A guardar campo..."
       successMessage="Campo guardado."
+      preventDuplicateSubmit
     >
       <input name="formId" type="hidden" value={formId} />
       {field ? <input name="id" type="hidden" value={field.id} /> : null}
       <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
         <Field className="min-w-0">
-          <Label htmlFor={`label-${field?.id ?? "new"}`}>Label</Label>
+          <Label htmlFor={`label-${field?.id ?? "new"}`}>Rótulo</Label>
           <Input
             id={`label-${field?.id ?? "new"}`}
             name="label"
@@ -69,11 +73,11 @@ export function FieldForm({
             className="text-muted-foreground text-xs"
             id={`label-help-${fieldId}`}
           >
-            Texto visivel para o visitante, por exemplo <code>Email</code>.
+            Texto visível para o visitante, por exemplo <code>Email</code>.
           </p>
         </Field>
         <Field className="min-w-0">
-          <Label htmlFor={`name-${field?.id ?? "new"}`}>Name</Label>
+          <Label htmlFor={`name-${field?.id ?? "new"}`}>Identificador</Label>
           <Input
             id={`name-${field?.id ?? "new"}`}
             name="name"
@@ -85,34 +89,13 @@ export function FieldForm({
             className="text-muted-foreground text-xs"
             id={`name-help-${fieldId}`}
           >
-            Chave interna sem espacos, por exemplo email, phone ou message.
-          </p>
-        </Field>
-        <Field className="min-w-0">
-          <Label htmlFor={`type-${field?.id ?? "new"}`}>Type</Label>
-          <Select
-            id={`type-${field?.id ?? "new"}`}
-            name="type"
-            aria-describedby={`type-help-${fieldId}`}
-            defaultValue={field?.type ?? FormFieldType.TEXT}
-          >
-            {Object.values(FormFieldType).map((type) => (
-              <option key={type} value={type}>
-                {type.toLowerCase()}
-              </option>
-            ))}
-          </Select>
-          <p
-            className="text-muted-foreground text-xs"
-            id={`type-help-${fieldId}`}
-          >
-            Define o tipo de input renderizado no formulario publico.
+            Chave interna sem espaços, por exemplo email, phone ou message.
           </p>
         </Field>
       </Grid>
       <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
         <Field className="min-w-0">
-          <Label htmlFor={`field-${fieldId}-placeholder`}>Placeholder</Label>
+          <Label htmlFor={`field-${fieldId}-placeholder`}>Texto de exemplo</Label>
           <Input
             id={`field-${fieldId}-placeholder`}
             name="placeholder"
@@ -120,7 +103,7 @@ export function FieldForm({
           />
         </Field>
         <Field className="min-w-0">
-          <Label htmlFor={`field-${fieldId}-help-text`}>Help text</Label>
+          <Label htmlFor={`field-${fieldId}-help-text`}>Texto de ajuda</Label>
           <Input
             id={`field-${fieldId}-help-text`}
             name="helpText"
@@ -129,7 +112,7 @@ export function FieldForm({
         </Field>
         <Field className="min-w-0">
           <Label htmlFor={`field-${fieldId}-default-value`}>
-            Default value
+            Valor predefinido
           </Label>
           <Input
             id={`field-${fieldId}-default-value`}
@@ -138,85 +121,30 @@ export function FieldForm({
           />
         </Field>
       </Grid>
-      <Grid className="min-w-0 sm:grid-cols-2 xl:grid-cols-3">
-        <Field className="min-w-0">
-          <Label htmlFor={`field-${fieldId}-options`}>Options JSON</Label>
-          <Textarea
-            className="font-mono text-xs"
-            id={`field-${fieldId}-options`}
-            name="options"
-            aria-describedby={`field-${fieldId}-options-help`}
-            defaultValue={json(field?.options, [])}
-          />
-          <p
-            className="text-muted-foreground text-xs"
-            id={`field-${fieldId}-options-help`}
-          >
-            Para select/radio:{" "}
-            <code className="break-all">
-              {`[{"label":"Consulta","value":"consulta"}]`}
-            </code>
-          </p>
-        </Field>
-        <Field className="min-w-0">
-          <Label htmlFor={`field-${fieldId}-validation`}>Validation JSON</Label>
-          <Textarea
-            className="font-mono text-xs"
-            id={`field-${fieldId}-validation`}
-            name="validation"
-            aria-describedby={`field-${fieldId}-validation-help`}
-            defaultValue={json(field?.validation, {})}
-          />
-          <p
-            className="text-muted-foreground text-xs"
-            id={`field-${fieldId}-validation-help`}
-          >
-            Exemplo: <code>{`{"minLength":3,"maxLength":120}`}</code>
-          </p>
-        </Field>
-        <Field className="min-w-0">
-          <Label htmlFor={`field-${fieldId}-conditional-logic`}>
-            Conditional Logic JSON
-          </Label>
-          <Textarea
-            className="font-mono text-xs"
-            id={`field-${fieldId}-conditional-logic`}
-            name="conditionalLogic"
-            aria-describedby={`field-${fieldId}-conditional-logic-help`}
-            defaultValue={json(field?.conditionalLogic, [])}
-          />
-          <p
-            className="text-muted-foreground text-xs"
-            id={`field-${fieldId}-conditional-logic-help`}
-          >
-            Exemplo:{" "}
-              <code className="break-all">
-                {`[{"field":"service","operator":"equals","value":"orcamento","action":"show"}]`}
-              </code>
-          </p>
-        </Field>
-      </Grid>
+      <FormFieldConfiguration
+        fieldType={field?.type ?? FormFieldType.TEXT}
+        options={field?.options ?? []}
+        validation={field?.validation ?? {}}
+        conditionalLogic={field?.conditionalLogic ?? []}
+        fields={fields.filter((candidate) => candidate.name !== field?.name)}
+      />
       <div className="flex flex-wrap gap-5">
         <label className="flex items-center gap-2 text-sm font-medium">
           <Checkbox
             name="isRequired"
             defaultChecked={field?.isRequired ?? false}
           />
-          Required
+          Obrigatório
         </label>
         <label className="flex items-center gap-2 text-sm font-medium">
           <Checkbox
             name="isVisible"
             defaultChecked={field?.isVisible ?? true}
           />
-          Visible
+          Visível
         </label>
       </div>
-      <Button type="submit">{field ? "Save field" : "Add field"}</Button>
+      <Button type="submit">{field ? "Guardar campo" : "Adicionar campo"}</Button>
     </ActionFeedbackForm>
   );
-}
-
-function json(value: unknown, fallback: unknown) {
-  return JSON.stringify(value ?? fallback, null, 2);
 }

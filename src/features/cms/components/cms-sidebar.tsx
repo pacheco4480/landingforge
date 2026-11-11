@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { CmsProductBrand } from "@/features/cms/components/cms-product-brand";
 import type { CmsNavigationItem } from "@/features/cms/navigation/cms-navigation.config";
 import { cmsNavigationIcons } from "@/features/cms/navigation/cms-navigation-icons";
 import { cn } from "@/lib/utils";
@@ -12,9 +13,8 @@ export function CmsSidebar({ items }: { items: CmsNavigationItem[] }) {
 
   return (
     <aside className="border-border bg-surface hidden min-h-screen w-72 border-r px-4 py-5 lg:block">
-      <div className="px-2">
-        <p className="text-lg font-bold">LandingForge</p>
-        <p className="text-muted-foreground mt-1 text-sm">Gestão de conteúdo</p>
+      <div className="px-2 py-1">
+        <CmsProductBrand />
       </div>
       <nav className="mt-8 grid gap-1" aria-label="Navegação do CMS">
         {items

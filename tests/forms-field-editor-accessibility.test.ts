@@ -40,7 +40,7 @@ function makeField(id: string, name: string): FormField {
 }
 
 describe("forms field editor accessibility", () => {
-  it("associates every advanced control with a unique visible label", () => {
+  it("associates form controls with unique visible labels", () => {
     const markup = renderToStaticMarkup(
       createElement(
         "div",
@@ -67,22 +67,24 @@ describe("forms field editor accessibility", () => {
       ].map((match) => match[1]),
     );
     const labelsById = new Map(labels.map((match) => [match[1], match[2]]));
-    const advancedNames = [
-      "Placeholder",
-      "Help text",
-      "Default value",
-      "Options JSON",
-      "Validation JSON",
-      "Conditional Logic JSON",
+    const commonNames = [
+      "Texto de exemplo",
+      "Texto de ajuda",
+      "Valor predefinido",
+      "Tipo de campo",
     ];
 
     expect(new Set(ids).size).toBe(ids.length);
     for (const [, id] of labels) {
       expect(controlIds.has(id), `label target ${id}`).toBe(true);
     }
-    for (const name of advancedNames) {
+    for (const name of commonNames) {
       const matchingLabels = labels.filter((match) => match[2].includes(name));
-      expect(matchingLabels).toHaveLength(2);
+      if (name === "Tipo de campo") {
+        expect(matchingLabels).toHaveLength(2);
+      } else {
+        expect(matchingLabels.length).toBeGreaterThan(0);
+      }
       for (const [, id] of matchingLabels) {
         expect(ids).toContain(id);
         expect(labelsById.get(id)).toContain(name);
@@ -100,15 +102,64 @@ describe("forms field editor accessibility", () => {
     const helpIds = [
       "label-help-field-one",
       "name-help-field-one",
-      "type-help-field-one",
-      "field-field-one-options-help",
-      "field-field-one-validation-help",
-      "field-field-one-conditional-logic-help",
     ];
 
     for (const helpId of helpIds) {
       expect(markup).toContain(`aria-describedby="${helpId}"`);
       expect(markup).toContain(`id="${helpId}"`);
     }
+    const ids = new Set(
+      [...markup.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]),
+    );
+    const describedBy = [...markup.matchAll(/aria-describedby="([^"]+)"/g)];
+    for (const [, value] of describedBy) {
+      for (const id of value.split(" ")) expect(ids).toContain(id);
+    }
+  });
+
+  it("renders visual option and validation controls without exposing JSON fields", () => {
+    const markup = renderToStaticMarkup(
+      createElement(FieldForm, {
+        field: {
+          ...makeField("field-select", "Serviço"),
+          type: "SELECT",
+          options: [{ label: "Consulta", value: "consulta" }],
+          validation: { minLength: 3, maxLength: 80 },
+          conditionalLogic: [
+            {
+              field: "service",
+              operator: "equals",
+              value: "consulta",
+              action: "disable",
+            },
+          ],
+        } as FormField,
+        formId,
+        fields: [{ name: "service", label: "Serviço" }],
+      }),
+    );
+
+    expect(markup).toContain("Texto da opção 1");
+    expect(markup).toContain("Valor guardado");
+    expect(markup).toContain('name="options"');
+    expect(markup).toContain('name="validation"');
+    expect(markup).toContain('name="conditionalLogic"');
+    expect(markup).toContain("Campo de referência");
+    expect(markup).toContain("Ação existente não aplicada: disable");
+    expect(markup).not.toContain("Options JSON");
+    expect(markup).not.toContain("Validation JSON");
+    expect(markup).not.toContain("Conditional Logic JSON");
+
+    const textMarkup = renderToStaticMarkup(
+      createElement(FieldForm, {
+        field: {
+          ...makeField("field-text", "Mensagem"),
+          validation: { minLength: 3, maxLength: 80 },
+        } as FormField,
+        formId,
+      }),
+    );
+    expect(textMarkup).toContain("Comprimento mínimo");
+    expect(textMarkup).toContain("Comprimento máximo");
   });
 });

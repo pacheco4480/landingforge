@@ -25,9 +25,9 @@ export function FormSettingsForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{form ? "Form Settings" : "Create Form"}</CardTitle>
+        <CardTitle>{form ? "Definições do formulário" : "Criar formulário"}</CardTitle>
         <CardDescription>
-          Core form configuration, status and submission behavior.
+          Configure os dados principais, o estado e o comportamento da submissão.
         </CardDescription>
       </CardHeader>
       <ActionFeedbackForm
@@ -35,11 +35,12 @@ export function FormSettingsForm({
         className="grid gap-5"
         loadingMessage="A guardar formulário..."
         successMessage="Formulário guardado."
+        preventDuplicateSubmit
       >
         {form ? <input name="id" type="hidden" value={form.id} /> : null}
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Nome</Label>
             <Input
               id="name"
               name="name"
@@ -49,7 +50,7 @@ export function FormSettingsForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="key">Key</Label>
+            <Label htmlFor="key">Identificador</Label>
             <Input
               id="key"
               name="key"
@@ -59,7 +60,7 @@ export function FormSettingsForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="type">Type</Label>
+            <Label htmlFor="type">Tipo</Label>
             <Select
               id="type"
               name="type"
@@ -74,7 +75,7 @@ export function FormSettingsForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="status">Estado</Label>
             <Select
               id="status"
               name="status"
@@ -89,7 +90,7 @@ export function FormSettingsForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="pageId">Landing page</Label>
+            <Label htmlFor="pageId">Página de destino</Label>
             <Select
               id="pageId"
               name="pageId"
@@ -105,18 +106,18 @@ export function FormSettingsForm({
             </Select>
             <p className="text-muted-foreground text-xs">
               Escolhe a landing onde este form deve aparecer. Se ficar Global,
-              o form existe no CMS mas nao fica anexado a uma pagina especifica.
+              o formulário existe no CMS, mas não fica associado a uma página específica.
             </p>
           </Field>
           <Field>
-            <Label htmlFor="thankYouPageId">Thank-you page</Label>
+            <Label htmlFor="thankYouPageId">Página de agradecimento</Label>
             <Select
               id="thankYouPageId"
               name="thankYouPageId"
               defaultValue={form?.thankYouPageId ?? ""}
               disabled={!canWrite}
             >
-              <option value="">None</option>
+              <option value="">Nenhuma</option>
               {pages.map((page) => (
                 <option key={page.id} value={page.id}>
                   {page.title}
@@ -125,7 +126,7 @@ export function FormSettingsForm({
             </Select>
           </Field>
           <Field>
-            <Label htmlFor="recipientEmail">Recipient email</Label>
+            <Label htmlFor="recipientEmail">Email destinatário</Label>
             <Input
               id="recipientEmail"
               name="recipientEmail"
@@ -136,7 +137,7 @@ export function FormSettingsForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="redirectUrl">Redirect URL</Label>
+            <Label htmlFor="redirectUrl">URL de redirecionamento</Label>
             <Input
               id="redirectUrl"
               name="redirectUrl"
@@ -146,7 +147,7 @@ export function FormSettingsForm({
           </Field>
         </Grid>
         <Field>
-          <Label htmlFor="description">Description</Label>
+          <Label htmlFor="description">Descrição</Label>
           <Textarea
             id="description"
             name="description"
@@ -162,7 +163,7 @@ export function FormSettingsForm({
               defaultChecked={form?.gdprConsentRequired ?? true}
               disabled={!canWrite}
             />
-            Consentimento RGPD obrigatorio
+            Consentimento RGPD obrigatório
           </label>
           <Field>
             <Label htmlFor="gdprConsentLabel">Texto do consentimento</Label>
@@ -178,7 +179,7 @@ export function FormSettingsForm({
             />
           </Field>
           <Field>
-            <Label htmlFor="gdprConsentVersion">Versao</Label>
+            <Label htmlFor="gdprConsentVersion">Versão</Label>
             <Input
               id="gdprConsentVersion"
               name="gdprConsentVersion"
@@ -190,26 +191,26 @@ export function FormSettingsForm({
         </Grid>
         <Grid className="md:grid-cols-2">
           <Field>
-            <Label htmlFor="successMessage">Success message</Label>
+            <Label htmlFor="successMessage">Mensagem de sucesso</Label>
             <Textarea
               id="successMessage"
               name="successMessage"
               defaultValue={
                 form?.successMessage ??
-                "Thank you. We will contact you shortly."
+                "Obrigado. Entraremos em contacto em breve."
               }
               disabled={!canWrite}
               required
             />
           </Field>
           <Field>
-            <Label htmlFor="errorMessage">Error message</Label>
+            <Label htmlFor="errorMessage">Mensagem de erro</Label>
             <Textarea
               id="errorMessage"
               name="errorMessage"
               defaultValue={
                 form?.errorMessage ??
-                "We could not send your request. Please try again."
+                "Não foi possível enviar o pedido. Tente novamente."
               }
               disabled={!canWrite}
               required
@@ -217,7 +218,7 @@ export function FormSettingsForm({
           </Field>
         </Grid>
         {canWrite ? (
-          <Button type="submit">{form ? "Save form" : "Create form"}</Button>
+          <Button type="submit">{form ? "Guardar formulário" : "Criar formulário"}</Button>
         ) : null}
       </ActionFeedbackForm>
     </Card>

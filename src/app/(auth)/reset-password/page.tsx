@@ -17,23 +17,23 @@ export default async function ResetPasswordPage({
   const { token = "", error } = await searchParams;
   return (
     <AuthShell
-      title="Choose a new password"
-      description="Use at least eight characters, one letter and one number."
+      title="Definir nova palavra-passe"
+      description="Usa pelo menos oito caracteres, incluindo uma letra e um número."
     >
       {error && (
         <Alert className="mb-4" tone="error">
-          This reset link is invalid or expired.
+          Esta ligação é inválida ou expirou. Solicita uma nova ligação de recuperação.
         </Alert>
       )}
       <form action={resetPasswordAction} className="grid gap-5">
         <input type="hidden" name="token" value={token} />
         <AuthField
-          label="New password"
+          label="Nova palavra-passe"
           name="password"
           type="password"
           autoComplete="new-password"
         />
-        <SubmitButton>Update password</SubmitButton>
+        <SubmitButton>Atualizar palavra-passe</SubmitButton>
       </form>
     </AuthShell>
   );

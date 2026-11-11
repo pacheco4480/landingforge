@@ -8,7 +8,7 @@ import {
 import { sectionTypeLabel, sectionTypeOptions } from "@/features/content/section-types";
 import { getTemplateDefinition } from "@/features/public-renderer/template-registry";
 import { SectionPresentationControl } from "@/features/content/components/section-presentation-control";
-import { RepeatableSectionEditor } from "@/features/content/components/repeatable-section-editor";
+import { SectionContentFieldEditor } from "@/features/content/components/section-content-field-editor";
 import {
   presentationOptions,
   resolvePresentation,
@@ -122,29 +122,11 @@ export function SectionForm({
             </Select>
           </Field>
         </Grid>
-        {section.sectionType === "faq" ||
-        section.sectionType.endsWith("_faq") ||
-        section.sectionType === "testimonials" ||
-        section.sectionType.endsWith("_testimonials") ||
-        section.sectionType === "restaurant_reviews" ||
-        section.sectionType === "restaurant_menu_highlights" ? (
-          <RepeatableSectionEditor
-            initialContent={section.content}
-            sectionId={section.id}
-            sectionType={section.sectionType}
-          />
-        ) : (
-          <Field>
-            <Label htmlFor={`section-content-${section.id}`}>Conteúdo (JSON)</Label>
-            <Textarea
-              className="font-mono text-xs"
-              id={`section-content-${section.id}`}
-              name="content"
-              defaultValue={toJsonText(section.content)}
-              required
-            />
-          </Field>
-        )}
+        <SectionContentFieldEditor
+          initialContent={section.content}
+          sectionId={section.id}
+          sectionType={section.sectionType}
+        />
         <Field>
           {options.length ? (
             <>

@@ -17,12 +17,12 @@ export default async function ForgotPasswordPage({
   const { sent } = await searchParams;
   return (
     <AuthShell
-      title="Reset password"
-      description="Enter your email to receive reset instructions."
+      title="Recuperar palavra-passe"
+      description="Indica o teu email para receber instruções de recuperação."
     >
       {sent && (
         <Alert className="mb-4" tone="success">
-          If the account exists, reset instructions were sent.
+          Se a conta existir, serão enviadas instruções de recuperação.
         </Alert>
       )}
       <form action={forgotPasswordAction} className="grid gap-5">
@@ -32,7 +32,7 @@ export default async function ForgotPasswordPage({
           type="email"
           autoComplete="email"
         />
-        <SubmitButton>Send instructions</SubmitButton>
+        <SubmitButton>Enviar instruções</SubmitButton>
       </form>
     </AuthShell>
   );

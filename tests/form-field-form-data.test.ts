@@ -24,9 +24,9 @@ function makeFormData(overrides: Record<string, string> = {}) {
 
 describe("parseFormFieldFormData", () => {
   it.each([
-    ["options", "Options JSON"],
-    ["validation", "Validation JSON"],
-    ["conditionalLogic", "Conditional Logic JSON"],
+    ["options", "Opções (modo avançado)"],
+    ["validation", "Validação avançada"],
+    ["conditionalLogic", "Regras condicionais avançadas"],
   ])("returns a field-specific error for malformed %s JSON", (key, label) => {
     const result = parseFormFieldFormData(makeFormData({ [key]: "[" }));
 
@@ -43,7 +43,8 @@ describe("parseFormFieldFormData", () => {
 
     expect(result).toEqual({
       success: false,
-      message: "Verifica o campo Options JSON.",
+      message:
+        "Revê as opções: cada uma precisa de um texto e de um valor, com até 80 caracteres.",
     });
   });
 
@@ -61,6 +62,39 @@ describe("parseFormFieldFormData", () => {
         { label: "Consulta", value: "consulta" },
       ]);
       expect(result.data.validation.minLength).toBe(3);
+    }
+  });
+
+  it("returns an actionable Portuguese validation message", () => {
+    const result = parseFormFieldFormData(
+      makeFormData({ validation: '{"minLength":12,"maxLength":4}' }),
+    );
+
+    expect(result).toEqual({
+      success: false,
+      message:
+        "Revê os comprimentos mínimo e máximo; o mínimo não pode exceder o máximo.",
+    });
+  });
+
+  it("parses common conditional rules using the existing contract", () => {
+    const result = parseFormFieldFormData(
+      makeFormData({
+        conditionalLogic:
+          '[{"field":"service","operator":"equals","value":"consultation","action":"show"}]',
+      }),
+    );
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.conditionalLogic).toEqual([
+        {
+          field: "service",
+          operator: "equals",
+          value: "consultation",
+          action: "show",
+        },
+      ]);
     }
   });
 });

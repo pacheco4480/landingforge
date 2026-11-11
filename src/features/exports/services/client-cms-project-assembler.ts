@@ -36,6 +36,68 @@ function runtimePath(sourcePath: string) {
   return `src/client-runtime/${sourcePath.slice(4)}`;
 }
 
+const clientCmsGlobalCss = `@import "tailwindcss";
+@source "../src/**/*.{ts,tsx}";
+
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --surface: #f8fafc;
+  --surface-elevated: #ffffff;
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
+  --border: #dbe3ec;
+  --input: #cbd5e1;
+  --ring: #2563eb;
+  --primary: #14532d;
+  --primary-foreground: #ffffff;
+  --secondary: #0f766e;
+  --secondary-foreground: #ffffff;
+  --accent: #f59e0b;
+  --accent-foreground: #111827;
+  --success: #15803d;
+  --success-foreground: #ffffff;
+  --warning: #d97706;
+  --warning-foreground: #111827;
+  --error: #b91c1c;
+  --error-foreground: #ffffff;
+  --info: #2563eb;
+  --info-foreground: #ffffff;
+  --neutral: #334155;
+  --neutral-foreground: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+  --color-destructive: var(--error);
+  --color-destructive-foreground: var(--error-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-neutral: var(--neutral);
+  --color-neutral-foreground: var(--neutral-foreground);
+}
+`;
+
 function rewriteAliases(source: string) {
   return source
     .replaceAll("@/features/", "@/client-runtime/features/")
@@ -171,7 +233,7 @@ function appFiles(composition: ClientRuntimeComposition) {
   return {
     "app/page.tsx": `import type { Metadata } from "next";\nimport { notFound } from "next/navigation";\nimport { getPublishedClientCmsPayload } from "@/client-runtime/features/exports/client-runtime/cms/public-page.service";\nimport { ClientRuntimeRenderer } from "@/client-runtime/features/exports/client-runtime/renderer";\nimport { clientRuntimeTemplateEntry } from "${entryImport}";\nimport { saveCookieConsent, submitLead } from "./actions";\nexport const dynamic = "force-dynamic";\nexport async function generateMetadata(): Promise<Metadata> { const payload = await getPublishedClientCmsPayload(); if (!payload) return { title: "Página em preparação", robots: { index: false, follow: false } }; const seo = payload.page.seo; return { title: seo?.metaTitle || payload.page.title, description: seo?.metaDescription || undefined, robots: { index: seo?.robotsIndex ?? true, follow: seo?.robotsFollow ?? true } }; }\nexport default async function Home() { const payload = await getPublishedClientCmsPayload(); if (!payload) notFound(); const content = payload.page.sections.map((section) => section.content as Record<string, unknown>); const brand = content.find((item) => item.brandName || item.logoText) ?? {}; const contact = content.find((item) => item.email || item.phone) ?? {}; const site = { businessName: String(brand.brandName ?? brand.logoText ?? payload.page.title), businessType: null, contactEmail: String(contact.email ?? ""), contactPhone: String(contact.phone ?? "") || null, city: String(contact.city ?? "") || null, country: String(contact.country ?? "Portugal"), primaryColor: payload.page.theme.primaryColor, secondaryColor: payload.page.theme.secondaryColor, accentColor: payload.page.theme.accentColor, logoMedia: brand.logoUrl ? { publicUrl: String(brand.logoUrl), altText: String(brand.logoAltText ?? payload.page.title) } : null }; return <ClientRuntimeRenderer payload={payload} templateEntry={clientRuntimeTemplateEntry} site={site} legalSettings={{ privacyPage: { slug: "politica-privacidade", title: "Política de Privacidade" }, cookiePage: { slug: "politica-cookies", title: "Política de Cookies" }, termsPage: { slug: "termos-condicoes", title: "Termos e Condições" }, analyticsCookiesEnabled: false, cookieBannerEnabled: true, marketingCookiesEnabled: false, consentVersion: "1" }} saveConsentAction={saveCookieConsent} submitFormAction={submitLead} turnstileEnabled={Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY)} turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || null} />; }\n`,
     "app/layout.tsx": `import type { Metadata } from "next";\nimport "./globals.css";\nexport const metadata: Metadata = { metadataBase: new URL(process.env.CLIENT_CMS_SITE_URL || "https://example.invalid") };\nexport default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="pt-PT"><body>{children}</body></html>; }\n`,
-    "app/globals.css": `@import "tailwindcss";\n@source "../src/**/*.{ts,tsx}";\n`,
+    "app/globals.css": clientCmsGlobalCss,
     "app/actions.ts": runtimeActions(),
     "app/api/auth/[...nextauth]/route.ts": `import { handlers } from "@/client-runtime/features/exports/client-runtime/cms/auth";\nexport const { GET, POST } = handlers;\n`,
     "app/cms/actions.ts": cmsActions(),

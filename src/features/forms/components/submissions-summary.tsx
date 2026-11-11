@@ -15,14 +15,14 @@ export function SubmissionsSummary({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Submissions</CardTitle>
+        <CardTitle>Submissões recentes</CardTitle>
         <CardDescription>
-          Analytics foundation for total submissions and recent activity.
+          Total de submissões e atividade recente.
         </CardDescription>
       </CardHeader>
       <DataTable
         caption="Submissões recentes"
-        columns={["Date", "Status", "Data"]}
+        columns={["Data", "Estado", "Conteúdo"]}
         rows={submissions.map((submission) => [
           submission.createdAt.toLocaleString("pt-PT"),
           submission.status.toLowerCase(),

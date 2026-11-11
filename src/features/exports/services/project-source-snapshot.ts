@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import type { Prisma } from "@/generated/prisma/client";
 import { getTemplateDefinition } from "@/features/public-renderer/template-registry";
+import { editableContentKeys } from "@/features/exports/client-runtime/cms/content-editor-schema";
 import { z } from "zod";
 
 type JsonValue = Prisma.JsonValue;
@@ -239,18 +240,22 @@ export function validateProjectSourceSnapshot(value: unknown, expectedChecksum?:
   const expectedSections = snapshot.page.sections.map((section) => ({
     key: section.sectionKey,
     type: section.sectionType,
-    editableFields:
-      section.content && typeof section.content === "object" && !Array.isArray(section.content)
-        ? Object.keys(section.content).sort()
-        : [],
+    editableFields: editableContentKeys(section.content),
   }));
   const expectedForms = snapshot.page.forms.map((form) => ({
     key: form.key,
     fields: form.fields.map(({ name }) => name),
   }));
+  const legacySections = snapshot.page.sections.map((section) => ({
+    key: section.sectionKey,
+    type: section.sectionType,
+    editableFields: section.content && typeof section.content === "object" && !Array.isArray(section.content)
+      ? Object.keys(section.content).sort()
+      : [],
+  }));
   if (
     canonicalJson(snapshot.capabilities.sectionTypes) !== canonicalJson(expectedSectionTypes) ||
-    canonicalJson(snapshot.capabilities.sections) !== canonicalJson(expectedSections) ||
+    (canonicalJson(snapshot.capabilities.sections) !== canonicalJson(expectedSections) && canonicalJson(snapshot.capabilities.sections) !== canonicalJson(legacySections)) ||
     canonicalJson(snapshot.capabilities.forms) !== canonicalJson(expectedForms)
   ) {
     throw new Error("O manifesto de capacidades não corresponde ao conteúdo do snapshot.");
@@ -380,10 +385,7 @@ export function buildProjectSourceSnapshot(page: SnapshotPage) {
       sections: page.sections.map((section) => ({
         key: section.sectionKey,
         type: section.sectionType,
-        editableFields:
-          section.content && typeof section.content === "object" && !Array.isArray(section.content)
-            ? Object.keys(section.content).sort()
-            : [],
+        editableFields: editableContentKeys(section.content),
       })),
       forms: page.forms.map((form) => ({
         key: form.key,

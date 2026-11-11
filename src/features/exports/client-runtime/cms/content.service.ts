@@ -2,6 +2,7 @@ import "server-only";
 
 import { clientCmsContentPatchSchema, type AuthorizedClientCmsContext } from "./contracts";
 import { getActorInstallation } from "./authorization";
+import { mergeStructuredContent, validateStructuredContent } from "./content-editor-schema";
 import { getClientCmsPool, withClientCmsTransaction } from "./database";
 import type { Pool, PoolClient } from "pg";
 
@@ -110,10 +111,11 @@ export async function updateClientCmsSection(
     if (!capability) throw new Error("A secção não pertence às capacidades da versão fixada.");
     const unsupportedFields = Object.keys(patch).filter((key) => !capability.editableFields.includes(key));
     if (unsupportedFields.length) throw new Error("Um ou mais campos não são editáveis nesta versão do template.");
+    validateStructuredContent(section.section_type, patch, capability.editableFields, section.content);
     if (Object.hasOwn(patch, "items")) validateRepeatableItems(section.section_type, "items", patch.items);
     if (Object.hasOwn(patch, "details")) validateRepeatableItems(section.section_type, "details", patch.details);
 
-    const content = { ...(section.content as Record<string, unknown>), ...patch };
+    const content = mergeStructuredContent(section.content, patch);
     await client.query(
       `UPDATE lf_cms_sections SET content = $4::jsonb, updated_at = now()
         WHERE project_id = $1 AND page_id = $2 AND id = $3`,

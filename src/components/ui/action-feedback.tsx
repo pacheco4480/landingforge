@@ -91,6 +91,7 @@ export function ActionFeedbackForm({
   action,
   children,
   className,
+  preventDuplicateSubmit = false,
   loadingMessage = "A guardar...",
   successMessage = "Alterações guardadas.",
   errorMessage = "Não foi possível concluir a ação.",
@@ -99,20 +100,33 @@ export function ActionFeedbackForm({
   loadingMessage?: string;
   successMessage?: string;
   errorMessage?: string;
+  preventDuplicateSubmit?: boolean;
 }) {
   const router = useRouter();
   const { showToast, updateToast } = useToast();
   const [isPending, startTransition] = React.useTransition();
   const [inlineError, setInlineError] = React.useState<string | null>(null);
+  const submissionLocked = React.useRef(false);
 
   return (
     <form
       className={className}
       onSubmit={(event) => {
         event.preventDefault();
+          if (preventDuplicateSubmit && submissionLocked.current) return;
         const form = event.currentTarget;
         const formData = new FormData(form);
         setInlineError(null);
+          const submitControls = preventDuplicateSubmit
+            ? Array.from(form.querySelectorAll<HTMLButtonElement | HTMLInputElement>(
+                'button[type="submit"], input[type="submit"]',
+              )).map((control) => ({ control, disabled: control.disabled }))
+            : [];
+          if (preventDuplicateSubmit) {
+            submissionLocked.current = true;
+            form.setAttribute("aria-busy", "true");
+            for (const { control } of submitControls) control.disabled = true;
+          }
         const toastId = showToast({ tone: "loading", title: loadingMessage });
 
         startTransition(async () => {
@@ -136,16 +150,27 @@ export function ActionFeedbackForm({
             const message = getActionErrorMessage(error, errorMessage);
             setInlineError(message);
             updateToast(toastId, { tone: "error", title: message });
+          } finally {
+            if (preventDuplicateSubmit) {
+              submissionLocked.current = false;
+              form.removeAttribute("aria-busy");
+              for (const { control, disabled } of submitControls) {
+                control.disabled = disabled;
+              }
+            }
           }
         });
       }}
     >
       {children}
-      {inlineError ? (
-        <p className="text-error text-sm" role="alert">
-          {inlineError}
-        </p>
-      ) : null}
+      <p
+        className={cn("text-error text-sm", !inlineError && "sr-only")}
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        {inlineError ?? ""}
+      </p>
       <input
         aria-hidden="true"
         hidden

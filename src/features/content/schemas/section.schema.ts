@@ -20,7 +20,7 @@ export const sectionUpdateSchema = z.object({
   pageId: z.string().uuid(),
   name: z.string().trim().min(1, "Section name is required.").max(80),
   sectionType: z.string().trim().min(1).max(80),
-  content: sectionContentSchema,
+  content: z.record(z.string(), z.unknown()).default({}),
   settings: z.record(z.string(), z.unknown()).default({}),
 });
 

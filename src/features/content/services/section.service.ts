@@ -9,6 +9,7 @@ import {
 } from "@/features/content/schemas/section.schema";
 import { db } from "@/lib/db";
 import { validateRepeatableSectionContent } from "@/features/content/repeatable-section-validation";
+import { editableContentKeys, mergeStructuredContent, validateStructuredContent } from "@/features/exports/client-runtime/cms/content-editor-schema";
 
 async function getNextSortOrder(pageId: string) {
   const aggregate = await db.pageSection.aggregate({
@@ -52,17 +53,20 @@ export async function createSection(input: unknown, userId: string) {
 
 export async function updateSection(input: unknown, userId: string) {
   const data = sectionUpdateSchema.parse(input);
-  validateRepeatableSectionContent(data.sectionType, data.content);
   const existingSection = await db.pageSection.findUniqueOrThrow({
     where: { id: data.id },
   });
+  const allowedFields = editableContentKeys(existingSection.content);
+  validateStructuredContent(data.sectionType, data.content, allowedFields, existingSection.content);
+  validateRepeatableSectionContent(data.sectionType, data.content);
+  const content = mergeStructuredContent(existingSection.content, data.content);
 
   const section = await db.pageSection.update({
     where: { id: data.id },
     data: {
       name: data.name,
       sectionType: data.sectionType,
-      content: data.content as Prisma.InputJsonValue,
+      content: content as Prisma.InputJsonValue,
       settings: data.settings as Prisma.InputJsonValue,
     },
   });

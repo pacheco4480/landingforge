@@ -3,6 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { unzipSync } from "fflate";
+import tailwindcss from "@tailwindcss/postcss";
+import postcss from "postcss";
 import { describe, expect, it } from "vitest";
 
 import { buildClientRuntimeComposition } from "@/features/exports/services/client-runtime-composition";
@@ -68,14 +70,26 @@ describe("Landing + CMS package source and bootstrap", () => {
     expect(graph.dependencies).not.toContain("@prisma/client");
   }, 15_000);
 
-  it("materializes CMS routes, isolated migrations and blank environment values without Master sources", () => {
+  it("materializes CMS routes, semantic theme utilities, isolated migrations and blank environment values", async () => {
     const composition = createCmsComposition();
     const temporaryParent = mkdtempSync(join(tmpdir(), "landingforge-client-cms-test-"));
     const destination = join(temporaryParent, "client-cms");
     try {
       assembleClientCmsProject(composition, destination);
+      const cmsCss = readFileSync(join(destination, "app/globals.css"), "utf8");
       const environment = readFileSync(join(destination, ".env.example"), "utf8");
-      const bootstrap = JSON.parse(readFileSync(join(destination, "database/initial-snapshot.json"), "utf8")) as { projectId: string; sourceChecksum: string; snapshot: { page: { title: string } } };
+      const bootstrap = JSON.parse(readFileSync(join(destination, "database/initial-snapshot.json"), "utf8")) as {
+        projectId: string;
+        sourceChecksum: string;
+        snapshot: {
+          templateVersion: string;
+          page: { title: string; sections: Array<{ sectionKey: string; content: Record<string, unknown> }> };
+        };
+      };
+      const exportedCapabilities = JSON.parse(readFileSync(join(destination, "cms/capabilities.json"), "utf8")) as {
+        templateVersion: string;
+        sections: Array<{ key: string; type: string; editableFields: string[] }>;
+      };
       const deliverySummary = readFileSync(join(destination, "client-docs/RESUMO-DA-ENTREGA.md"), "utf8");
       const faq = readFileSync(join(destination, "client-docs/FAQ.md"), "utf8");
       const deliveryChecklist = readFileSync(join(destination, "client-docs/CHECKLIST-DE-ENTREGA.md"), "utf8");
@@ -86,6 +100,27 @@ describe("Landing + CMS package source and bootstrap", () => {
         scripts: Record<string, string>;
       };
       expect(existsSync(join(destination, "app/api/auth/[...nextauth]/route.ts"))).toBe(true);
+      expect(cmsCss).toContain("@source \"../src/**/*.{ts,tsx}\";");
+      expect(cmsCss).toContain("--color-background: var(--background);");
+      expect(cmsCss).toContain("--color-muted-foreground: var(--muted-foreground);");
+      expect(cmsCss).toContain("--color-primary: var(--primary);");
+      expect(cmsCss).toContain("--color-destructive: var(--error);");
+      expect(cmsCss).toContain("--primary: #14532d;");
+      const masterCss = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+      for (const token of ["background", "foreground", "surface", "surface-elevated", "muted", "muted-foreground", "border", "input", "ring", "primary", "primary-foreground", "secondary", "secondary-foreground", "accent", "accent-foreground", "success", "success-foreground", "warning", "warning-foreground", "error", "error-foreground", "info", "info-foreground", "neutral", "neutral-foreground"]) {
+        const masterValue = masterCss.match(new RegExp(`--${token}:\\s*([^;]+);`))?.[1];
+        expect(masterValue, `Master token --${token}`).toBeTruthy();
+        expect(cmsCss).toContain(`  --${token}: ${masterValue};`);
+      }
+      const tailwindCssPath = join(process.cwd(), "node_modules/tailwindcss/index.css").replaceAll("\\", "/");
+      const compiledCmsCss = await postcss([tailwindcss({ base: process.cwd() })]).process(
+        cmsCss.replace('@import "tailwindcss";', `@import "${tailwindCssPath}";`),
+        { from: join(destination, "app/globals.css") },
+      );
+      expect(compiledCmsCss.css).toMatch(/\.bg-background\s*\{/);
+      expect(compiledCmsCss.css).toMatch(/\.text-muted-foreground\s*\{/);
+      expect(compiledCmsCss.css).toMatch(/\.bg-primary\s*\{/);
+      expect(compiledCmsCss.css).toMatch(/\.text-destructive\s*\{/);
       expect(existsSync(join(destination, "app/cms/(workspace)/content/page.tsx"))).toBe(true);
       expect(existsSync(join(destination, "app/cms/(workspace)/preview/page.tsx"))).toBe(true);
       const forgotPasswordPage = readFileSync(join(destination, "app/cms/forgot-password/page.tsx"), "utf8");
@@ -130,6 +165,17 @@ describe("Landing + CMS package source and bootstrap", () => {
       expect(existsSync(join(destination, "migrations/0001_client_cms_foundation.sql"))).toBe(true);
       expect(bootstrap).toMatchObject({ projectId: cmsProjectId, snapshot: { page: { title: "Casa do Teste" } } });
       expect(bootstrap.sourceChecksum).toMatch(/^[a-f0-9]{64}$/);
+      expect(exportedCapabilities.templateVersion).toBe(bootstrap.snapshot.templateVersion);
+      expect(exportedCapabilities.sections).toContainEqual(expect.objectContaining({
+        key: "menu",
+        type: "restaurant_menu_highlights",
+        editableFields: expect.arrayContaining(["title", "text", "items"]),
+      }));
+      expect(bootstrap.snapshot.page.sections.find(({ sectionKey }) => sectionKey === "menu")?.content).toEqual(expect.objectContaining({
+        title: "Para partilhar",
+        text: "Favoritos da casa.",
+        items: [expect.objectContaining({ title: "Pão de alho", price: "6" })],
+      }));
       expect(environment).toContain(`CLIENT_CMS_PROJECT_ID=${cmsProjectId}`);
       expect(environment).not.toMatch(/(?:AUTH_SECRET|DATABASE_URL|SUPABASE_SERVICE_ROLE_KEY)=\S+/);
       expect(environment).not.toContain("re_");
@@ -152,11 +198,11 @@ describe("Landing + CMS package source and bootstrap", () => {
       expect(clientCmsContentService).toContain("capability.sectionKey)");
       expect(clientCmsContentService).toContain("id = $3 AND is_visible = true");
       const clientCmsSectionEditor = readFileSync(join(destination, "src/client-runtime/features/exports/client-runtime/cms/components/section-content-editor.tsx"), "utf8");
-      expect(clientCmsSectionEditor).toContain('restaurant_signature_dishes:');
-      expect(clientCmsSectionEditor).toContain('restaurant_gallery:');
-      expect(clientCmsSectionEditor).toContain('restaurant_reservation:');
-      expect(clientCmsSectionEditor).toContain('label: "Texto alternativo da imagem"');
+      expect(clientCmsSectionEditor).toContain("StructuredContentFields");
       expect(clientCmsSectionEditor).toContain('"A guardar…"');
+      const contentEditorSchema = readFileSync(join(destination, "src/client-runtime/features/exports/client-runtime/cms/content-editor-schema.ts"), "utf8");
+      expect(contentEditorSchema).toContain('imageAlt: "Texto alternativo da imagem"');
+      expect(contentEditorSchema).toContain("editableContentKeys");
       const mediaPage = readFileSync(join(destination, "app/cms/(workspace)/media/page.tsx"), "utf8");
       expect(mediaPage).toContain("MediaUploadForm");
       expect(mediaPage).not.toContain('<form action={uploadMedia}');
@@ -191,7 +237,7 @@ describe("Landing + CMS package source and bootstrap", () => {
     } finally {
       rmSync(temporaryParent, { recursive: true, force: true });
     }
-  }, 20_000);
+  }, 45_000);
 
   it.skipIf(process.env.RUN_CLIENT_CMS_PACKAGE_BUILD !== "1")("builds the independent CMS package but refuses archive until tenant isolation passes", async () => {
     const result = await assembleAuditedClientCmsPackage(createCmsComposition(), false);

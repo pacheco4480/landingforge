@@ -23,7 +23,10 @@ export const fieldValidationSchema = z
       value.minLength === undefined ||
       value.maxLength === undefined ||
       value.minLength <= value.maxLength,
-    { message: "Minimum length cannot exceed maximum length." },
+    {
+      message: "O comprimento mínimo não pode exceder o máximo.",
+      path: ["maxLength"],
+    },
   )
   .refine(
     (value) =>
@@ -32,7 +35,10 @@ export const fieldValidationSchema = z
       value.min === undefined ||
       value.max === undefined ||
       value.min <= value.max,
-    { message: "Minimum value cannot exceed maximum value." },
+    {
+      message: "O valor mínimo não pode exceder o máximo.",
+      path: ["max"],
+    },
   )
   .refine(
     (value) => {
@@ -44,7 +50,7 @@ export const fieldValidationSchema = z
         return false;
       }
     },
-    { message: "Regex must be valid." },
+    { message: "A expressão regular não é válida.", path: ["regex"] },
   );
 
 export const formFieldSchema = z.object({

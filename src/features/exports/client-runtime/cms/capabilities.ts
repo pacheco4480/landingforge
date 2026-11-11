@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { clientCmsContentPatchSchema, type ClientCmsCapability } from "./contracts";
+import { editableContentKeys } from "./content-editor-schema";
 
 const sourceSectionSchema = z.object({
   sectionKey: z.string().min(1),
@@ -40,9 +41,12 @@ export function capabilitiesFromPinnedSnapshot(input: unknown): {
     if (!actual || actual.sectionType !== declared.type) {
       throw new Error("As capacidades não correspondem às secções da versão fixada.");
     }
-    const actualFields = Object.keys(actual.content).sort();
+    const actualFields = editableContentKeys(actual.content);
     const declaredFields = [...new Set(declared.editableFields)].sort();
-    if (actualFields.length !== declaredFields.length || actualFields.some((field, index) => field !== declaredFields[index])) {
+    const legacyFields = Object.keys(actual.content).sort();
+    const matchesCurrent = actualFields.length === declaredFields.length && actualFields.every((field, index) => field === declaredFields[index]);
+    const matchesLegacy = legacyFields.length === declaredFields.length && legacyFields.every((field, index) => field === declaredFields[index]);
+    if (!matchesCurrent && !matchesLegacy) {
       throw new Error("Os campos editáveis não correspondem ao conteúdo do snapshot fixado.");
     }
     if (declaredFields.some((field) => privateFieldPattern.test(field))) {
@@ -54,7 +58,7 @@ export function capabilitiesFromPinnedSnapshot(input: unknown): {
     return {
       sectionKey: declared.key,
       sectionType: declared.type,
-      editableFields: declaredFields,
+      editableFields: actualFields,
     };
   });
   if (seen.size !== actualSections.size) throw new Error("O snapshot tem secções sem capacidade CMS declarada.");
