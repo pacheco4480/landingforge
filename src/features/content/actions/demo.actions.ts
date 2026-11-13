@@ -9,6 +9,7 @@ import {
   duplicateDemo,
   updateDemoSettings,
 } from "@/features/content/services/demo.service";
+import { revalidatePublicPage } from "@/features/public-renderer/services/public-cache.service";
 import { permissions } from "@/features/rbac/permissions";
 import { requirePermission } from "@/lib/auth/require-permission";
 
@@ -36,7 +37,7 @@ export async function createDemoAction(formData: FormData) {
 
 export async function updateDemoSettingsAction(formData: FormData) {
   const user = await requirePermission(permissions.cmsWrite);
-  await updateDemoSettings(
+  const { previousSlug, slug } = await updateDemoSettings(
     {
       id: value(formData, "id"),
       title: value(formData, "title"),
@@ -54,6 +55,8 @@ export async function updateDemoSettingsAction(formData: FormData) {
     user.roles,
   );
   revalidatePath("/content");
+  revalidatePublicPage(slug);
+  if (previousSlug !== slug) revalidatePath(`/${previousSlug}`);
 }
 
 export async function duplicateDemoAction(formData: FormData) {

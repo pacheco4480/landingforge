@@ -1,9 +1,9 @@
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 
 export const publicPageCacheTag = "public-pages";
 
 export function revalidatePublicPage(slug?: string | null) {
-  revalidateTag(publicPageCacheTag, "max");
+  updateTag(publicPageCacheTag);
   revalidatePath("/");
   revalidatePath("/sitemap.xml");
 

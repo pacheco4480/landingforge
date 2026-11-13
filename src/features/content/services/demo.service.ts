@@ -226,7 +226,7 @@ export async function updateDemoSettings(input: unknown, userId: string, userRol
     status: updated.status,
     demoStatus: updated.demoStatus,
   });
-  return updated;
+  return { previousSlug: current.slug, slug: updated.slug };
 }
 
 export async function duplicateDemo(idInput: unknown, userId: string, userRoles: readonly string[]) {

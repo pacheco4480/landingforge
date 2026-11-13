@@ -9,7 +9,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-7.8-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.10-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 <br />
@@ -61,13 +61,16 @@ Agencies, freelancers and businesses that deliver landing pages for clients face
 Modular rendering engine that converts CMS content into polished, responsive landing pages with template-specific layouts, configurable presentation patterns, theme-aware styling and structured data.
 
 ### 📋 Focused CMS
-Purpose-built content management for landing pages — pages, sections, media, forms, leads, SEO, branding and analytics. No bloat.
+Purpose-built content management for landing pages — pages, sections, media, forms, leads, SEO, branding and analytics. Guided editors cover common content and form fields; advanced configurations remain specialized. No bloat.
 
 ### 🏗️ Template System
 Industry-specific templates organized by vertical and visual positioning. Each template can use its own brand-led header, footer, FAQ/contact presentation and restrained motion while keeping page content CMS-editable.
 
 ### 📊 Lead Management
 Lead capture and management with statuses, filtering, consent records and CSV export.
+
+### 🔎 Prospecting Workspace
+Internal B2B prospect records with manual/CSV intake, qualification and suppression controls, plus reviewed outreach drafts. Automated discovery and outbound prospecting email are disabled.
 
 ### 👥 Client & Project Workspace
 Internal client/project records, structured briefings, review decisions, maintenance workflows and delivery tracking. End-to-end commercial acceptance is still in progress.
@@ -88,7 +91,7 @@ Auth.js authentication, role-based access control, Zod validation, rate limiting
 Email notifications and scheduled digests through Resend when the integration is configured.
 
 ### 📦 Client Package Generation
-On-demand, audited Landing Only and Landing + CMS package generation. Local package workflows exist; target-host deployment and final release sign-off have not been certified.
+On-demand, audited Landing Only and Landing + CMS package generation. Selected local generation, installation and CMS checks have been exercised; full integrated acceptance and target-host deployment remain pending.
 
 </td>
 </tr>
@@ -191,6 +194,7 @@ src/
 │   ├── exports/            → Audited client package assembly and runtime
 │   ├── forms/              → Form engine & validation
 │   ├── leads/              → Lead capture & management
+│   ├── prospects/          → Internal prospecting workspace
 │   ├── seo/                → SEO metadata management
 │   ├── branding/           → Theme & brand configuration
 │   ├── media/              → Media management
@@ -304,7 +308,7 @@ npx prisma validate   # Schema validation
 
 ### Deployment
 
-The repository includes an internal pipeline for generating and auditing Landing Only and Landing + CMS client packages. It does not provide a one-click publisher for every hosting provider. Local package checks have passed, but target-host deployment, hosted cron behavior and production limits have not been certified. A deployment requires a configured PostgreSQL database, environment variables and any integrations enabled for that package. Vercel is a hosting target, not a claim that every account or client configuration has been tested. Validate migrations, build output, storage permissions, public routes and recovery procedures in the chosen target environment before release.
+The repository includes an internal pipeline for generating and auditing Landing Only and Landing + CMS client packages. Selected local generation, installation and CMS checks have been exercised; full integrated acceptance and target-host deployment remain pending. The pipeline does not provide a one-click publisher for every hosting provider. Hosted cron behavior and production limits have not been certified. A deployment requires a configured PostgreSQL database, environment variables and any integrations enabled for that package. Vercel is a hosting target, not a claim that every account or client configuration has been tested. Validate migrations, build output, storage permissions, public routes and recovery procedures in the chosen target environment before release.
 
 ---
 
@@ -366,7 +370,7 @@ These diagrams explain the implementation at a high level; they are not screensh
 - Beauty & Wellness — Elegant · Playful (planned)
 
 **Commercial & Agency Operations**
-- **Implemented locally:** public portfolio catalogue; internal client/project CRM and briefing workspace; audited Landing Only and Landing + CMS package generation; managed maintenance/rebase foundations; operational privacy request tracking.
+- **Implemented locally:** internal prospecting workspace with manual/CSV intake, qualification, suppression controls and draft-only outreach; public portfolio catalogue; internal client/project CRM and briefing workspace; audited Landing Only and Landing + CMS package generation; managed maintenance/rebase foundations; operational privacy request tracking.
 - **Acceptance in progress:** final visual approval of selected demos; integrated commercial scenarios and package release sign-off; confirmation that client handover materials match the generated package and CMS controls.
 - **Environment-specific validation not complete:** hosted deployment/cron, provider-backed email delivery, and destination-specific recovery/rollback. These are not represented as production-ready.
 - **Showcase publication:** case-study guides and current, approved screenshots remain separate from implementation status; demo content is fictional and must not be presented as client work or measured results.

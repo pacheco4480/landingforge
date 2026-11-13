@@ -2,6 +2,13 @@
 
 Notable project changes are recorded here by task and date.
 
+## 2026-11-11
+
+### Bakery Playful QA — rota pública e capturas
+- Corrigida a invalidação imediata do cache público ao alterar o estado/visibilidade de uma demo; também são invalidados o slug atual e, se mudar, o slug anterior.
+- Adicionado teste de regressão para a invalidação das rotas e da tag pública.
+- Capturadas localmente as secções Bakery Playful para referência do portfolio. A demo na BD QA foi restaurada a `READY` e oculta; não houve publicação externa nem utilização da BD principal.
+
 ## 2026-11-10
 
 ### TASK 050B — Identidade do shell Master (implementação parcial)
